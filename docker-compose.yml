@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT}:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command:
+      - |
+        yarn build && \
+        export NODE_ENV=test && \
+        yarn test && \
+        export NODE_ENV=staging && \
+        yarn start
+    healthcheck:
+        test: "netstat -ltn | grep -c 3000"
