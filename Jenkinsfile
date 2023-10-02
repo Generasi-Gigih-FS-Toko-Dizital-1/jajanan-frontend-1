@@ -19,17 +19,6 @@ pipeline {
             steps {
                 jiraSendBuildInfo()
                 jiraSendDeploymentInfo environmentId: 'sg-staging-1', environmentName: 'sg-staging-1', environmentType: 'staging'
-                publishHTML (
-                     target : [
-                         allowMissing: false,
-                         alwaysLinkToLastBuild: true,
-                         keepAll: true,
-                         reportDir: 'coverage',
-                         reportFiles: 'index.html',
-                         reportName: 'Post Reports',
-                         reportTitles: 'Code Coverage Report'
-                     ]
-                )
             }
         }
     }
