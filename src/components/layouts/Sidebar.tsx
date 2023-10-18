@@ -10,7 +10,7 @@ const Sidebar = ({
   oppened: boolean;
 }) => {
   return (
-    <nav className={`${oppened ? "w-80" : "w-24"} px-5 duration-300`}>
+    <nav className={`${oppened ? "w-80 px-5" : "w-0 px-0"} duration-300`}>
       <div className="flex items-center py-3">
         <Image src="/images/jajanmania-logo.svg" width={60} alt="Logo" />
         {oppened && (
@@ -24,7 +24,7 @@ const Sidebar = ({
           <li className="mb-1" key={index}>
             <a
               className={`flex items-center gap-2 py-2 px-2 hover:bg-[#FDD671] cursor-pointer rounded-lg 
-              ${window.location.pathname === item.link && "bg-[#FDD671]"}
+              ${window.location.pathname.includes(item.link) && "bg-[#FDD671]"}
               ${!oppened && "justify-center"}
               `}
               href={item.link}
