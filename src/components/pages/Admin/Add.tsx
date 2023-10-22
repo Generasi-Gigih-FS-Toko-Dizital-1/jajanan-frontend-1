@@ -1,7 +1,8 @@
-import { Button } from "@nextui-org/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@nextui-org/react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { Link } from "react-router-dom";
+
 import AdminForm from "../../fragments/admin-form";
 
 const AdminAdd = () => {
@@ -9,20 +10,22 @@ const AdminAdd = () => {
     e.preventDefault();
     alert("Add Admin");
   };
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white p-5 h-full">
-      <div className="flex justify-between items-center">
-        <h2 className="font-[600] text-2xl">Add Admin</h2>
-        <Link to={"/admin"}>
-          <Button
-            variant="bordered"
-            className="flex items-center border border-black rounded-md py-2 px-3 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
-          >
-            <AiOutlineArrowLeft /> Back
-          </Button>
-        </Link>
+      <div className="flex justify-between items-center px-4 pb-4">
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Add Admin</h2>
+        <Button 
+          onPress={() => navigate('/admin')}
+          variant="bordered"
+          className="flex items-center border border-jajanDark2 text-jajanDark2 rounded-md p-2 hover: shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
+        >
+          <AiOutlineArrowLeft/>
+          Back
+        </Button>
       </div>
-      <AdminForm className="mt-5" action={handleSubmit} />
+      <AdminForm className="p-4" action={handleSubmit} />
     </div>
   );
 };

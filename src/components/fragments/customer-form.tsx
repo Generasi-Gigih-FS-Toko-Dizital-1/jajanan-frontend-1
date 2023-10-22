@@ -1,15 +1,17 @@
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
+import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-const AdminForm = ({
+import CustomerTypes from "../../types/UserTypes";
+
+const CustomerForm = ({
   className,
   action,
   data
 }: {
   className?: string;
   action: (e: React.FormEvent<HTMLFormElement>) => void;
-  data?: any
+  data?: CustomerTypes
 }) => {
   const [isVisiblePassword, setIsVisiblePassword] = React.useState(false);
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
@@ -130,4 +132,4 @@ const AdminForm = ({
   );
 };
 
-export default AdminForm;
+export default CustomerForm;

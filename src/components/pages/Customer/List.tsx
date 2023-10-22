@@ -33,7 +33,9 @@ const List = () => {
           <TableColumn>Address</TableColumn>
           <TableColumn
             className="flex justify-center items-center"
-          >Action</TableColumn>
+          >
+            Action
+          </TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow className="border-b">
@@ -49,7 +51,7 @@ const List = () => {
             <TableCell
               className="flex justify-center items-center"
             >
-              <ActionButton />
+              <ActionButton type="customer"/>
             </TableCell>
           </TableRow>
         </TableBody>

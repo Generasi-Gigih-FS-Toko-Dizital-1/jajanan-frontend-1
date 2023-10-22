@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Table,
@@ -7,19 +8,20 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import React from "react";
-import { Link } from "react-router-dom";
+import ActionButton from "../../elements/action-button";
 
 const List = () => {
+  const navigate = useNavigate();
   return (
-    <div className="bg-white p-5">
-      <div className="flex justify-between items-center">
-        <h2 className="font-[600] text-2xl">Manage Admin</h2>
-        <Link to={"/admin/add"}>
-          <Button className="bg-jajanDark2 text-white rounded-md py-2 px-3 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100">
-            Add Admin
-          </Button>
-        </Link>
+    <div className="bg-white py-5 md:px-3">
+      <div className="flex justify-between items-center mx-4 pb-4">
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Manage Admin</h2>
+        <Button 
+          onPress={() => navigate('/admin/add')}
+          className="bg-jajanDark2 text-white rounded-md p-2 hover:shadow-md hover:shadow-jajanWarning  focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
+        >
+          + Add Admin
+        </Button>
       </div>
       <Table className="overflow-x-auto">
         <TableHeader>
@@ -29,20 +31,28 @@ const List = () => {
           <TableColumn>Gender</TableColumn>
           <TableColumn>Updated at</TableColumn>
           <TableColumn>Created at</TableColumn>
-          <TableColumn>Action</TableColumn>
+          <TableColumn
+            className="flex justify-center items-center"
+          >
+            Action
+          </TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow className="border-b">
             <TableCell>1</TableCell>
-            <TableCell>John Doe</TableCell>
+            <TableCell>
+              <Link to="/admin/1" className="text-jajanDark2 underline">
+                John Doe
+              </Link>
+            </TableCell>
             <TableCell>4Nn2s@example.com</TableCell>
             <TableCell>Male</TableCell>
             <TableCell>2022-01-01</TableCell>
             <TableCell>2022-01-01</TableCell>
-            <TableCell>
-              <button className="flex justify-center bg-[#FDD671] border border-black py-1 px-2">
-                Detail
-              </button>
+            <TableCell
+              className="flex justify-center items-center"
+            >
+              <ActionButton type="admin"/>
             </TableCell>
           </TableRow>
         </TableBody>
