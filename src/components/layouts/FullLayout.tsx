@@ -10,11 +10,11 @@ const FullLayout = ({ navList }: { navList: NavigationListTypes[] }) => {
     setSidebarOpened(!sidebarOpened);
   };
   return (
-    <div className="flex w-screen overflow-hidden">
+    <div className="flex">
       <Sidebar navList={navList} oppened={sidebarOpened} />
       <div className="w-full h-screen flex flex-col">
         <Header sidebarToggle={toggleSidebar} />
-        <main className="bg-[#ECECEC] md:px-5 md:py-5 h-full">
+        <main className="bg-[#ECECEC] md:p-5 h-full">
           <Outlet />
         </main>
       </div>
