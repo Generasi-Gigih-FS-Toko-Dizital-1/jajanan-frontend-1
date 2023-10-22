@@ -1,6 +1,6 @@
-import React from "react";
 import { Image } from "@nextui-org/react";
 import { NavigationListTypes } from "../../types/NavigationListTypes";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({
   navList,
@@ -9,6 +9,8 @@ const Sidebar = ({
   navList: NavigationListTypes[];
   oppened: boolean;
 }) => {
+  const location = useLocation();
+  
   return (
     <nav className={`${oppened ? "w-80 px-5" : "w-0 px-0"} duration-300`}>
       <div className="flex items-center py-3">
@@ -22,16 +24,16 @@ const Sidebar = ({
       <ul className="py-1">
         {navList.map((item, index) => (
           <li className="mb-1" key={index}>
-            <a
+            <Link
               className={`flex items-center gap-2 py-2 px-2 hover:bg-[#FDD671] cursor-pointer rounded-lg 
-              ${window.location.pathname.includes(item.link) && "bg-[#FDD671]"}
+              ${location.pathname.includes(item.link) && "bg-[#FDD671]"}
               ${!oppened && "justify-center"}
               `}
-              href={item.link}
+              to={item.link}
             >
               <i>{item.icon}</i>
               {oppened && item.title}
-            </a>
+            </Link>
           </li>
         ))}
         <li></li>
