@@ -14,6 +14,11 @@ import CustomerAdd from "./components/pages/Customer/Add";
 import CustomerDetail from "./components/pages/Customer/Detail";
 import CustomerEdit from "./components/pages/Customer/Edit";
 
+import VendorList from "./components/pages/Vendor/List";
+import VendorAdd from "./components/pages/Vendor/Add";
+import VendorDetail from "./components/pages/Vendor/Detail";
+import VendorEdit from "./components/pages/Vendor/Edit";
+
 export default function App() {
 
   return (
@@ -60,6 +65,12 @@ export default function App() {
             <Route path="add" element={<CustomerAdd />} />
             <Route path="edit/:id" element={<CustomerEdit />} />
             <Route path=":id" element={<CustomerDetail />} />
+          </Route>
+          <Route path="/vendors">
+            <Route index element={<VendorList />} />
+            <Route path="add" element={<VendorAdd />} />
+            <Route path="edit/:id" element={<VendorEdit />} />
+            <Route path=":id" element={<VendorDetail />} />
           </Route>
         </Route>
       </Routes>
