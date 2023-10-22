@@ -15,7 +15,7 @@ const List = () => {
 
   return (
     <div className="bg-white py-5 md:px-3">
-      <div className="flex justify-between items-center mx-4 pb-4">
+      <div className="flex justify-between mx-4 mb-4">
         <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Customers</h2>
         <Button 
           onPress={() => navigate('/customers/add')}
