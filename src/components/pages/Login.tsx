@@ -1,4 +1,4 @@
-import LoginForm from "../elements/login-form";
+import LoginForm from "../fragments/login-form";
 
 export default function Login() {
   return(
