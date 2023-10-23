@@ -19,7 +19,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }) => {
         </DropdownTrigger>
         <DropdownMenu 
           aria-label="Static Actions"
-          className="text-center"
+          className="text-center flex flex-col gap-2"
           onAction={(key) => 
             key === "logout" &&
               confirm('Are you sure you want to logout?') &&
@@ -29,7 +29,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }) => {
           <DropdownItem>ADMIN 1</DropdownItem>
           <DropdownItem 
             key="logout" 
-            className="text-danger" 
+            className="text-white bg-jajanDanger2/80" 
             color="danger"
           >
             Logout
