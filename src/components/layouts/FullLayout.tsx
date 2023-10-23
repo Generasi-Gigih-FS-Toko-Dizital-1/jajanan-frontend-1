@@ -12,9 +12,13 @@ const FullLayout = ({ navList }: { navList: NavigationListTypes[] }) => {
   return (
     <div className="flex">
       <Sidebar navList={navList} oppened={sidebarOpened} />
-      <div className="w-full h-screen flex flex-col">
+      <div 
+        className={`fixed top-0 left-0 z-[999] w-full h-screen bg-jajanDark2 ${sidebarOpened ? "hidden bg-opacity-0" : "block bg-opacity-30"} transition-opacity ease-in-out duration-150`}
+        onClick={toggleSidebar}>
+      </div>
+      <div className="w-full flex flex-col">
         <Header sidebarToggle={toggleSidebar} />
-        <main className="bg-[#ECECEC] md:p-5 h-full">
+        <main className="bg-[#ECECEC] mt-[72px] md:p-5 min-h-screen">
           <Outlet />
         </main>
       </div>

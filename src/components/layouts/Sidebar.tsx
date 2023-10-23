@@ -12,27 +12,25 @@ const Sidebar = ({
   const location = useLocation();
   
   return (
-    <nav className={`${oppened ? "w-80 px-5" : "w-0 px-0"} duration-300`}>
-      <div className="flex items-center py-3">
+    <nav className={`${oppened ? "-translate-x-full" : "transform-none"} fixed top-0 left-0 z-[9999] h-screen overflow-y-auto transition-transform bg-white w-60 md:w-72 px-5`}>
+      <div className="flex items-center pt-2">
         <Image src="/images/jajanmania-logo.svg" width={60} alt="Logo" />
-        {oppened && (
-          <h2 className="text-xl font-[400]">
-            <span className="font-[600]">JAJAN</span> PANEL
-          </h2>
-        )}
+        <h2 className="text-xl lg:text-2xl font-normal">
+          <span className="font-semibold">JAJAN</span> PANEL
+        </h2>
       </div>
-      <ul className="py-1">
+      <ul className="py-5 md:py-6 lg:py-8">
         {navList.map((item, index) => (
-          <li className="mb-1" key={index}>
+          <li 
+            className="mb-1.5 text-base md:text-lg"
+            key={index}>
             <Link
-              className={`flex items-center gap-2 py-2 px-2 hover:bg-[#FDD671] cursor-pointer rounded-lg 
-              ${location.pathname.includes(item.link) && "bg-[#FDD671]"}
-              ${!oppened && "justify-center"}
-              `}
+              className={`flex items-center gap-2 py-2 px-2 hover:bg-jajanWarning rounded-lg 
+              ${location.pathname.includes(item.link) && "bg-jajanWarning"}`}
               to={item.link}
             >
-              <i>{item.icon}</i>
-              {oppened && item.title}
+              {item.icon}
+              {item.title}
             </Link>
           </li>
         ))}
