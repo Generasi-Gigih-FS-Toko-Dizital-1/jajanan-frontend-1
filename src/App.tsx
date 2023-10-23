@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 
-import Login from "./components/pages/Login";
 import FullLayout from "./components/layouts/FullLayout";
 import { AiOutlineDashboard, AiOutlineShop, AiOutlineUser, AiOutlineUserSwitch } from "react-icons/ai";
+
+import Login from "./components/pages/Login";
+import Dashboard from "./components/pages/Dashboard";
 
 import AdminList from "./components/pages/Admin/List";
 import AdminAdd from "./components/pages/Admin/Add";
@@ -54,6 +56,7 @@ export default function App() {
             />
           }
         >
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin">
             <Route index element={<AdminList />} />
             <Route path="add" element={<AdminAdd />} />
