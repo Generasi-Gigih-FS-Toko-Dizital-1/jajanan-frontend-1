@@ -77,7 +77,7 @@ const CustomerForm = ({
           labelPlacement="outside"
           label="Address"
           placeholder="223 Example Street, City, State."
-          className="max-w-xl"
+          className="w-full md:w-[calc(50%-.5rem)]"
           isRequired
           variant="bordered"
           radius="none"

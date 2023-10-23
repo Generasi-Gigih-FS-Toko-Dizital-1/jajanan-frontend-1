@@ -32,11 +32,7 @@ export default function ActionButton({type}: {type: string}) {
             alert(`${userType} deleted!`)
         }
       >
-        <DropdownItem 
-          key="edit" 
-        >
-          Edit
-        </DropdownItem>
+        <DropdownItem key="edit">Edit</DropdownItem>
         <DropdownItem key="delete" className="text-danger"color="danger">Delete
         </DropdownItem>
       </DropdownMenu>
