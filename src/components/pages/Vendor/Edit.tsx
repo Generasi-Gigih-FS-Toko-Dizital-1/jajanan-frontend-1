@@ -11,16 +11,25 @@ const Edit = () => {
     e.preventDefault();
     alert("Edit Vendor");
   };
-
+  
   const vendor = {
+    id: "1",
     fullname: "Max Mayfield",
-    username: "max",
-    email: "maxxx@mail.com",
     gender: "F",
     address: "565 Holland Rd, Hawkins, Indiana",
-    jajan_name: "Mayfield Toast",
+    username: "max",
+    email: "maxxx@mail.com",
+    balance: 0,
+    experience: 0,
     jajan_image_url: "https://openai-labs-public-images-prod.azureedge.net/user-jTJ7A5puDaUD79bsLHVgWCyy/generations/generation-ZXpxrA1J2HneW7qCNQEJ9wQZ/image.webp",
+    jajan_name: "Mayfield Toast",
     jajan_description: "Your street food maestro. Fast, tasty bites for your cravings. Don't miss out!",
+    last_latitude: 0,
+    last_longitude: 0,
+    status: "active",
+    created_at: "2021-10-01T00:00:00Z",
+    updated_at: "2021-10-01T00:00:00Z", 
+    deleted_at: "2021-10-01T00:00:00Z",
   };
 
   return (

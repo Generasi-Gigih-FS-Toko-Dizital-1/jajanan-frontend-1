@@ -12,9 +12,13 @@ const AdminEdit = () => {
   };
 
   const admin = {
+    id: "1",
     fullname: "John Doe",
+    gender: "M",
     email: "john@gmail.com",
-    gender: "M"
+    updated_at: "2021-10-01T00:00:00Z",
+    created_at: "2021-10-01T00:00:00Z",
+    deleted_at: "2021-10-01T00:00:00Z",
   };
 
   return (

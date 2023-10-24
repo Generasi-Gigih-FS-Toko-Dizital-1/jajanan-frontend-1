@@ -13,11 +13,19 @@ const Edit = () => {
   };
 
   const customer = {
+    id: "1",
     fullname: "Dusty Buns",
-    username: "dustyyy",
-    email: "dusty@mail.com",
     gender: "M",
     address: "2886 Cornwallis Road, Hawkins, Indiana",
+    username: "dustyyy",
+    email: "dusty@mail.com",
+    balance: 0,
+    experience: 0,
+    last_latitude: 0,
+    last_longitude: 0,
+    created_at: "2021-10-01T00:00:00Z",
+    updated_at: "2021-10-01T00:00:00Z",
+    deleted_at: "2021-10-01T00:00:00Z",
   };
 
   return (

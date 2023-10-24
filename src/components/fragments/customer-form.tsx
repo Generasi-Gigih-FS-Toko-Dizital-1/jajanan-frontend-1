@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-import CustomerTypes from "../../types/UserTypes";
+import type { CustomerTypes } from "../../types/UserTypes";
 
 const CustomerForm = ({
   className,

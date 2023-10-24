@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-import AdminTypes from "../../types/UserTypes";
+import type { AdminTypes } from "../../types/UserTypes";
 
 const AdminForm = ({
   className,

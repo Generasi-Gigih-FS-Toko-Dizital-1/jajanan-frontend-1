@@ -1,14 +1,14 @@
-export default interface AdminTypes {
+export interface AdminTypes {
   id: string;
   fullname: string;
   gender: string;
   email: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt: string;
+  updated_at: string;
+  created_at: string;
+  deleted_at: string;
 }
 
-export default interface VendorTypes {
+export interface VendorTypes {
   id: string;
   fullname: string;
   gender: string;
@@ -28,7 +28,7 @@ export default interface VendorTypes {
   deleted_at: string;
 }
 
-export default interface CustomerTypes {
+export interface CustomerTypes {
   id: string;
   fullname: string;
   gender: string;

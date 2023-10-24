@@ -3,12 +3,13 @@ import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import JajanStandForm from "./jajan-stand-form";
 
-import type VendorTypes from "../../types/UserTypes";
+import type { VendorTypes } from "../../types/UserTypes";
+
 
 const VendorForm = ({
   className,
   action,
-  data
+  data,
 }: {
   className?: string;
   action: (e: React.FormEvent<HTMLFormElement>) => void;
