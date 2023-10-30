@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import { AiOutlineEye, AiOutlineLock, AiOutlineMail } from "react-icons/ai";
+import { Link } from 'react-router-dom'
+import { AiOutlineEye, AiOutlineLock, AiOutlineMail } from 'react-icons/ai'
+import React from 'react'
 
-export default function LoginForm() {
+export default function LoginForm (): React.ReactElement {
   return (
     <div className="flex rounded-xl border-2 border-jajanDark2 shadow-xl items-center justify-center w-11/12 sm:w-[480px] md:w-[732.86px] md:h-[500px] bg-white lg:w-[879.43px] lg:h-[600px]">
       <div className="flex flex-col items-center justify-center h-full w-full md:w-[55%] pb-10">
@@ -12,7 +13,7 @@ export default function LoginForm() {
             <div className="absolute left-5 top-3 sm:top-3.5">
               <AiOutlineMail />
             </div>
-            <input 
+            <input
               className="w-full border-2 border-jajanDark2 rounded-full text-sm md:text-base py-2 pl-10 pr-4 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
               type="text" placeholder="Email"
             />
@@ -21,13 +22,13 @@ export default function LoginForm() {
             <div className="absolute left-5 top-3 sm:top-3.5">
               <AiOutlineLock />
             </div>
-            <input 
+            <input
               className="w-full border-2 border-jajanDark2 rounded-full text-sm md:text-base py-2 px-10 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
-              type="password" 
-              placeholder="Password" 
+              type="password"
+              placeholder="Password"
             />
             <div className="absolute right-2 top-1 sm:top-2">
-              <button 
+              <button
                 className="bg-white p-2 rounded-full"
                 type="button"
               >
@@ -42,7 +43,7 @@ export default function LoginForm() {
             </div>
             <Link to="/forgot-password" className="text-jajanDark2 underline">Forgot password?</Link>
           </div>
-          <button 
+          <button
             className="bg-jajanDark2 text-white rounded-md py-2 px-10 md:px-8 mt-6 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
             type="submit"
           >
@@ -56,7 +57,7 @@ export default function LoginForm() {
           </p>
           <p className="text-xs scale-95 text-center">In collaboration with</p>
           <img src="/images/goto-logo.svg" alt="Logo-1" className="object-cover mt-1" />
-        </div>  
+        </div>
       </div>
       <div className="hidden md:flex flex-col text-center justify-between items-center border-l-2 border-jajanDark2 h-full w-[45%] py-10">
         <div>
@@ -72,5 +73,5 @@ export default function LoginForm() {
         </div>
       </div>
     </div>
-  );
+  )
 }
