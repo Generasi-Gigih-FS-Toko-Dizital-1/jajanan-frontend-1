@@ -1,10 +1,11 @@
-import { AiOutlineLink } from "react-icons/ai";
-import { Input, Textarea } from "@nextui-org/react";
+import { AiOutlineLink } from 'react-icons/ai'
+import { Input, Textarea } from '@nextui-org/react'
 
-import type VendorTypes from "../../types/UserTypes";
+import type { VendorTypes } from '../../types/UserTypes'
+import React from 'react'
 
-export default function JajanStandForm({ data }: { data?: VendorTypes }) {
-  return(
+export default function JajanStandForm ({ data }: { data?: VendorTypes }): React.ReactElement {
+  return (
     <>
       <h2 className="font-semibold text-xl mb-6 sm:text-2xl md:mb-8 md:text-xl lg:text-2xl ">Add Jajan Stand</h2>
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
@@ -16,7 +17,7 @@ export default function JajanStandForm({ data }: { data?: VendorTypes }) {
           variant="bordered"
           label="Name"
           radius="none"
-          defaultValue={data ? data.jajan_name : ""}
+          defaultValue={(data != null) ? data.jajan_name : ''}
         />
         <Input
           isRequired
@@ -24,7 +25,7 @@ export default function JajanStandForm({ data }: { data?: VendorTypes }) {
           placeholder="https://example.com/image.png"
           type="url"
           variant="bordered"
-          classNames={{ input: "bg-blue-500" }}
+          classNames={{ input: 'bg-blue-500' }}
           label="Image"
           radius="none"
           startContent={
@@ -32,7 +33,7 @@ export default function JajanStandForm({ data }: { data?: VendorTypes }) {
               <AiOutlineLink/>
             </span>
           }
-          defaultValue={data ? data.jajan_image_url : ""}
+          defaultValue={(data != null) ? data.jajan_image_url : ''}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
@@ -44,7 +45,7 @@ export default function JajanStandForm({ data }: { data?: VendorTypes }) {
           isRequired
           variant="bordered"
           radius="none"
-          defaultValue={data ? data.jajan_description : ""}
+          defaultValue={(data != null) ? data.jajan_description : ''}
         />
       </div>
     </>

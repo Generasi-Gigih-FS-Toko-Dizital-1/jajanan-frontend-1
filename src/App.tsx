@@ -1,28 +1,28 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom'
 
-import FullLayout from "./components/layouts/FullLayout";
-import { AiOutlineDashboard, AiOutlineShop, AiOutlineUser, AiOutlineUserSwitch } from "react-icons/ai";
+import FullLayout from './components/layouts/FullLayout'
+import { AiOutlineDashboard, AiOutlineShop, AiOutlineSwap, AiOutlineUser, AiOutlineUserSwitch } from 'react-icons/ai'
 
-import Login from "./components/pages/Login";
-import Dashboard from "./components/pages/Dashboard";
+import Login from './components/pages/Login'
+import Dashboard from './components/pages/Dashboard'
 
-import AdminList from "./components/pages/Admin/List";
-import AdminAdd from "./components/pages/Admin/Add";
-import AdminEdit from "./components/pages/Admin/Edit";
-import AdminDetail from "./components/pages/Admin/Detail";
+import AdminList from './components/pages/Admin/List'
+import AdminAdd from './components/pages/Admin/Add'
+import AdminEdit from './components/pages/Admin/Edit'
+import AdminDetail from './components/pages/Admin/Detail'
 
-import CustomerList from "./components/pages/Customer/List";
-import CustomerAdd from "./components/pages/Customer/Add";
-import CustomerDetail from "./components/pages/Customer/Detail";
-import CustomerEdit from "./components/pages/Customer/Edit";
+import CustomerList from './components/pages/Customer/List'
+import CustomerAdd from './components/pages/Customer/Add'
+import CustomerDetail from './components/pages/Customer/Detail'
+import CustomerEdit from './components/pages/Customer/Edit'
 
-import VendorList from "./components/pages/Vendor/List";
-import VendorAdd from "./components/pages/Vendor/Add";
-import VendorDetail from "./components/pages/Vendor/Detail";
-import VendorEdit from "./components/pages/Vendor/Edit";
+import VendorList from './components/pages/Vendor/List'
+import VendorAdd from './components/pages/Vendor/Add'
+import VendorDetail from './components/pages/Vendor/Detail'
+import VendorEdit from './components/pages/Vendor/Edit'
+import React from 'react'
 
-export default function App() {
-
+export default function App (): React.ReactElement {
   return (
     <>
       <Routes>
@@ -33,25 +33,31 @@ export default function App() {
             <FullLayout
               navList={[
                 {
-                  title: "Dashboard",
-                  link: "/dashboard",
-                  icon: <AiOutlineDashboard />,
+                  title: 'Dashboard',
+                  link: '/dashboard',
+                  icon: <AiOutlineDashboard />
                 },
                 {
-                  title: "Street Vendors",
-                  link: "/vendors",
-                  icon: <AiOutlineShop />,
+                  title: 'Street Vendors',
+                  link: '/vendors',
+                  icon: <AiOutlineShop />
                 },
                 {
-                  title: "Customers",
-                  link: "/customers",
-                  icon: <AiOutlineUser />,
+                  title: 'Customers',
+                  link: '/customers',
+                  icon: <AiOutlineUser />
                 },
                 {
-                  title: "Manage Admin",
-                  link: "/admin",
-                  icon: <AiOutlineUserSwitch />,
+                  title: 'Manage Admin',
+                  link: '/admins',
+                  icon: <AiOutlineUserSwitch />
                 },
+
+                {
+                  title: 'Manage Transaction',
+                  link: '/transactions',
+                  icon: <AiOutlineSwap />
+                }
               ]}
             />
           }
@@ -78,5 +84,5 @@ export default function App() {
         </Route>
       </Routes>
     </>
-  );
+  )
 }

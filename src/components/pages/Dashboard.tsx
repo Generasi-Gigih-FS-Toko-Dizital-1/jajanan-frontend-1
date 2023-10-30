@@ -1,5 +1,7 @@
-export default function Dashboard () {
-  return(
+import React from 'react'
+
+export default function Dashboard (): React.ReactElement {
+  return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
         <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Dashboard</h2>

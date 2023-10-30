@@ -1,16 +1,17 @@
-import { useNavigate } from "react-router-dom";
-import { Button, Chip } from "@nextui-org/react";
-import { AiOutlineArrowLeft, AiOutlineUser } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom'
+import { Button, Chip } from '@nextui-org/react'
+import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
+import React from 'react'
 
-const Detail = () => {
-  const navigate = useNavigate();
+const Detail = (): React.ReactElement => {
+  const navigate = useNavigate()
 
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
         <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin</h2>
-        <Button 
-          onPress={() => navigate('/admin')}
+        <Button
+          onPress={() => { navigate('/admin') }}
           variant="bordered"
           className="flex items-center border border-jajanDark2 text-jajanDark2 rounded-md p-2 hover: shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         >
@@ -35,18 +36,18 @@ const Detail = () => {
           </div>
         </div>
         <div className="w-full flex items-center gap-3 mt-5">
-          <Button 
-            onPress={() => navigate("/admin/edit/1")}
+          <Button
+            onPress={() => { navigate('/admin/edit/1') }}
             className="bg-jajanDark2 text-white rounded-md"
           >
             Edit
           </Button>
-          <Button 
+          <Button
             className="bg-jajanDanger text-white rounded-md"
             onPress={
               () => {
-                confirm("Are you sure you want to delete this admin?") &&
-                alert("Admin deleted")
+                confirm('Are you sure you want to delete this admin?') &&
+                alert('Admin deleted')
               }
             }
           >
@@ -55,10 +56,10 @@ const Detail = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-const AdminProfileCard = ({ className }: { className?: string }) => {
+const AdminProfileCard = ({ className }: { className?: string }): React.ReactElement => {
   return (
     <div className={`${className} flex flex-col md:flex-row justify-between gap-y-5 md:gap-x-3`}>
       <div className="flex gap-x-3 md:gap-x-4 md:w-1/2 lg:w-[45%]">
@@ -76,7 +77,7 @@ const AdminProfileCard = ({ className }: { className?: string }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Detail;
+export default Detail
