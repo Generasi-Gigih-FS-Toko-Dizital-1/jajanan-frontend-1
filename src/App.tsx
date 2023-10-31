@@ -7,6 +7,7 @@ import {
 	AiOutlineSwap,
 	AiOutlineUser,
 	AiOutlineUserSwitch,
+	AiOutlineWallet,
 } from "react-icons/ai";
 
 import Login from "./components/pages/Login";
@@ -68,9 +69,9 @@ export default function App(): React.ReactElement {
 									icon: <AiOutlineSwap />,
 								},
 								{
-									title: "Manage Ewallet",
+									title: "Manage E-Wallet",
 									link: "/wallet",
-									icon: <AiOutlineSwap />,
+									icon: <AiOutlineWallet />,
 								},
 							]}
 						/>
