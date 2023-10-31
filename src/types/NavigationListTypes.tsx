@@ -1,5 +1,5 @@
-export type NavigationListTypes = {
-  title: string;
-  link: string;
-  icon: React.ReactNode;
-};
+export interface NavigationListTypes {
+  title: string
+  link: string
+  icon: React.ReactNode
+}

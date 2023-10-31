@@ -1,9 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import FullLayout from "./components/layouts/FullLayout";
 import {
 	AiOutlineDashboard,
 	AiOutlineShop,
+	AiOutlineSwap,
 	AiOutlineUser,
 	AiOutlineUserSwitch,
 } from "react-icons/ai";
@@ -25,8 +26,9 @@ import VendorList from "./components/pages/Vendor/List";
 import VendorAdd from "./components/pages/Vendor/Add";
 import VendorDetail from "./components/pages/Vendor/Detail";
 import VendorEdit from "./components/pages/Vendor/Edit";
+import React from "react";
 
-export default function App() {
+export default function App(): React.ReactElement {
 	return (
 		<>
 			<Routes>
@@ -53,13 +55,14 @@ export default function App() {
 								},
 								{
 									title: "Manage Admin",
-									link: "/admin",
+									link: "/admins",
 									icon: <AiOutlineUserSwitch />,
 								},
+
 								{
-									title: "Top Up History",
-									link: "/top-up-history",
-									icon: <AiOutlineUserSwitch />,
+									title: "Manage Transaction",
+									link: "/transactions",
+									icon: <AiOutlineSwap />,
 								},
 							]}
 						/>
