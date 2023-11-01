@@ -11,7 +11,7 @@ const Detail = (): React.ReactElement => {
       <div className="flex justify-between mx-4 mb-4">
         <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin</h2>
         <Button
-          onPress={() => { navigate('/admin') }}
+          onPress={() => { navigate('/admins') }}
           variant="bordered"
           className="flex items-center border border-jajanDark2 text-jajanDark2 rounded-md p-2 hover: shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         >
@@ -37,7 +37,7 @@ const Detail = (): React.ReactElement => {
         </div>
         <div className="w-full flex items-center gap-3 mt-5">
           <Button
-            onPress={() => { navigate('/admin/edit/1') }}
+            onPress={() => { navigate('/admins/edit/1') }}
             className="bg-jajanDark2 text-white rounded-md"
           >
             Edit
