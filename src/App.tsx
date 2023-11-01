@@ -30,6 +30,8 @@ import VendorAdd from './components/pages/Vendor/Add'
 import VendorDetail from './components/pages/Vendor/Detail'
 import VendorEdit from './components/pages/Vendor/Edit'
 
+import EWalletList from './components/pages/E-Wallet/List'
+
 import RequireAuth from './components/elements/require-auth'
 
 export default function App (): React.ReactElement {
@@ -62,7 +64,7 @@ export default function App (): React.ReactElement {
     },
     {
       title: 'Manage E-Wallet',
-      link: '/ewallets',
+      link: '/wallets',
       icon: <AiOutlineWallet />
     }
   ]
@@ -93,6 +95,10 @@ export default function App (): React.ReactElement {
             <Route index element={<VendorList />} />
             <Route path="add" element={<VendorAdd />} />
             <Route path="edit/:id" element={<VendorEdit />} />
+            <Route path=":id" element={<VendorDetail />} />
+          </Route>
+          <Route path="/wallet">
+            <Route index element={<EWalletList />} />
             <Route path=":id" element={<VendorDetail />} />
           </Route>
         </Route>
