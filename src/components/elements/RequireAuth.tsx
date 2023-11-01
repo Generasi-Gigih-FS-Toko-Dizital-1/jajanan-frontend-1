@@ -6,11 +6,7 @@ const RequireAuth = (): React.ReactElement => {
   const { auth }: any = useAuth()
   const location = useLocation()
 
-  // setAuth({
-  //   session: res.data.data.session
-  // })
   return (
-    // auth.accessToken !== undefined && auth.accountType === 'ADMIN'
     auth.session !== undefined &&
     auth.session.accessToken !== undefined &&
     auth.session.accountType === 'ADMIN'
