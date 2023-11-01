@@ -27,8 +27,9 @@ const AdminForm = ({
           type="text"
           variant="bordered"
           label="Fullname"
+          name="fullName"
           radius="none"
-          defaultValue={(data != null) ? data.fullname : ''}
+          defaultValue={(data != null) ? data.fullName : ''}
         />
         <Input
           isRequired
@@ -38,6 +39,7 @@ const AdminForm = ({
           variant="bordered"
           classNames={{ input: 'bg-blue-500' }}
           label="Email"
+          name="email"
           radius="none"
           defaultValue={(data != null) ? data.email : ''}
         />
@@ -46,6 +48,7 @@ const AdminForm = ({
        <Select
           labelPlacement="outside"
           label="Gender"
+          name="gender"
           placeholder="Select gender"
           isRequired
           variant="bordered"
@@ -53,8 +56,8 @@ const AdminForm = ({
           className="w-full md:w-[calc(50%-.5rem)]"
           defaultSelectedKeys={`${(data != null) ? data.gender : ''}`}
         >
-          <SelectItem key="F" value="F">Female</SelectItem>
-          <SelectItem key="M" value="M">Male</SelectItem>
+          <SelectItem key="FEMALE" value="FEMALE">Female</SelectItem>
+          <SelectItem key="MALE" value="MALE">Male</SelectItem>
         </Select>
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
@@ -62,6 +65,7 @@ const AdminForm = ({
           isRequired
           labelPlacement="outside"
           label="New Password"
+          name="password"
           placeholder="Enter your password"
           variant="bordered"
           radius="none"

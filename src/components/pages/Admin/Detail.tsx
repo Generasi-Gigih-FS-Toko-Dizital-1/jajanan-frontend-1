@@ -1,15 +1,40 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Chip } from '@nextui-org/react'
 import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
 import React from 'react'
+import useFetch, { type Config } from '../../../hooks/useFetch'
+import { type AdminTypes } from '../../../types/UserTypes'
+import BackendOneClient from '../../../clients/BackendOneClient'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
+  const { id } = useParams()
+
+  const url = `${import.meta.env.VITE_BACKEND_ONE_URL}api/v1/admins/${id}`
+  const config: Config = {
+    headers: {
+      // localStorage.getItem("token")
+      Authorization:
+        'Bearer ' +
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4Nzk4NjI2LCJleHAiOjE2OTg3OTkyMjZ9.FUYw1fuU8XIigtoRUrxSEDeQBcKI87nDb5y9UfTms1s',
+      Accept: 'application/json'
+    }
+  }
+  const { data, loading } = useFetch(url, config)
+  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+
+  const handleDelete = (): void => {
+    const client = new BackendOneClient()
+    client.instance.delete(url, config).then(() => {
+      alert('Admin deleted')
+      navigate('/admin')
+    }).catch((err) => { console.log(err) })
+  }
 
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin {data?.message}</h2>
         <Button
           onPress={() => { navigate('/admin') }}
           variant="bordered"
@@ -19,16 +44,20 @@ const Detail = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      <AdminProfileCard className="py-4 mx-4"/>
+      {loading
+        ? loadingBar
+        : (
+        <>
+      <AdminProfileCard profile={data?.data} className="py-4 mx-4"/>
       <div className="flex flex-wrap py-6 mx-4 lg:w-3/4 xl:3/5 2xl:w-1/2">
         <div className="w-1/2 flex flex-col gap-y-5">
           <div>
             <h3 className="font-medium lg:text-xl">Created at</h3>
-            <p className="text-sm opacity-70 lg:text-base">31/12/2023, 23.59 WIB</p>
+            <p className="text-sm opacity-70 lg:text-base">{data?.data.createdAt}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Updated at</h3>
-            <p className="text-sm opacity-70 lg:text-base">31/12/2023, 23.59 WIB</p>
+            <p className="text-sm opacity-70 lg:text-base">{data?.data.updatedAt}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Deleted at</h3>
@@ -37,7 +66,7 @@ const Detail = (): React.ReactElement => {
         </div>
         <div className="w-full flex items-center gap-3 mt-5">
           <Button
-            onPress={() => { navigate('/admin/edit/1') }}
+            onPress={() => { navigate(`/admin/edit/${id}`) }}
             className="bg-jajanDark2 text-white rounded-md"
           >
             Edit
@@ -47,7 +76,7 @@ const Detail = (): React.ReactElement => {
             onPress={
               () => {
                 confirm('Are you sure you want to delete this admin?') &&
-                alert('Admin deleted')
+                handleDelete()
               }
             }
           >
@@ -55,11 +84,13 @@ const Detail = (): React.ReactElement => {
           </Button>
         </div>
       </div>
+      </>
+          )}
     </div>
   )
 }
 
-const AdminProfileCard = ({ className }: { className?: string }): React.ReactElement => {
+const AdminProfileCard = ({ className, profile }: { className?: string, profile: AdminTypes }): React.ReactElement => {
   return (
     <div className={`${className} flex flex-col md:flex-row justify-between gap-y-5 md:gap-x-3`}>
       <div className="flex gap-x-3 md:gap-x-4 md:w-1/2 lg:w-[45%]">
@@ -68,11 +99,11 @@ const AdminProfileCard = ({ className }: { className?: string }): React.ReactEle
         </div>
         <div className="flex flex-col justify-between py-1">
           <div>
-            <h2 className="font-semibold text-[24px] sm:text-2xl xl:text-3xl">John Brown</h2>
-            <p className="opacity-70 text-sm sm:text-base xl:text-lg 2xl:text-xl">john@gmail.com</p>
+            <h2 className="font-semibold text-[24px] sm:text-2xl xl:text-3xl">{profile.fullName}</h2>
+            <p className="opacity-70 text-sm sm:text-base xl:text-lg 2xl:text-xl">{profile.email}</p>
           </div>
           <Chip size="sm" className="bg-jajanWarning mt-3 rounded" radius="none">
-            Male
+            {profile.gender}
           </Chip>
         </div>
       </div>

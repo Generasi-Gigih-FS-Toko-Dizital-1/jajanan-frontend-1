@@ -4,13 +4,44 @@ import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import AdminForm from '../../fragments/admin-form'
+import BackendOneClient from '../../../clients/BackendOneClient'
 
 const AdminAdd = (): React.ReactElement => {
+  const navigate = useNavigate()
+  const client = new BackendOneClient()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    alert('Add Admin')
+    const createAdmin = async (form: HTMLFormElement): Promise<void> => {
+      const fullName = form.fullName.value
+      const email = form.email.value
+      const gender = form.gender.value
+      const password = form.password.value
+
+      const url = `${import.meta.env.VITE_BACKEND_ONE_URL}api/v1/admins`
+      try {
+        await client.instance.post(url, {
+          fullName,
+          email,
+          gender,
+          password
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4ODEzNjc3LCJleHAiOjE2OTg4MTQyNzd9.EvRPWRXlL7TcyAHBdcXCs0vtfUoLf23Zo5zDQCYJwE0',
+            Accept: 'application/json'
+          }
+        })
+
+        alert('Add Admin Success')
+        navigate('/admin')
+      } catch (err) {
+        alert('Error: ' + fullName + email + gender + password)
+        console.log(err)
+      }
+    }
+
+    void createAdmin(e.target as HTMLFormElement)
   }
-  const navigate = useNavigate()
 
   return (
     <div className="bg-white p-5 h-full">
