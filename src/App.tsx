@@ -1,7 +1,16 @@
-import { Route, Routes } from 'react-router-dom'
+import React from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+
+import {
+  AiOutlineDashboard,
+  AiOutlineShop,
+  AiOutlineSwap,
+  AiOutlineUser,
+  AiOutlineUserSwitch,
+  AiOutlineWallet
+} from 'react-icons/ai'
 
 import FullLayout from './components/layouts/FullLayout'
-import { AiOutlineDashboard, AiOutlineShop, AiOutlineSwap, AiOutlineUser, AiOutlineUserSwitch } from 'react-icons/ai'
 
 import Login from './components/pages/Login'
 import Dashboard from './components/pages/Dashboard'
@@ -20,50 +29,55 @@ import VendorList from './components/pages/Vendor/List'
 import VendorAdd from './components/pages/Vendor/Add'
 import VendorDetail from './components/pages/Vendor/Detail'
 import VendorEdit from './components/pages/Vendor/Edit'
-import React from 'react'
+
+import RequireAuth from './components/elements/require-auth'
 
 export default function App (): React.ReactElement {
+  const navList = [
+    {
+      title: 'Dashboard',
+      link: '/dashboard',
+      icon: <AiOutlineDashboard />
+    },
+    {
+      title: 'Street Vendors',
+      link: '/vendors',
+      icon: <AiOutlineShop />
+    },
+    {
+      title: 'Customers',
+      link: '/customers',
+      icon: <AiOutlineUser />
+    },
+    {
+      title: 'Manage Admin',
+      link: '/admins',
+      icon: <AiOutlineUserSwitch />
+    },
+
+    {
+      title: 'Manage Transaction',
+      link: '/transactions',
+      icon: <AiOutlineSwap />
+    },
+    {
+      title: 'Manage E-Wallet',
+      link: '/ewallets',
+      icon: <AiOutlineWallet />
+    }
+  ]
+
   return (
-    <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route element={<RequireAuth />} >
         <Route
           path="/"
-          element={
-            <FullLayout
-              navList={[
-                {
-                  title: 'Dashboard',
-                  link: '/dashboard',
-                  icon: <AiOutlineDashboard />
-                },
-                {
-                  title: 'Street Vendors',
-                  link: '/vendors',
-                  icon: <AiOutlineShop />
-                },
-                {
-                  title: 'Customers',
-                  link: '/customers',
-                  icon: <AiOutlineUser />
-                },
-                {
-                  title: 'Manage Admin',
-                  link: '/admins',
-                  icon: <AiOutlineUserSwitch />
-                },
-
-                {
-                  title: 'Manage Transaction',
-                  link: '/transactions',
-                  icon: <AiOutlineSwap />
-                }
-              ]}
-            />
-          }
+          element={<FullLayout navList={navList} />}
         >
+          <Route index element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin">
+          <Route path="/admins">
             <Route index element={<AdminList />} />
             <Route path="add" element={<AdminAdd />} />
             <Route path="edit/:id" element={<AdminEdit />} />
@@ -82,7 +96,7 @@ export default function App (): React.ReactElement {
             <Route path=":id" element={<VendorDetail />} />
           </Route>
         </Route>
-      </Routes>
-    </>
+      </Route>
+    </Routes>
   )
 }
