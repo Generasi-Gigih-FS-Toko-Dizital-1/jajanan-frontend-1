@@ -5,14 +5,14 @@ import useRefreshAccessToken from './useRefreshAccessToken.tsx'
 
 const useBackendOneClientPrivate = (): any => {
   const refreshAccessToken = useRefreshAccessToken()
-  const { auth } = useAuthentication()
+  const { authentication } = useAuthentication()
   const backEndOneClient: BackendOneClient = new BackendOneClient()
 
   useEffect(() => {
     const requestIntercept = backEndOneClient.instance.interceptors.request.use(
       (config) => {
         if (config.headers.Authorization === undefined) {
-          config.headers.Authorization = `Bearer ${auth.session.accessToken}`
+          config.headers.Authorization = `Bearer ${authentication.session.accessToken}`
         }
         return config
       }, async (error) => {
@@ -38,7 +38,7 @@ const useBackendOneClientPrivate = (): any => {
       backEndOneClient.instance.interceptors.request.eject(requestIntercept)
       backEndOneClient.instance.interceptors.response.eject(responseIntercept)
     }
-  }, [auth, refreshAccessToken])
+  }, [authentication, refreshAccessToken])
 
   return backEndOneClient.instance
 }
