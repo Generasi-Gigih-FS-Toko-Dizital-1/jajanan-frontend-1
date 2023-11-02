@@ -12,8 +12,8 @@ import {
 
 import FullLayout from './components/layouts/FullLayout'
 
-import Login from './components/pages/Login'
-import Dashboard from './components/pages/Dashboard'
+import Login from './components/pages/login'
+import Dashboard from './components/pages/dashboard'
 
 import AdminList from './components/pages/admin/List'
 import AdminAdd from './components/pages/admin/Add'
@@ -38,7 +38,7 @@ import PersistLogin from './components/elements/PersistLogin'
 export default function App (): React.ReactElement {
   const navList = [
     {
-      title: 'Dashboard',
+      title: 'Index',
       link: '/dashboard',
       icon: <AiOutlineDashboard />
     },

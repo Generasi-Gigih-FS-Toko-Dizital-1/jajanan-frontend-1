@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Dashboard (): React.ReactElement {
+export default function Index (): React.ReactElement {
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
