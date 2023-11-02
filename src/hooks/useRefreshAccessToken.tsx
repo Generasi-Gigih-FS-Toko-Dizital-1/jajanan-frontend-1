@@ -1,20 +1,14 @@
 import BackendOneClient from '../clients/BackendOneClient'
-import useAuth from './useAuth'
+import useAuthentication from './useAuthentication.ts'
 
-const useRefreshToken = (): any => {
+const useRefreshAccessToken = (): any => {
   const client = new BackendOneClient()
-  const { auth, setAuth } = useAuth()
+  const { auth, setAuth } = useAuthentication()
 
   const refresh = async (): Promise<string> => {
     const response = await client.instance.post('api/v1/authentications/admins/refreshes/access-token',
       {
-        session: {
-          account_id: auth.session.accountId,
-          account_type: auth.session.accountType,
-          access_token: auth.session.accessToken,
-          refresh_token: auth.session.refreshToken,
-          expired_at: auth.session.expiredAt
-        }
+        session: auth.session
       }
     )
     // setAuth((prev: any) => {
@@ -37,4 +31,4 @@ const useRefreshToken = (): any => {
   return refresh
 }
 
-export default useRefreshToken
+export default useRefreshAccessToken

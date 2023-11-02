@@ -24,7 +24,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactEl
           onAction={(key) => {
             if (key === 'logout') {
               confirm('Are you sure you want to logout?')
-              alert('Admin succesfully logout')
+              alert('admin succesfully logout')
             }
           }
         }

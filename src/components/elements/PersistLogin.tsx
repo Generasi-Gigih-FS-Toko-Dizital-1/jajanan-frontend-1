@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import useRefreshToken from '../../hooks/useRefreshToken'
-import useAuth from '../../hooks/useAuth'
+import useRefreshAccessToken from '../../hooks/useRefreshAccessToken.tsx'
+import useAuthentication from '../../hooks/useAuthentication.ts'
 
 const PersistLogin = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(true)
-  const refresh = useRefreshToken()
-  const { auth }: any = useAuth()
+  const refreshAccessToken = useRefreshAccessToken()
+  const { authentication }: any = useAuthentication()
 
   // console.log(`ini token dari persist: ${auth.session.accessToken}`)
   // return
@@ -14,7 +14,7 @@ const PersistLogin = (): React.ReactElement => {
   useEffect(() => {
     const verifyRefreshToken = async (): Promise<any> => {
       try {
-        await refresh()
+        await refreshAccessToken()
       } catch (err) {
         console.log(err)
       } finally {
@@ -22,10 +22,10 @@ const PersistLogin = (): React.ReactElement => {
       }
     }
 
-    if (auth === undefined) {
+    if (authentication === undefined) {
       void (verifyRefreshToken())
     }
-    if (auth !== undefined) {
+    if (authentication !== undefined) {
       setIsLoading(false)
     }
     // if (!auth) {
@@ -39,7 +39,7 @@ const PersistLogin = (): React.ReactElement => {
 
   useEffect(() => {
     console.log(`isLoading: ${isLoading}`)
-    console.log(`aT: ${JSON.stringify(auth)}`)
+    console.log(`aT: ${JSON.stringify(authentication)}`)
   }, [isLoading])
 
   return (

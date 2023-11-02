@@ -4,11 +4,11 @@ import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
 import React from 'react'
 import useFetch from '../../../hooks/useFetch'
 import { type AdminTypes } from '../../../types/UserTypes'
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate.tsx'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
-  const axiosPrivate = useAxiosPrivate()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
   const { id } = useParams()
 
   const url = `api/v1/admins/${id}`
@@ -17,8 +17,8 @@ const Detail = (): React.ReactElement => {
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   const handleDelete = (): void => {
-    axiosPrivate.instance.delete(url).then(() => {
-      alert('Admin deleted')
+    backendOneClientPrivate.instance.delete(url).then(() => {
+      alert('admin deleted')
       navigate('/admins')
     }).catch((err: any) => { console.log(err) })
   }

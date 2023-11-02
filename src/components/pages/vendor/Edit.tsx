@@ -9,7 +9,7 @@ const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    alert('Edit Vendor')
+    alert('Edit vendor')
   }
 
   const vendor = {

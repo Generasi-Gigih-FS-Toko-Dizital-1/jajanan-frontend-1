@@ -60,7 +60,7 @@ const Detail = (): React.ReactElement => {
           onPress={
             () => {
               confirm('Are you sure you want to delete this vendor?') &&
-              alert('Vendor deleted')
+              alert('vendor deleted')
             }
           }
         >

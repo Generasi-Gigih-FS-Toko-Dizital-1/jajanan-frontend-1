@@ -16,8 +16,3 @@ export default class BackendOneClient {
     this.instance = applyCaseMiddleware(this.instance)
   }
 }
-
-export const axiosPrivate = applyCaseMiddleware(axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_ONE_URL,
-  headers: { 'Content-Type': 'application/json' }
-}))

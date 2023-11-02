@@ -57,7 +57,7 @@ const Detail = (): React.ReactElement => {
             onPress={
               () => {
                 confirm('Are you sure you want to delete this customer?') &&
-                alert('Customer deleted')
+                alert('customer deleted')
               }
             }
           >

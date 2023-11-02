@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react'
-import useAuth from '../../hooks/useAuth'
+import useAuthentication from '../../hooks/useAuthentication.ts'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import LoginForm from '../fragments/login-form'
@@ -8,7 +8,7 @@ import BackendOneClient from '../../clients/BackendOneClient'
 
 export default function Login (): React.ReactElement {
   const client = new BackendOneClient()
-  const { setAuth }: any = useAuth()
+  const { setAuthentication }: any = useAuthentication()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -48,7 +48,7 @@ export default function Login (): React.ReactElement {
         // const { accessToken, accountType } = res.data.data.session
         // console.log(accessToken, accountType)
         // setAuth({ accessToken, accountType })
-        setAuth({
+        setAuthentication({
           session: res.data.data.session
         })
         console.log(res.data.data.session)

@@ -32,7 +32,7 @@ const AdminAdd = (): React.ReactElement => {
           }
         })
 
-        alert('Add Admin Success')
+        alert('Add admin Success')
         navigate('/admin')
       } catch (err) {
         alert('Error: ' + fullName + email + gender + password)

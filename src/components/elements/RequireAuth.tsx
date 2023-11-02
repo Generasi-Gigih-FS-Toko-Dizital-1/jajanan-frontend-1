@@ -1,15 +1,20 @@
 import React from 'react'
-import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import useAuthentication from '../../hooks/useAuthentication.ts'
 
 const RequireAuth = (): React.ReactElement => {
-  const { auth }: any = useAuth()
+  const { authentication }: any = useAuthentication()
   const location = useLocation()
 
+  const isAccountValid = (): boolean => {
+    const isAuthValid = authentication !== undefined && authentication !== null
+    const isSessionValid = authentication.session !== undefined && authentication.session !== null
+    const isAccountTypeAdmin = authentication.session.accountType === 'ADMIN'
+    return isAuthValid && isSessionValid && isAccountTypeAdmin
+  }
+
   return (
-    auth.session !== undefined &&
-    auth.session.accessToken !== undefined &&
-    auth.session.accountType === 'ADMIN'
+    isAccountValid()
       ? <Outlet />
       : <Navigate
           to='/login'

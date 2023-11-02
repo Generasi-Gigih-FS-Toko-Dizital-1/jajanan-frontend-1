@@ -8,7 +8,7 @@ import CustomerForm from '../../fragments/customer-form'
 const Add = (): React.ReactElement => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    alert('Add Customer')
+    alert('Add customer')
   }
   const navigate = useNavigate()
 
