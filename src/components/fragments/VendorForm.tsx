@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import JajanStandForm from './jajan-stand-form'
+import JajanStandForm from './JajanStandForm.tsx'
 
 import type { VendorTypes } from '../../types/UserTypes'
 

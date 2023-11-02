@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import AdminForm from '../../fragments/admin-form'
+import AdminForm from '../../fragments/AdminForm.tsx'
 import BackendOneClient from '../../../clients/BackendOneClient'
 
 const AdminAdd = (): React.ReactElement => {

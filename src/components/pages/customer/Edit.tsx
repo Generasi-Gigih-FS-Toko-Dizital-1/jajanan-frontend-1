@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import CustomerForm from '../../fragments/customer-form'
+import CustomerForm from '../../fragments/CustomerForm.tsx'
 
 const Edit = (): React.ReactElement => {
   const navigate = useNavigate()

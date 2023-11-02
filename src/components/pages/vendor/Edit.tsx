@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import VendorForm from '../../fragments/vendor-form'
+import VendorForm from '../../fragments/VendorForm.tsx'
 
 const Edit = (): React.ReactElement => {
   const navigate = useNavigate()

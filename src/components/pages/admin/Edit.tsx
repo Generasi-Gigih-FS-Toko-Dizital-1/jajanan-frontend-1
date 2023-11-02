@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/react'
 import React from 'react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import AdminForm from '../../fragments/admin-form'
+import AdminForm from '../../fragments/AdminForm.tsx'
 
 const AdminEdit = (): React.ReactElement => {
   const navigate = useNavigate()

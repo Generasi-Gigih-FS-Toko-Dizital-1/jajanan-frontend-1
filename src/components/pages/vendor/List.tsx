@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import ActionButton from '../../elements/action-button'
+import ActionButton from '../../elements/ActionButton.tsx'
 import React from 'react'
 
 const List = (): React.ReactElement => {

@@ -10,7 +10,7 @@ import {
   TableRow,
   Tabs
 } from '@nextui-org/react'
-import ActionButton from '../../elements/action-button'
+import ActionButton from '../../elements/ActionButton.tsx'
 
 const List = (): React.ReactElement => {
   return (

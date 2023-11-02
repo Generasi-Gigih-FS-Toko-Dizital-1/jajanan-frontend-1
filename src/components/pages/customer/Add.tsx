@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import CustomerForm from '../../fragments/customer-form'
+import CustomerForm from '../../fragments/CustomerForm.tsx'
 
 const Add = (): React.ReactElement => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {

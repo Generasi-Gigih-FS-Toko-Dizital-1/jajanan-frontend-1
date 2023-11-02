@@ -33,7 +33,6 @@ import VendorEdit from './components/pages/vendor/Edit'
 import EWalletList from './components/pages/e_wallet/List'
 
 import RequireAuth from './components/elements/RequireAuth'
-import PersistLogin from './components/elements/PersistLogin'
 
 export default function App (): React.ReactElement {
   const navList = [
@@ -72,8 +71,8 @@ export default function App (): React.ReactElement {
 
   return (
     <Routes>
+      <Route index path="/" element={<Navigate to="/login"/>} />
       <Route path="/login" element={<Login />} />
-      <Route element={<PersistLogin />} >
         <Route element={<RequireAuth />} >
           <Route
             path="/"
@@ -105,7 +104,6 @@ export default function App (): React.ReactElement {
             </Route>
           </Route>
         </Route>
-      </Route>
     </Routes>
   )
 }

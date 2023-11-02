@@ -9,10 +9,10 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
-import ActionButton from '../../elements/action-button'
+import ActionButton from '../../elements/ActionButton.tsx'
 import useFetch from '../../../hooks/useFetch'
 import { type AdminTypes } from '../../../types/UserTypes'
-import { dateFormat } from '../../../utils/dateFormat'
+import { dateFormatter } from '../../../utils/DateFormatter.tsx'
 
 const List = (): React.ReactElement => {
   const navigate = useNavigate()
@@ -64,8 +64,8 @@ const List = (): React.ReactElement => {
               </TableCell>
               <TableCell>{admin.email}</TableCell>
               <TableCell>{admin.gender}</TableCell>
-              <TableCell>{dateFormat(admin.updatedAt)}</TableCell>
-              <TableCell>{dateFormat(admin.createdAt)}</TableCell>
+              <TableCell>{dateFormatter(admin.updatedAt)}</TableCell>
+              <TableCell>{dateFormatter(admin.createdAt)}</TableCell>
               <TableCell className="flex justify-center items-center">
                 <ActionButton type="admin" />
               </TableCell>
