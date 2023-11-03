@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useState } from 'react'
 
 const AuthenticationContext = createContext({})
 
@@ -10,9 +10,9 @@ const AuthenticationProvider = (props: any): React.ReactElement => {
 
   const [authentication, setAuthentication] = useState(getAuthInitialState())
 
-  useEffect(() => {
+  if (authentication !== undefined) {
     localStorage.setItem('authentication', JSON.stringify(authentication))
-  }, [authentication])
+  }
 
   return (
     <AuthenticationContext.Provider value={{ authentication, setAuthentication }}>
