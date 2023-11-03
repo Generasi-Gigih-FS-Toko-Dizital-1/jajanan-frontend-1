@@ -1,11 +1,11 @@
 export interface AdminTypes {
   id: string
-  fullname: string
+  fullName: string
   gender: string
   email: string
-  updated_at: string
-  created_at: string
-  deleted_at: string
+  updatedAt: string
+  createdAt: string
+  deletedAt: string
 }
 
 export interface VendorTypes {
