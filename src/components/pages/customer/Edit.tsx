@@ -1,12 +1,13 @@
-import { Button } from '@nextui-org/react'
 import React from 'react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { useNavigate, useParams } from 'react-router-dom'
-import AdminForm from '../../fragments/admin-form'
 import useFetch, { type Config } from '../../../hooks/useFetch'
 import BackendOneClient from '../../../clients/BackendOneClient'
 
-const AdminEdit = (): React.ReactElement => {
+import CustomerForm from '../../fragments/CustomerForm.tsx'
+import { Button } from '@nextui-org/react'
+
+const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
   const { id } = useParams()
 
@@ -60,10 +61,10 @@ const AdminEdit = (): React.ReactElement => {
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Admin {data?.data.fullName}</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Customer {data?.data.fullName}</h2>
         {/* Belum semua data muncul (baru fullname sama email) */}
         <Button
-          onPress={() => { navigate('/admin') }}
+          onPress={() => { navigate('/customers') }}
           variant="bordered"
           className="flex items-center border border-jajanDark2 text-jajanDark2 rounded-md p-2 hover: shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         >
@@ -71,18 +72,13 @@ const AdminEdit = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      {loading
-        ? loadingBar
-        : (
-        <AdminForm
-          className="p-4"
-          action={handleSubmit}
-          data={data?.data}
-        />
-
-          )}
+      <CustomerForm
+        className="p-4"
+        action={handleSubmit}
+        data={customer}
+      />
     </div>
   )
 }
 
-export default AdminEdit
+export default Edit

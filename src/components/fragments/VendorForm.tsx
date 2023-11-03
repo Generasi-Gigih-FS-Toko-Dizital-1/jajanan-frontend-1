@@ -1,17 +1,18 @@
 import React from 'react'
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
+import { Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import JajanStandForm from './JajanStandForm.tsx'
 
-import type { AdminTypes } from '../../types/UserTypes'
+import type { VendorTypes } from '../../types/UserTypes'
 
-const AdminForm = ({
+const VendorForm = ({
   className,
   action,
   data
 }: {
   className?: string
   action: (e: React.FormEvent<HTMLFormElement>) => void
-  data?: AdminTypes
+  data?: VendorTypes
 }): React.ReactElement => {
   const [isVisiblePassword, setIsVisiblePassword] = React.useState(false)
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
@@ -27,10 +28,27 @@ const AdminForm = ({
           type="text"
           variant="bordered"
           label="Fullname"
-          name="fullName"
           radius="none"
-          defaultValue={(data != null) ? data.fullName : ''}
+          defaultValue={(data != null) ? data.fullname : ''}
         />
+        <Input
+          isRequired
+          labelPlacement="outside"
+          placeholder="example"
+          type="text"
+          variant="bordered"
+          classNames={{ input: 'bg-blue-500' }}
+          label="Username"
+          radius="none"
+          startContent={
+            <span className="text-default-400 pointer-events-none">
+              @
+            </span>
+          }
+          defaultValue={(data != null) ? data.username : ''}
+        />
+      </div>
+      <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
         <Input
           isRequired
           labelPlacement="outside"
@@ -39,33 +57,40 @@ const AdminForm = ({
           variant="bordered"
           classNames={{ input: 'bg-blue-500' }}
           label="Email"
-          name="email"
           radius="none"
           defaultValue={(data != null) ? data.email : ''}
         />
-      </div>
-      <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
-       <Select
+        <Select
           labelPlacement="outside"
           label="Gender"
-          name="gender"
           placeholder="Select gender"
           isRequired
           variant="bordered"
           radius="none"
-          className="w-full md:w-[calc(50%-.5rem)]"
           defaultSelectedKeys={`${(data != null) ? data.gender : ''}`}
         >
-          <SelectItem key="FEMALE" value="FEMALE">Female</SelectItem>
-          <SelectItem key="MALE" value="MALE">Male</SelectItem>
+          <SelectItem key="F" value="F">Female</SelectItem>
+          <SelectItem key="M" value="M">Male</SelectItem>
         </Select>
       </div>
+      <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
+        <Textarea
+          labelPlacement="outside"
+          label="Address"
+          placeholder="223 Example Street, City, State."
+          className="w-full md:w-[calc(50%-.5rem)]"
+          isRequired
+          variant="bordered"
+          radius="none"
+          defaultValue={(data != null) ? data.address : ''}
+        />
+      </div>
+      <JajanStandForm data={data}/>
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
         <Input
           isRequired
           labelPlacement="outside"
           label="New Password"
-          name="password"
           placeholder="Enter your password"
           variant="bordered"
           radius="none"
@@ -113,4 +138,4 @@ const AdminForm = ({
   )
 }
 
-export default AdminForm
+export default VendorForm

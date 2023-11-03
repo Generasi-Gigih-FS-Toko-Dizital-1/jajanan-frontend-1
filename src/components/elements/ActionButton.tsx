@@ -4,9 +4,9 @@ import { AiOutlineEllipsis } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
-export default function ActionButton ({ type }: { type: string }): React.ReactElement {
+export default function ActionButton ({ type, id }: { type: string, id: string }): React.ReactElement {
   const navigate = useNavigate()
-  const userType = type === 'admin' ? 'admin' : type === 'vendor' ? 'vendors' : 'customers'
+  const userType = type === 'admin' ? 'admins' : type === 'vendor' ? 'vendors' : 'customers'
 
   return (
     <Dropdown>
@@ -20,13 +20,12 @@ export default function ActionButton ({ type }: { type: string }): React.ReactEl
         </Button>
       </DropdownTrigger>
       <DropdownMenu
-        onAction={(key) =>
+        onAction={(key) => {
           key === 'edit'
-            ? () => { navigate(`/${userType}/${key}/1`) }
-            : () => {
-                confirm(`Are you sure you want to delete this ${userType}?`)
-                alert(`${userType} deleted!`)
-              }
+            ? navigate(`/${userType}/${key}/${id}`)
+            : confirm(`Are you sure you want to delete this ${userType}?`) &&
+            alert(`${userType} deleted!`)
+        }
         }
       >
         <DropdownItem key="edit">Edit</DropdownItem>

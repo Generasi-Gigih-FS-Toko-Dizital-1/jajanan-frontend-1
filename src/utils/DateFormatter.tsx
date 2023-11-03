@@ -1,4 +1,4 @@
-export const dateFormat = (dateString: string): string => {
+export const dateFormatter = (dateString: string): string => {
   const date = new Date(dateString)
 
   const formattedDateTime = `${date.getFullYear()}-${(date.getMonth() + 1)

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-import { type AxiosRequestConfig } from 'axios'
-import BackendOneClient from '../clients/BackendOneClient'
+import { useEffect, useState } from 'react'
 
-export type Config = AxiosRequestConfig
+import useBackendOneClientPrivate from './useBackendOneClientPrivate.tsx'
+
 interface DataFetch {
   message: string
   data: any
@@ -13,27 +12,23 @@ interface FetchReturn {
   error?: Error
 }
 
-const useFetch = (url: string, config: Config = {}): FetchReturn => {
+const useFetch = (url: string): FetchReturn => {
   const [data, setData] = useState<DataFetch>()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
 
-  const client = new BackendOneClient()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await client.instance.get(url, config)
+    backendOneClientPrivate.get(url)
+      .then((response: any) => {
         setData(response.data)
+      }).catch((err: any) => {
+        setError(err)
+      }).finally(() => {
         setLoading(false)
-      } catch (error: any) {
-        setError(error)
-        setLoading(false)
-      }
-    }
-
-    void fetchData()
-  }, [url])
+      })
+  }, [])
 
   return { data, loading, error }
 }

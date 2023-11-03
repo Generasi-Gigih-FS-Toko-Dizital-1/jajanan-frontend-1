@@ -2,41 +2,33 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Chip } from '@nextui-org/react'
 import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
 import React from 'react'
-import useFetch, { type Config } from '../../../hooks/useFetch'
+import useFetch from '../../../hooks/useFetch'
 import { type AdminTypes } from '../../../types/UserTypes'
-import BackendOneClient from '../../../clients/BackendOneClient'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate.tsx'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
   const { id } = useParams()
 
-  const url = `${import.meta.env.VITE_BACKEND_ONE_URL}api/v1/admins/${id}`
-  const config: Config = {
-    headers: {
-      // localStorage.getItem("token")
-      Authorization:
-        'Bearer ' +
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4Nzk4NjI2LCJleHAiOjE2OTg3OTkyMjZ9.FUYw1fuU8XIigtoRUrxSEDeQBcKI87nDb5y9UfTms1s',
-      Accept: 'application/json'
-    }
-  }
-  const { data, loading } = useFetch(url, config)
+  const url = `api/v1/admins/${id}`
+
+  const { data, loading } = useFetch(url)
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   const handleDelete = (): void => {
-    const client = new BackendOneClient()
-    client.instance.delete(url, config).then(() => {
-      alert('Admin deleted')
-      navigate('/admin')
-    }).catch((err) => { console.log(err) })
+    backendOneClientPrivate.instance.delete(url).then(() => {
+      alert('admin deleted')
+      navigate('/admins')
+    }).catch((err: any) => { console.log(err) })
   }
 
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin {data?.message}</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Admin</h2>
         <Button
-          onPress={() => { navigate('/admin') }}
+          onPress={() => { navigate('/admins') }}
           variant="bordered"
           className="flex items-center border border-jajanDark2 text-jajanDark2 rounded-md p-2 hover: shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         >
@@ -66,7 +58,7 @@ const Detail = (): React.ReactElement => {
         </div>
         <div className="w-full flex items-center gap-3 mt-5">
           <Button
-            onPress={() => { navigate(`/admin/edit/${id}`) }}
+            onPress={() => { navigate(`/admins/edit/${id}`) }}
             className="bg-jajanDark2 text-white rounded-md"
           >
             Edit

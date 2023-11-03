@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import ActionButton from '../../elements/action-button'
+import ActionButton from '../../elements/ActionButton.tsx'
 import React from 'react'
 
 const List = (): React.ReactElement => {
@@ -9,9 +9,9 @@ const List = (): React.ReactElement => {
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Customers</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Vendors</h2>
         <Button
-          onPress={() => { navigate('/customers/add') }}
+          onPress={() => { navigate('/vendors/add') }}
           className="bg-jajanDark2 text-white rounded-md p-2 hover:shadow-md hover:shadow-jajanWarning  focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         >
           + Add
@@ -34,17 +34,20 @@ const List = (): React.ReactElement => {
           <TableRow className="border-b">
             <TableCell>1</TableCell>
             <TableCell>
-              <Link to="/customers/1" className="text-jajanDark2 underline">
-                Dusty Buns
+              <Link to="/vendors/1" className="text-jajanDark2 underline">
+                Max Mayfield
               </Link>
             </TableCell>
-            <TableCell>@dustyyy</TableCell>
-            <TableCell>dusty@mail.com</TableCell>
-            <TableCell>2886 Cornwallis Road, Hawkins, Indiana</TableCell>
+            <TableCell>@max</TableCell>
+            <TableCell>maxxx@mail.com</TableCell>
+            <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
             <TableCell
               className="flex justify-center items-center"
             >
-              <ActionButton type="customer"/>
+              <ActionButton
+                type="vendor"
+                id='1'
+              />
             </TableCell>
           </TableRow>
         </TableBody>

@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import VendorForm from '../../fragments/vendor-form'
+import VendorForm from '../../fragments/VendorForm.tsx'
 
 const Add = (): React.ReactElement => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    alert('Add Customer')
+    alert('Add customer')
   }
   const navigate = useNavigate()
 
