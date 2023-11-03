@@ -10,7 +10,6 @@ import {
   TableRow,
   Tabs
 } from '@nextui-org/react'
-import ActionButton from '../../elements/action-button'
 
 const List = (): React.ReactElement => {
   return (
@@ -30,15 +29,12 @@ const List = (): React.ReactElement => {
               <TableColumn>Amount</TableColumn>
               <TableColumn>Received At</TableColumn>
               <TableColumn>Media</TableColumn>
-              <TableColumn className="flex justify-center items-center">
-                Action
-              </TableColumn>
             </TableHeader>
             <TableBody>
               <TableRow className="border-b">
                 <TableCell>1</TableCell>
                 <TableCell>
-                  <Link to="/e-wallets/payouts/1" className="text-jajanDark2 underline">
+                  <Link to="/e-wallets/topups/1" className="text-jajanDark2 underline">
                     Max Mayfield
                   </Link>
                 </TableCell>
@@ -46,9 +42,6 @@ const List = (): React.ReactElement => {
                 <TableCell>maxxx@mail.com</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
-                <TableCell className="flex justify-center items-center">
-                  <ActionButton type="vendor" />
-                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -62,15 +55,12 @@ const List = (): React.ReactElement => {
               <TableColumn>Amount</TableColumn>
               <TableColumn>Claimed At</TableColumn>
               <TableColumn>Media</TableColumn>
-              <TableColumn className="flex justify-center items-center">
-                Action
-              </TableColumn>
             </TableHeader>
             <TableBody>
               <TableRow className="border-b">
                 <TableCell>1</TableCell>
                 <TableCell>
-                  <Link to="/vendors/1" className="text-jajanDark2 underline">
+                  <Link to="/e-wallets/payouts/1" className="text-jajanDark2 underline">
                     Max Mayfield
                   </Link>
                 </TableCell>
@@ -78,9 +68,6 @@ const List = (): React.ReactElement => {
                 <TableCell>maxxx@mail.com</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
-                <TableCell className="flex justify-center items-center">
-                  <ActionButton type="vendor" />
-                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

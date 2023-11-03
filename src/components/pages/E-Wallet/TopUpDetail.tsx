@@ -23,7 +23,7 @@ const Detail = (): React.ReactElement => {
       <div className="flex flex-wrap py-6 mx-4">
         <div className="lg:w-1/2 flex flex-col gap-y-5">
           <div>
-            <h3 className="font-medium lg:text-xl">Payout Id</h3>
+            <h3 className="font-medium lg:text-xl">Top Up Id</h3>
             <p className="text-sm opacity-70 lg:text-base underline">12763528-347346378-hxbsjgd-234737467</p>
           </div>
           <div>
@@ -31,16 +31,16 @@ const Detail = (): React.ReactElement => {
             <p className="text-sm opacity-70 lg:text-base">IDR 10.0000</p>
           </div>
           <div>
-            <h3 className="font-medium lg:text-xl">Claimed At</h3>
+            <h3 className="font-medium lg:text-xl">Received At</h3>
             <p className="text-sm opacity-70 lg:text-base">Sunday 27 Oct 2023</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Media</h3>
-            <p className="text-sm opacity-70 lg:text-base">VA-Mandiri</p>
+            <p className="text-sm opacity-70 lg:text-base">Gopay</p>
           </div>
         </div>
         <div className='lg:w-1/2 flex-col'>
-          <h2 className="my-4 font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Vendor</h2>
+          <h2 className="my-4 font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">User</h2>
           <JajanStandCard className="py-4 mb-4" />
         </div>
       </div>

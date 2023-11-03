@@ -18,6 +18,7 @@ import VendorDetail from './components/pages/Vendor/Detail'
 import VendorEdit from './components/pages/Vendor/Edit'
 import EWalletList from './components/pages/E-Wallet/List'
 import PayoutDetail from './components/pages/E-Wallet/PayoutDetail'
+import TopUpDetail from './components/pages/E-Wallet/TopUpDetail'
 
 export default function App (): React.ReactElement {
   return (
@@ -85,6 +86,7 @@ export default function App (): React.ReactElement {
           <Route path="/e-wallets">
             <Route index element={<EWalletList />} />
             <Route path="payouts/:id" element={<PayoutDetail />} />
+            <Route path="topups/:id" element={<TopUpDetail />} />
           </Route>
         </Route>
       </Routes>
