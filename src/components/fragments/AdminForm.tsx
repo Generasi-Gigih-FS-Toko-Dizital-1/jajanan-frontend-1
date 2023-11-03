@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
@@ -13,9 +13,8 @@ const AdminForm = ({
   action: (e: React.FormEvent<HTMLFormElement>) => void
   data?: AdminTypes
 }): React.ReactElement => {
-  const [isVisiblePassword, setIsVisiblePassword] = React.useState(false)
-  const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
-    React.useState(false)
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false)
+  const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] = useState(false)
 
   return (
     <form className={className} onSubmit={action}>
@@ -29,7 +28,7 @@ const AdminForm = ({
           label="Fullname"
           name="fullName"
           radius="none"
-          defaultValue={(data != null) ? data.fullName : ''}
+          defaultValue={(data !== undefined) ? data.fullName : ''}
         />
         <Input
           isRequired
@@ -41,24 +40,25 @@ const AdminForm = ({
           label="Email"
           name="email"
           radius="none"
-          defaultValue={(data != null) ? data.email : ''}
+          defaultValue={(data !== undefined) ? data.email : ''}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
-       <Select
-          labelPlacement="outside"
-          label="Gender"
-          name="gender"
-          placeholder="Select gender"
-          isRequired
-          variant="bordered"
-          radius="none"
-          className="w-full md:w-[calc(50%-.5rem)]"
-          defaultSelectedKeys={`${(data != null) ? data.gender : ''}`}
-        >
-          <SelectItem key="FEMALE" value="FEMALE">Female</SelectItem>
-          <SelectItem key="MALE" value="MALE">Male</SelectItem>
-        </Select>
+      <Select
+        labelPlacement="outside"
+        label="Gender"
+        name="gender"
+        placeholder="Select gender"
+        isRequired
+        variant="bordered"
+        radius="none"
+        className="w-full md:w-[calc(50%-.5rem)]"
+        selectionMode='single'
+        defaultSelectedKeys={(data !== undefined) ? [data.gender] : []}
+      >
+        <SelectItem key="FEMALE" value="FEMALE">Female</SelectItem>
+        <SelectItem key="MALE" value="MALE">Male</SelectItem>
+      </Select>
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
         <Input
@@ -107,7 +107,7 @@ const AdminForm = ({
         type="submit"
         className="bg-jajanDark2 text-white rounded-md py-2 px-4 hover:shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
       >
-        {(data != null) ? 'Update' : 'Save'}
+        {(data !== undefined) ? 'Update' : 'Save'}
       </Button>
     </form>
   )

@@ -1,8 +1,10 @@
-import { Button } from '@nextui-org/react'
 import React from 'react'
+import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-import { useNavigate } from 'react-router-dom'
 import AdminForm from '../../fragments/AdminForm.tsx'
+
+import { useNavigate, useParams } from 'react-router-dom'
+import useFetch from '../../../hooks/useFetch.tsx'
 
 const AdminEdit = (): React.ReactElement => {
   const navigate = useNavigate()
@@ -11,15 +13,11 @@ const AdminEdit = (): React.ReactElement => {
     alert('Update admin')
   }
 
-  const admin = {
-    id: '1',
-    fullname: 'John Doe',
-    gender: 'M',
-    email: 'john@gmail.com',
-    updated_at: '2021-10-01T00:00:00Z',
-    created_at: '2021-10-01T00:00:00Z',
-    deleted_at: '2021-10-01T00:00:00Z'
-  }
+  const { id } = useParams()
+
+  const url = `api/v1/admins/${id}`
+
+  const { data } = useFetch(url)
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -34,11 +32,14 @@ const AdminEdit = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      <AdminForm
-        className="p-4"
-        action={handleSubmit}
-        data={admin}
-      />
+      {
+        data?.data !== undefined &&
+        <AdminForm
+          className="p-4"
+          action={handleSubmit}
+          data={data?.data}
+        />
+      }
     </div>
   )
 }
