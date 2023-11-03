@@ -33,11 +33,12 @@ import VendorEdit from './components/pages/vendor/Edit'
 import EWalletList from './components/pages/e_wallet/List'
 
 import RequireAuth from './components/elements/RequireAuth'
+import Anonymous from './components/elements/Anonymous'
 
 export default function App (): React.ReactElement {
   const navList = [
     {
-      title: 'Index',
+      title: 'Dashboard',
       link: '/dashboard',
       icon: <AiOutlineDashboard />
     },
@@ -52,7 +53,7 @@ export default function App (): React.ReactElement {
       icon: <AiOutlineUser />
     },
     {
-      title: 'Manage admin',
+      title: 'Manage Admin',
       link: '/admins',
       icon: <AiOutlineUserSwitch />
     },
@@ -63,7 +64,7 @@ export default function App (): React.ReactElement {
       icon: <AiOutlineSwap />
     },
     {
-      title: 'Manage e_wallet',
+      title: 'Manage E-Wallet',
       link: '/wallets',
       icon: <AiOutlineWallet />
     }
@@ -72,38 +73,40 @@ export default function App (): React.ReactElement {
   return (
     <Routes>
       <Route index path="/" element={<Navigate to="/login"/>} />
-      <Route path="/login" element={<Login />} />
-        <Route element={<RequireAuth />} >
-          <Route
-            path="/"
-            element={<FullLayout navList={navList} />}
-          >
-            <Route index element={<Navigate to="/dashboard" />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admins">
-              <Route index element={<AdminList />} />
-              <Route path="add" element={<AdminAdd />} />
-              <Route path="edit/:id" element={<AdminEdit />} />
-              <Route path=":id" element={<AdminDetail />} />
-            </Route>
-            <Route path="/customers">
-              <Route index element={<CustomerList />} />
-              <Route path="add" element={<CustomerAdd />} />
-              <Route path="edit/:id" element={<CustomerEdit />} />
-              <Route path=":id" element={<CustomerDetail />} />
-            </Route>
-            <Route path="/vendors">
-              <Route index element={<VendorList />} />
-              <Route path="add" element={<VendorAdd />} />
-              <Route path="edit/:id" element={<VendorEdit />} />
-              <Route path=":id" element={<VendorDetail />} />
-            </Route>
-            <Route path="/wallets">
-              <Route index element={<EWalletList />} />
-              <Route path=":id" element={<VendorDetail />} />
-            </Route>
+      <Route element={<Anonymous />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+      <Route element={<RequireAuth />} >
+        <Route
+          path="/"
+          element={<FullLayout navList={navList} />}
+        >
+          <Route index element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admins">
+            <Route index element={<AdminList />} />
+            <Route path="add" element={<AdminAdd />} />
+            <Route path="edit/:id" element={<AdminEdit />} />
+            <Route path=":id" element={<AdminDetail />} />
+          </Route>
+          <Route path="/customers">
+            <Route index element={<CustomerList />} />
+            <Route path="add" element={<CustomerAdd />} />
+            <Route path="edit/:id" element={<CustomerEdit />} />
+            <Route path=":id" element={<CustomerDetail />} />
+          </Route>
+          <Route path="/vendors">
+            <Route index element={<VendorList />} />
+            <Route path="add" element={<VendorAdd />} />
+            <Route path="edit/:id" element={<VendorEdit />} />
+            <Route path=":id" element={<VendorDetail />} />
+          </Route>
+          <Route path="/wallets">
+            <Route index element={<EWalletList />} />
+            <Route path=":id" element={<VendorDetail />} />
           </Route>
         </Route>
+      </Route>
     </Routes>
   )
 }
