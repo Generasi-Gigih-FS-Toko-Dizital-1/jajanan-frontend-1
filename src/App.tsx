@@ -65,7 +65,7 @@ export default function App (): React.ReactElement {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin">
+          <Route path="/admins">
             <Route index element={<AdminList />} />
             <Route path="add" element={<AdminAdd />} />
             <Route path="edit/:id" element={<AdminEdit />} />
