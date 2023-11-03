@@ -47,7 +47,10 @@ const List = (): React.ReactElement => {
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell className='flex justify-center items-center'>
-                  <ActionButton type='vendor' />
+                  <ActionButton
+                    type='vendor'
+                    id='1'
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -79,7 +82,10 @@ const List = (): React.ReactElement => {
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
                 <TableCell className='flex justify-center items-center'>
-                  <ActionButton type='vendor' />
+                  <ActionButton
+                    type='vendor'
+                    id='1'
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>

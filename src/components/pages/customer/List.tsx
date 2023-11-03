@@ -44,7 +44,10 @@ const List = (): React.ReactElement => {
             <TableCell
               className="flex justify-center items-center"
             >
-              <ActionButton type="customer"/>
+              <ActionButton
+                type="customer"
+                id="1"
+              />
             </TableCell>
           </TableRow>
         </TableBody>

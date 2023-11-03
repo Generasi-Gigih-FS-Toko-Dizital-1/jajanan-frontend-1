@@ -67,7 +67,10 @@ const List = (): React.ReactElement => {
               <TableCell>{dateFormatter(admin.updatedAt)}</TableCell>
               <TableCell>{dateFormatter(admin.createdAt)}</TableCell>
               <TableCell className="flex justify-center items-center">
-                <ActionButton type="admin" />
+                <ActionButton
+                  type="admin"
+                  id={admin.id}
+                />
               </TableCell>
             </TableRow>
           ))}

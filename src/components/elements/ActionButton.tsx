@@ -4,7 +4,7 @@ import { AiOutlineEllipsis } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
-export default function ActionButton ({ type }: { type: string }): React.ReactElement {
+export default function ActionButton ({ type, id }: { type: string, id: string }): React.ReactElement {
   const navigate = useNavigate()
   const userType = type === 'admin' ? 'admins' : type === 'vendor' ? 'vendors' : 'customers'
 
@@ -22,7 +22,7 @@ export default function ActionButton ({ type }: { type: string }): React.ReactEl
       <DropdownMenu
         onAction={(key) => {
           key === 'edit'
-            ? navigate(`/${userType}/${key}/1`)
+            ? navigate(`/${userType}/${key}/${id}`)
             : confirm(`Are you sure you want to delete this ${userType}?`) &&
             alert(`${userType} deleted!`)
         }
