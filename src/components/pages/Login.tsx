@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react'
-import useAuthentication from '../../../hooks/useAuthentication.ts'
+import useAuthentication from '../../hooks/useAuthentication.ts'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import LoginForm from '../../fragments/LoginForm.tsx'
-import BackendOneClient from '../../../clients/BackendOneClient.ts'
+import LoginForm from '../fragments/LoginForm.tsx'
+import BackendOneClient from '../../clients/BackendOneClient.ts'
 
 export default function Index (): React.ReactElement {
   const client = new BackendOneClient()

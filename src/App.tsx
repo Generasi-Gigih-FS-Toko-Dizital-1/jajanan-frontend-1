@@ -12,23 +12,23 @@ import {
 
 import FullLayout from './components/layouts/FullLayout'
 
-import Login from './components/pages/login'
-import Dashboard from './components/pages/dashboard'
+import Login from './components/pages/Login'
+import Dashboard from './components/pages/Dashboard'
 
-import AdminList from './components/pages/admin/List'
-import AdminAdd from './components/pages/admin/Add'
-import AdminEdit from './components/pages/admin/Edit'
-import AdminDetail from './components/pages/admin/Detail'
+import AdminList from './components/pages/Admin/List'
+import AdminAdd from './components/pages/Admin/Add'
+import AdminEdit from './components/pages/Admin/Edit'
+import AdminDetail from './components/pages/Admin/Detail'
 
-import CustomerList from './components/pages/customer/List'
-import CustomerAdd from './components/pages/customer/Add'
-import CustomerDetail from './components/pages/customer/Detail'
-import CustomerEdit from './components/pages/customer/Edit'
+import CustomerList from './components/pages/Customer/List'
+import CustomerAdd from './components/pages/Customer/Add'
+import CustomerDetail from './components/pages/Customer/Detail'
+import CustomerEdit from './components/pages/Customer/Edit'
 
-import VendorList from './components/pages/vendor/List'
-import VendorAdd from './components/pages/vendor/Add'
-import VendorDetail from './components/pages/vendor/Detail'
-import VendorEdit from './components/pages/vendor/Edit'
+import VendorList from './components/pages/Vendor/List'
+import VendorAdd from './components/pages/Vendor/Add'
+import VendorDetail from './components/pages/Vendor/Detail'
+import VendorEdit from './components/pages/Vendor/Edit'
 
 import EWalletList from './components/pages/E-Wallet/List'
 import PayoutDetail from './components/pages/E-Wallet/PayoutDetail'
