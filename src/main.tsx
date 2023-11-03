@@ -14,7 +14,7 @@ ReactDOM.createRoot(root).render(
       <NextUIProvider>
         <Router>
           <AuthenticationProvider>
-              <App />
+            <App />
           </AuthenticationProvider>
         </Router>
       </NextUIProvider>

@@ -8,9 +8,11 @@ const RequireAuth = (): React.ReactElement => {
 
   const isAccountValid = (): boolean => {
     const isAuthValid = authentication !== undefined && authentication !== null
+    if (!isAuthValid) { return false }
+
     const isSessionValid = authentication.session !== undefined && authentication.session !== null
-    const isAccountTypeAdmin = authentication.session.accountType === 'ADMIN'
-    return isAuthValid && isSessionValid && isAccountTypeAdmin
+    const isAccountTypeAdmin = authentication.session?.accountType === 'ADMIN'
+    return isSessionValid && isAccountTypeAdmin
   }
 
   return (

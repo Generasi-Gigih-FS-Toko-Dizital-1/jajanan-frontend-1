@@ -5,7 +5,7 @@ const AuthenticationContext = createContext({})
 const AuthenticationProvider = (props: any): React.ReactElement => {
   const getAuthInitialState = (): any => {
     const authentication = localStorage.getItem('authentication')
-    return authentication === null ? {} : JSON.parse(authentication)
+    return authentication === null ? undefined : JSON.parse(authentication)
   }
 
   const [authentication, setAuthentication] = useState(getAuthInitialState())

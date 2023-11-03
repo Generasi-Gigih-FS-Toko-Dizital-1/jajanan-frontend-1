@@ -24,11 +24,13 @@ const useBackendOneClientPrivate = (): any => {
       response => response,
       async (error) => {
         const prevRequest = error?.config
-        if (error?.response?.status === 403 && prevRequest?.sent !== true) {
-          prevRequest.sent = true
-          const accessToken = await refreshAccessToken()
-          prevRequest.headers.Authorization = `Bearer ${accessToken}`
-          return await backEndOneClient.instance(prevRequest)
+        if (error?.response?.status === 500 && error?.response?.data?.message === 'Validate authentication failed, jwt expired.') {
+          if (prevRequest?.sent !== true) {
+            prevRequest.sent = true
+            const accessToken = await refreshAccessToken()
+            prevRequest.headers.Authorization = `Bearer ${accessToken}`
+            return await backEndOneClient.instance(prevRequest)
+          }
         }
         return await Promise.reject(error)
       }

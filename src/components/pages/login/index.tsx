@@ -45,13 +45,9 @@ export default function Index (): React.ReactElement {
       password: fields.password
     })
       .then((res) => {
-        // const { accessToken, accountType } = res.data.data.session
-        // console.log(accessToken, accountType)
-        // setAuth({ accessToken, accountType })
         setAuthentication({
           session: res.data.data.session
         })
-        console.log(res.data.data.session)
         navigate(from, { replace: true })
       })
       .catch((err) => {

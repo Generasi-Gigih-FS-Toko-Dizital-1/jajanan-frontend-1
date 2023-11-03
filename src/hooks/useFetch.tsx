@@ -20,19 +20,15 @@ const useFetch = (url: string): FetchReturn => {
   const backendOneClientPrivate = useBackendOneClientPrivate()
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await backendOneClientPrivate.get(url)
+    backendOneClientPrivate.get(url)
+      .then((response: any) => {
         setData(response.data)
+      }).catch((err: any) => {
+        setError(err)
+      }).finally(() => {
         setLoading(false)
-      } catch (error: any) {
-        setError(error)
-        setLoading(false)
-      }
-    }
-
-    void fetchData()
-  }, [url])
+      })
+  }, [])
 
   return { data, loading, error }
 }
