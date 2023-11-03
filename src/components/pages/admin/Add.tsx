@@ -6,7 +6,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import AdminForm from '../../fragments/AdminForm.tsx'
 import BackendOneClient from '../../../clients/BackendOneClient'
 
-const AdminAdd = (): React.ReactElement => {
+const Add = (): React.ReactElement => {
   const navigate = useNavigate()
   const client = new BackendOneClient()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -44,7 +44,7 @@ const AdminAdd = (): React.ReactElement => {
   }
 
   return (
-    <div className="bg-white p-5 h-full">
+    <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
         <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Add Admin</h2>
         <Button
@@ -61,4 +61,4 @@ const AdminAdd = (): React.ReactElement => {
   )
 }
 
-export default AdminAdd
+export default Add
