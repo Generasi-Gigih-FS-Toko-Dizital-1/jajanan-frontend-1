@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineLock, AiOutlineMail } from 'react-icons/ai'
 import React from 'react'
 
@@ -58,15 +57,8 @@ export default function LoginForm ({
           </button>
         </div>
       </div>
-      <div className="flex w-full justify-between mt-5 text-sm lg:text-base">
-        <div className="flex">
-          <input type="checkbox" id="remember" name="remember" className="mr-0.5 sm:mr-2 border-2 border-jajanWarning rounded-full accent-jajanWarning" />
-          <label htmlFor="remember">Remember me</label>
-        </div>
-        <Link to="/forgot-password" className="text-jajanDark2 underline">Forgot password?</Link>
-      </div>
       <button
-        className="bg-jajanDark2 text-white rounded-md py-2 px-10 md:px-8 mt-6 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
+        className="mx-auto w-full bg-jajanDark2 text-white rounded-md py-2 px-10 md:px-8 mt-6 focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
         type="submit"
       >
         Login
