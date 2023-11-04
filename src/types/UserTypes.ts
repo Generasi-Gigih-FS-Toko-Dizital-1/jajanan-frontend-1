@@ -10,7 +10,7 @@ export interface AdminTypes {
 
 export interface VendorTypes {
   id: string
-  fullname: string
+  fullName: string
   gender: string
   address: string
   username: string
@@ -30,7 +30,7 @@ export interface VendorTypes {
 
 export interface CustomerTypes {
   id: string
-  fullname: string
+  fullName: string
   gender: string
   address: string
   username: string
