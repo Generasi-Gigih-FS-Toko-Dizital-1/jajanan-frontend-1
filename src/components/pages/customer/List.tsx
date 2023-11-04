@@ -1,10 +1,17 @@
+import React from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import ActionButton from '../../elements/ActionButton.tsx'
-import React from 'react'
+import ActionButton from '../../elements/ActionButton'
+import useFetch from '../../../hooks/useFetch'
 
 const List = (): React.ReactElement => {
   const navigate = useNavigate()
+
+  const url = 'api/v1/users?page_number=1&page_size=10'
+
+  const { data, loading } = useFetch(url)
+  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -17,6 +24,9 @@ const List = (): React.ReactElement => {
           + Add
         </Button>
       </div>
+      {loading
+        ? loadingBar
+        : (
       <Table className="overflow-x-auto">
         <TableHeader>
           <TableColumn>#</TableColumn>
@@ -31,27 +41,33 @@ const List = (): React.ReactElement => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-          <TableRow className="border-b">
-            <TableCell>1</TableCell>
+        {data?.data.users.map((customer: any, index: number) => (
+          <TableRow key={customer.id} className="border-b">
+            <TableCell>{index + 1}</TableCell>
             <TableCell>
-              <Link to="/customers/1" className="text-jajanDark2 underline">
-                Dusty Buns
+              <Link
+                to={`/customers/${customer.id}`}
+                className="text-jajanDark2 underline"
+              >
+                {customer.fullName}
               </Link>
             </TableCell>
-            <TableCell>@dustyyy</TableCell>
-            <TableCell>dusty@mail.com</TableCell>
-            <TableCell>2886 Cornwallis Road, Hawkins, Indiana</TableCell>
+            <TableCell>{customer.username}</TableCell>
+            <TableCell>{customer.email}</TableCell>
+            <TableCell>{customer.address}</TableCell>
             <TableCell
               className="flex justify-center items-center"
             >
               <ActionButton
                 type="customer"
-                id="1"
+                id={customer.id}
               />
             </TableCell>
           </TableRow>
+        ))}
         </TableBody>
       </Table>
+          )}
     </div>
   )
 }

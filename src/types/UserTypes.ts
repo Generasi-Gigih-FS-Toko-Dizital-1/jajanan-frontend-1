@@ -30,16 +30,16 @@ export interface VendorTypes {
 
 export interface CustomerTypes {
   id: string
-  fullname: string
+  fullName: string
   gender: string
   address: string
   username: string
   email: string
   balance: number
   experience: number
-  last_latitude: Float32Array | number | string
-  last_longitude: Float32Array | number | string
-  created_at: string
-  updated_at: string
-  deleted_at: string
+  lastLatitude: Float32Array | number | string
+  lastLongitude: Float32Array | number | string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string
 }

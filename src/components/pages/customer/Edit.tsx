@@ -1,68 +1,110 @@
-import React from 'react'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
-import { useNavigate, useParams } from 'react-router-dom'
-import useFetch, { type Config } from '../../../hooks/useFetch'
-import BackendOneClient from '../../../clients/BackendOneClient'
-
-import CustomerForm from '../../fragments/CustomerForm.tsx'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@nextui-org/react'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-const Edit = (): React.ReactElement => {
+import { useNavigate, useParams } from 'react-router-dom'
+import useFetch from '../../../hooks/useFetch.tsx'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import CustomerForm from '../../fragments/CustomerForm'
+import getGeoLocation from '../../../utils/GetGeolocation'
+
+const AdminEdit = (): React.ReactElement => {
   const navigate = useNavigate()
-  const { id } = useParams()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
 
-  const url = `${import.meta.env.VITE_BACKEND_ONE_URL}api/v1/admins/${id}`
-  const config: Config = {
-    headers: {
-      // localStorage.getItem("token")
-      Authorization:
-        'Bearer ' +
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4ODIzMjIxLCJleHAiOjE2OTg4MjM4MjF9.N2iqxd47QwFGdCCgZywsaHPRmPLVxk_728prHY5uxsk',
-      Accept: 'application/json'
-    }
-  }
-  const { data, loading } = useFetch(url, config)
-  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+  const { id } = useParams()
+  const url = `api/v1/users/${id}`
+  const { data } = useFetch(url)
+  const oldUsername = data?.data.username
+  const oldEmail = data?.data.email
+
+  const [fields, setFields] = useState({
+    fullName: '',
+    gender: '',
+    address: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    lastLatitude: 0,
+    lastLongitude: 0
+  })
+
+  useEffect(() => {
+    getGeoLocation(fields, setFields)
+  }, [])
+
+  useEffect(() => {
+    setFields({
+      fullName: data?.data.fullName,
+      gender: data?.data.gender,
+      address: data?.data.address,
+      username: data?.data.username,
+      email: data?.data.email,
+      password: data?.data.password,
+      confirmPassword: data?.data.confirmPassword,
+      lastLatitude: 0,
+      lastLongitude: 0
+    })
+  }, [data])
+
+  const { fullName, gender, address, username, email, password, lastLatitude, lastLongitude } = fields
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    const client = new BackendOneClient()
-    const editAdmin = async (form: HTMLFormElement): Promise<void> => {
-      const fullName = form.fullName.value
-      const email = form.email.value
-      const gender = form.gender.value
-      const password = form.password.value
 
-      try {
-        await client.instance.patch(url, {
-          fullName,
-          email,
-          gender,
-          password
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4ODEzNjc3LCJleHAiOjE2OTg4MTQyNzd9.EvRPWRXlL7TcyAHBdcXCs0vtfUoLf23Zo5zDQCYJwE0',
-            Accept: 'application/json'
-          }
-        })
+    console.log(fields)
+    return
 
-        alert('Edit admin success')
-        navigate(`/admin/${id}`)
-      } catch (err) {
-        alert('Error: ' + fullName + email + gender + password)
-        console.log(err)
-      }
+    // empty validation
+    if (fullName === '' || address === '' || username === '' || email === '') {
+      alert('Please fill all the fields')
+      return
     }
 
-    void editAdmin(e.target as HTMLFormElement)
+    // username unique validation
+    const usernameUnique = data?.data.users.filter((user: any) => user.username === username.toLowerCase().replace(/\s+/g, ''))
+    if (usernameUnique?.length !== 0 && username !== oldUsername) {
+      alert('Username already registered')
+      return
+    }
+
+    // email validation
+    if (!email.includes('@')) {
+      alert('Please enter a valid email')
+      return
+    }
+    const emailUnique = data?.data.users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
+    if (emailUnique?.length !== 0 && email !== oldEmail) {
+      alert('Email already registered')
+      return
+    }
+
+    confirm('Are you sure to update this customer?')
+      ? backendOneClientPrivate.patch('api/v1/users', {
+        fullName,
+        gender,
+        address,
+        username,
+        email,
+        password,
+        lastLatitude,
+        lastLongitude
+      })
+        .then(() => {
+          alert('Update customer success')
+          navigate('/customers')
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+      : alert('Update canceled')
   }
 
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Customer {data?.data.fullName}</h2>
-        {/* Belum semua data muncul (baru fullname sama email) */}
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Admin</h2>
         <Button
           onPress={() => { navigate('/customers') }}
           variant="bordered"
@@ -72,13 +114,18 @@ const Edit = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      <CustomerForm
-        className="p-4"
-        action={handleSubmit}
-        data={customer}
-      />
+      {
+        data?.data !== undefined &&
+        <CustomerForm
+          className="p-4"
+          action={handleSubmit}
+          data={data?.data}
+          fields={fields}
+          setFields={setFields}
+        />
+      }
     </div>
   )
 }
 
-export default Edit
+export default AdminEdit
