@@ -14,7 +14,7 @@ const Add = (): React.ReactElement => {
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
 
-  const url = 'api/v1/admins?page_number=1&page_size=10'
+  const url = 'api/v1/admins'
   const { data } = useFetch(url)
 
   const [fields, setFields] = useState({
