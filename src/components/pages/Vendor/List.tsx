@@ -1,10 +1,31 @@
+import React, { useMemo, useState } from 'react'
+
+import useFetch from '../../../hooks/useFetch'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import ActionButton from '../../elements/ActionButton.tsx'
-import React from 'react'
+
+import ActionButton from '../../elements/ActionButton'
+import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+
+import { type VendorTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
+  const rowsPerPage = 10
+
+  const url = 'api/v1/vendors'
+
+  const { data, loading } = useFetch(url)
+  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+
+  const pages = Math.ceil(data?.data.vendors.length / rowsPerPage)
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+
+    return data?.data.vendors.slice(start, end)
+  }, [page, data])
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -17,7 +38,26 @@ const List = (): React.ReactElement => {
           + Add
         </Button>
       </div>
-      <Table className="overflow-x-auto">
+      {loading
+        ? loadingBar
+        : (
+      <Table
+        aria-label="List of customers"
+        className="overflow-x-auto"
+        bottomContent={
+          <div className="flex w-full">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="default"
+              page={page}
+              total={pages}
+              onChange={(page) => { setPage(page) }}
+            />
+          </div>
+        }
+      >
         <TableHeader>
           <TableColumn>#</TableColumn>
           <TableColumn>Fullname</TableColumn>
@@ -31,27 +71,36 @@ const List = (): React.ReactElement => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-          <TableRow className="border-b">
-            <TableCell>1</TableCell>
+        {items.map((vendor: VendorTypes, index: number) => (
+          <TableRow
+            key={vendor.id}
+            className="border-b"
+          >
+            <TableCell>{index + 1}</TableCell>
             <TableCell>
-              <Link to="/vendors/1" className="text-jajanDark2 underline">
-                Max Mayfield
+              <Link
+                to={`/vendors/${vendor.id}`}
+                className="text-jajanDark2 underline"
+              >
+                {vendor.fullName}
               </Link>
             </TableCell>
-            <TableCell>@max</TableCell>
-            <TableCell>maxxx@mail.com</TableCell>
-            <TableCell>565 Holland Rd, Hawkins, Indiana</TableCell>
+            <TableCell>{vendor.username}</TableCell>
+            <TableCell>{vendor.email}</TableCell>
+            <TableCell>{vendor.address}</TableCell>
             <TableCell
               className="flex justify-center items-center"
             >
               <ActionButton
                 type="vendor"
-                id='1'
+                id={vendor.id}
               />
             </TableCell>
           </TableRow>
+        ))}
         </TableBody>
       </Table>
+          )}
     </div>
   )
 }

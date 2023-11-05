@@ -1,35 +1,142 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '@nextui-org/react'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
+import React, { useEffect, useState } from 'react'
+
+import useFetch from '../../../hooks/useFetch'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import VendorForm from '../../fragments/VendorForm.tsx'
 
+import { Button } from '@nextui-org/react'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+
+import getGeoLocation from '../../../utils/GetGeolocation'
+
 const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
+
+  const { id } = useParams()
+  const url = `api/v1/vendors/${id}`
+  const { data } = useFetch(url)
+
+  const oldUsername = data?.data.username
+  const oldEmail = data?.data.email
+
+  const [fields, setFields] = useState({
+    fullName: '',
+    gender: '',
+    address: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    jajanImageUrl: '',
+    jajanName: '',
+    jajanDescription: '',
+    status: 'ON',
+    lastLatitude: 0,
+    lastLongitude: 0
+  })
+
+  useEffect(() => {
+    getGeoLocation(fields, setFields)
+  }, [])
+
+  useEffect(() => {
+    setFields({
+      fullName: data?.data.fullName,
+      gender: data?.data.gender,
+      address: data?.data.address,
+      username: data?.data.username,
+      email: data?.data.email,
+      password: data?.data.password,
+      confirmPassword: data?.data.confirmPassword,
+      jajanImageUrl: data?.data.jajanImageUrl,
+      jajanName: data?.data.jajanName,
+      jajanDescription: data?.data.jajanDescription,
+      status: data?.data.status,
+      lastLatitude: 0,
+      lastLongitude: 0
+    })
+  }, [data])
+
+  const { fullName, gender, address, username, email, password, confirmPassword, jajanImageUrl, jajanName, jajanDescription, status, lastLatitude, lastLongitude } = fields
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    alert('Edit vendor')
-  }
+    // empty validation
+    if (fullName === '' || gender === '' || address === '' || username === '' || email === '' || password === '' || confirmPassword === '' || jajanImageUrl === '' || jajanName === '' || jajanDescription === '') {
+      alert('Please fill all the fields')
+      return
+    }
 
-  const vendor = {
-    id: '1',
-    fullname: 'Max Mayfield',
-    gender: 'F',
-    address: '565 Holland Rd, Hawkins, Indiana',
-    username: 'max',
-    email: 'maxxx@mail.com',
-    balance: 0,
-    experience: 0,
-    jajan_image_url: 'https://openai-labs-public-images-prod.azureedge.net/user-jTJ7A5puDaUD79bsLHVgWCyy/generations/generation-ZXpxrA1J2HneW7qCNQEJ9wQZ/image.webp',
-    jajan_name: 'Mayfield Toast',
-    jajan_description: "Your street food maestro. Fast, tasty bites for your cravings. Don't miss out!",
-    last_latitude: 0,
-    last_longitude: 0,
-    status: 'active',
-    created_at: '2021-10-01T00:00:00Z',
-    updated_at: '2021-10-01T00:00:00Z',
-    deleted_at: '2021-10-01T00:00:00Z'
+    console.log(fields)
+    return
+
+    // username unique validation
+    const usernameUnique = data?.data.vendors.filter((vendor: any) => vendor.username === username.toLowerCase().replace(/\s+/g, ''))
+    if (usernameUnique?.length !== 0 && username !== oldUsername) {
+      alert('Username already registered')
+      return
+    }
+
+    // email validation
+    if (!email.includes('@')) {
+      alert('Please enter a valid email')
+      return
+    }
+    const emailUnique = data?.data.vendors.filter((vendor: any) => vendor.email === email.toLowerCase().replace(/\s+/g, ''))
+    if (emailUnique?.length !== 0 && email !== oldEmail) {
+      alert('Email already registered')
+      return
+    }
+
+    // password validation
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('Password and confirm password must be same')
+    }
+
+    backendOneClientPrivate.patch('api/v1/vendors', {
+      fullName,
+      gender,
+      address,
+      username,
+      email,
+      password,
+      jajanImageUrl,
+      jajanName,
+      jajanDescription,
+      status,
+      lastLatitude,
+      lastLongitude
+    })
+      .then(() => {
+        alert('Add vendor Success')
+        setFields({
+          fullName: '',
+          gender: '',
+          address: '',
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          jajanImageUrl: '',
+          jajanName: '',
+          jajanDescription: '',
+          status: '',
+          lastLatitude: 0,
+          lastLongitude: 0
+        })
+        navigate('/vendors')
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -45,11 +152,16 @@ const Edit = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      <VendorForm
-        className="p-4"
-        action={handleSubmit}
-        data={vendor}
-      />
+      {
+        data?.data !== undefined &&
+        <VendorForm
+          className="p-4"
+          action={handleSubmit}
+          data={data?.data}
+          fields={fields}
+          setFields={setFields}
+        />
+      }
     </div>
   )
 }

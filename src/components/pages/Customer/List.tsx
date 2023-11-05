@@ -72,7 +72,10 @@ const List = (): React.ReactElement => {
         </TableHeader>
         <TableBody>
         {items.map((customer: CustomerTypes, index: number) => (
-          <TableRow key={customer.id} className="border-b">
+          <TableRow
+            key={customer.id}
+            className="border-b"
+          >
             <TableCell>{index + 1}</TableCell>
             <TableCell>
               <Link
