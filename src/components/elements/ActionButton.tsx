@@ -11,7 +11,7 @@ export default function ActionButton ({ type, id }: { type: string, id: string }
 
   const handleDelete = (): void => {
     confirm(`Are you sure to delete this ${userType}?`)
-      ? backendOneClientPrivate.delete(`api/v1/users/${id}`).then(() => {
+      ? backendOneClientPrivate.delete(`api/v1/${userType}/${id}`).then(() => {
         alert(`${userType} deleted`)
         window.location.reload()
       }).catch((err: any) => { console.log(err) })
@@ -30,6 +30,7 @@ export default function ActionButton ({ type, id }: { type: string, id: string }
         </Button>
       </DropdownTrigger>
       <DropdownMenu
+        aria-label="Dropdown menu for action button"
         onAction={(key) => {
           key === 'edit'
             ? navigate(`/${userType}/${key}/${id}`)
