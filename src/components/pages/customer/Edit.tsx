@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
+
+import useFetch from '../../../hooks/useFetch'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import CustomerForm from '../../fragments/CustomerForm'
+
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import { useNavigate, useParams } from 'react-router-dom'
-import useFetch from '../../../hooks/useFetch.tsx'
-import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
-import CustomerForm from '../../fragments/CustomerForm'
 import getGeoLocation from '../../../utils/GetGeolocation'
 
-const AdminEdit = (): React.ReactElement => {
+const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
 
   const { id } = useParams()
   const url = `api/v1/users/${id}`
   const { data } = useFetch(url)
+
   const oldUsername = data?.data.username
   const oldEmail = data?.data.email
 
@@ -48,7 +52,7 @@ const AdminEdit = (): React.ReactElement => {
     })
   }, [data])
 
-  const { fullName, gender, address, username, email, password, lastLatitude, lastLongitude } = fields
+  const { fullName, gender, address, username, email, password, confirmPassword, lastLatitude, lastLongitude } = fields
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -80,6 +84,16 @@ const AdminEdit = (): React.ReactElement => {
       return
     }
 
+    // password validation
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('Password and confirm password must be same')
+    }
+
     confirm('Are you sure to update this customer?')
       ? backendOneClientPrivate.patch('api/v1/users', {
         fullName,
@@ -93,6 +107,17 @@ const AdminEdit = (): React.ReactElement => {
       })
         .then(() => {
           alert('Update customer success')
+          setFields({
+            fullName: '',
+            gender: '',
+            address: '',
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            lastLatitude: 0,
+            lastLongitude: 0
+          })
           navigate('/customers')
         })
         .catch((err: any) => {
@@ -104,7 +129,7 @@ const AdminEdit = (): React.ReactElement => {
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Admin</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Edit Customer</h2>
         <Button
           onPress={() => { navigate('/customers') }}
           variant="bordered"
@@ -128,4 +153,4 @@ const AdminEdit = (): React.ReactElement => {
   )
 }
 
-export default AdminEdit
+export default Edit

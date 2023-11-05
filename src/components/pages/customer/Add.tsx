@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import useFetch from '../../../hooks/useFetch'
+import { useNavigate } from 'react-router-dom'
+
+import CustomerForm from '../../fragments/CustomerForm'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import CustomerForm from '../../fragments/CustomerForm'
 import getGeoLocation from '../../../utils/GetGeolocation'
-import useFetch from '../../../hooks/useFetch'
 
 const Add = (): React.ReactElement => {
+  const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
+
   const url = 'api/v1/users?page_number=1&page_size=10'
   const { data } = useFetch(url)
 
@@ -80,14 +84,23 @@ const Add = (): React.ReactElement => {
     })
       .then(() => {
         alert('Add customer Success')
+        setFields({
+          fullName: '',
+          gender: '',
+          address: '',
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          lastLatitude: 0,
+          lastLongitude: 0
+        })
         navigate('/customers')
       })
       .catch((err: any) => {
         console.log(err)
       })
   }
-
-  const navigate = useNavigate()
 
   return (
     <div className="bg-white py-5 md:px-3">

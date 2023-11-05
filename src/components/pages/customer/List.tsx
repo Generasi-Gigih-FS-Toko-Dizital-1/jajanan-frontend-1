@@ -1,17 +1,31 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-import ActionButton from '../../elements/ActionButton'
 import useFetch from '../../../hooks/useFetch'
+import { Link, useNavigate } from 'react-router-dom'
+
+import ActionButton from '../../elements/ActionButton'
+import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+
+import { type CustomerTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
+  const rowsPerPage = 10
 
-  const url = 'api/v1/users?page_number=1&page_size=10'
+  const url = 'api/v1/users'
 
   const { data, loading } = useFetch(url)
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+
+  const pages = Math.ceil(data?.data.users.length / rowsPerPage)
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+
+    return data?.data.users.slice(start, end)
+  }, [page, data])
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -27,7 +41,23 @@ const List = (): React.ReactElement => {
       {loading
         ? loadingBar
         : (
-      <Table className="overflow-x-auto">
+      <Table
+        aria-label="List of customers"
+        className="overflow-x-auto"
+        bottomContent={
+          <div className="flex w-full">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="default"
+              page={page}
+              total={pages}
+              onChange={(page) => { setPage(page) }}
+            />
+          </div>
+        }
+      >
         <TableHeader>
           <TableColumn>#</TableColumn>
           <TableColumn>Fullname</TableColumn>
@@ -41,7 +71,7 @@ const List = (): React.ReactElement => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-        {data?.data.users.map((customer: any, index: number) => (
+        {items.map((customer: CustomerTypes, index: number) => (
           <TableRow key={customer.id} className="border-b">
             <TableCell>{index + 1}</TableCell>
             <TableCell>
