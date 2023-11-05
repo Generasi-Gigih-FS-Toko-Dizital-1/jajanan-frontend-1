@@ -1,46 +1,92 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import useFetch from '../../../hooks/useFetch'
 import { useNavigate } from 'react-router-dom'
+
+import AdminForm from '../../fragments/AdminForm'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import AdminForm from '../../fragments/AdminForm.tsx'
-import BackendOneClient from '../../../clients/BackendOneClient'
+import getGeoLocation from '../../../utils/GetGeolocation'
 
 const Add = (): React.ReactElement => {
   const navigate = useNavigate()
-  const client = new BackendOneClient()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
+
+  const url = 'api/v1/admins?page_number=1&page_size=10'
+  const { data } = useFetch(url)
+
+  const [fields, setFields] = useState({
+    fullName: '',
+    gender: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    lastLatitude: 0,
+    lastLongitude: 0
+  })
+
+  useEffect(() => {
+    getGeoLocation(fields, setFields)
+  }, [])
+
+  const { fullName, gender, email, password, confirmPassword, lastLatitude, lastLongitude } = fields
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    const createAdmin = async (form: HTMLFormElement): Promise<void> => {
-      const fullName = form.fullName.value
-      const email = form.email.value
-      const gender = form.gender.value
-      const password = form.password.value
 
-      const url = `${import.meta.env.VITE_BACKEND_ONE_URL}api/v1/admins`
-      try {
-        await client.instance.post(url, {
-          fullName,
-          email,
-          gender,
-          password
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJhNjU3ZDVlMy1mYjRjLTQ2NTMtOTNhNC1jZjQwOGFmMjI5NTQiLCJhY2NvdW50VHlwZSI6IkFETUlOIiwiaWF0IjoxNjk4ODEzNjc3LCJleHAiOjE2OTg4MTQyNzd9.EvRPWRXlL7TcyAHBdcXCs0vtfUoLf23Zo5zDQCYJwE0',
-            Accept: 'application/json'
-          }
-        })
-
-        alert('Add admin Success')
-        navigate('/admin')
-      } catch (err) {
-        alert('Error: ' + fullName + email + gender + password)
-        console.log(err)
-      }
+    // empty validation
+    if (fullName === '' || email === '') {
+      alert('Please fill all the fields')
+      return
     }
 
-    void createAdmin(e.target as HTMLFormElement)
+    // email validation
+    if (!email.includes('@')) {
+      alert('Please enter a valid email')
+      return
+    }
+    const emailUnique = data?.data.admins.filter((admin: any) => admin.email === email.toLowerCase().replace(/\s+/g, ''))
+    if (emailUnique?.length !== 0) {
+      alert('Email already registered')
+      return
+    }
+
+    // password validation
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('Password and confirm password must be same')
+    }
+
+    backendOneClientPrivate.post('api/v1/admins', {
+      fullName,
+      gender,
+      email,
+      password,
+      lastLatitude,
+      lastLongitude
+    })
+      .then(() => {
+        alert('Admin added successfully')
+        setFields({
+          fullName: '',
+          email: '',
+          gender: '',
+          password: '',
+          confirmPassword: '',
+          lastLatitude: 0,
+          lastLongitude: 0
+        })
+        navigate('/admins')
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -56,7 +102,12 @@ const Add = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      <AdminForm className="p-4" action={handleSubmit} />
+      <AdminForm
+        className="p-4"
+        action={handleSubmit}
+        fields={fields}
+        setFields={setFields}
+      />
     </div>
   )
 }

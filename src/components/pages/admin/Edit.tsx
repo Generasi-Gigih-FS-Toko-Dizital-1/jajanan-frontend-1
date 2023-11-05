@@ -1,23 +1,114 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+import useFetch from '../../../hooks/useFetch'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import AdminForm from '../../fragments/AdminForm'
+
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-import AdminForm from '../../fragments/AdminForm.tsx'
 
-import { useNavigate, useParams } from 'react-router-dom'
-import useFetch from '../../../hooks/useFetch.tsx'
+import getGeoLocation from '../../../utils/GetGeolocation'
 
-const AdminEdit = (): React.ReactElement => {
+const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
-    alert('Update admin')
-  }
+  const backendOneClientPrivate = useBackendOneClientPrivate()
 
   const { id } = useParams()
-
   const url = `api/v1/admins/${id}`
-
   const { data } = useFetch(url)
+
+  const oldEmail = data?.data.email
+
+  const [fields, setFields] = useState({
+    fullName: '',
+    gender: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    lastLatitude: 0,
+    lastLongitude: 0
+  })
+
+  useEffect(() => {
+    getGeoLocation(fields, setFields)
+  }, [])
+
+  useEffect(() => {
+    setFields({
+      fullName: data?.data.fullName,
+      gender: data?.data.gender,
+      email: data?.data.email,
+      password: data?.data.password,
+      confirmPassword: data?.data.confirmPassword,
+      lastLatitude: 0,
+      lastLongitude: 0
+    })
+  }, [data])
+
+  const { fullName, gender, email, password, confirmPassword, lastLatitude, lastLongitude } = fields
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+
+    console.log(fields)
+    return
+
+    // empty validation
+    if (fullName === '' || email === '') {
+      alert('Please fill all the fields')
+      return
+    }
+
+    // email validation
+    if (!email.includes('@')) {
+      alert('Please enter a valid email')
+      return
+    }
+    const emailUnique = data?.data.users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
+    if (emailUnique?.length !== 0 && email !== oldEmail) {
+      alert('Email already registered')
+      return
+    }
+
+    // password validation
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('Password and confirm password must be same')
+    }
+
+    confirm('Are you sure to update this admin?')
+      ? backendOneClientPrivate.patch('api/v1/admins', {
+        fullName,
+        gender,
+        email,
+        password,
+        lastLatitude,
+        lastLongitude
+      })
+        .then(() => {
+          alert('Update admin success')
+          etFields({
+            fullName: '',
+            gender: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            lastLatitude: 0,
+            lastLongitude: 0
+          })
+          navigate('/admins')
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+      : alert('Update canceled')
+  }
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -38,10 +129,12 @@ const AdminEdit = (): React.ReactElement => {
           className="p-4"
           action={handleSubmit}
           data={data?.data}
+          fields={fields}
+          setFields={setFields}
         />
       }
     </div>
   )
 }
 
-export default AdminEdit
+export default Edit

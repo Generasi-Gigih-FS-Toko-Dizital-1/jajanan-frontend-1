@@ -7,11 +7,15 @@ import type { AdminTypes } from '../../types/UserTypes'
 const AdminForm = ({
   className,
   action,
-  data
+  data,
+  fields,
+  setFields
 }: {
   className?: string
   action: (e: React.FormEvent<HTMLFormElement>) => void
   data?: AdminTypes
+  fields: any
+  setFields: any
 }): React.ReactElement => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] = useState(false)
@@ -29,6 +33,7 @@ const AdminForm = ({
           name="fullName"
           radius="none"
           defaultValue={(data !== undefined) ? data.fullName : ''}
+          onChange={(e) => { setFields({ ...fields, fullName: e.target.value }) }}
         />
         <Input
           isRequired
@@ -41,6 +46,7 @@ const AdminForm = ({
           name="email"
           radius="none"
           defaultValue={(data !== undefined) ? data.email : ''}
+          onChange={(e) => { setFields({ ...fields, email: e.target.value }) }}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
@@ -55,6 +61,7 @@ const AdminForm = ({
         className="w-full md:w-[calc(50%-.5rem)]"
         selectionMode='single'
         defaultSelectedKeys={(data !== undefined) ? [data.gender] : []}
+        onChange={(e) => { setFields({ ...fields, gender: e.target.value }) }}
       >
         <SelectItem key="FEMALE" value="FEMALE">Female</SelectItem>
         <SelectItem key="MALE" value="MALE">Male</SelectItem>
@@ -81,6 +88,7 @@ const AdminForm = ({
             </button>
           }
           type={isVisiblePassword ? 'text' : 'password'}
+          onChange={(e) => { setFields({ ...fields, password: e.target.value }) }}
         />
         <Input
           isRequired
@@ -101,6 +109,7 @@ const AdminForm = ({
             </button>
           }
           type={isVisibleConfirmPassword ? 'text' : 'password'}
+          onChange={(e) => { setFields({ ...fields, confirmPassword: e.target.value }) }}
         />
       </div>
       <Button
