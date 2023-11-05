@@ -93,7 +93,7 @@ const Edit = (): React.ReactElement => {
       })
         .then(() => {
           alert('Update admin success')
-          etFields({
+          setFields({
             fullName: '',
             gender: '',
             email: '',
