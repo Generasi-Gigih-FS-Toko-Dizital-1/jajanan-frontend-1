@@ -47,7 +47,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactEl
           />
         </DropdownTrigger>
         <DropdownMenu
-          aria-label="Static Actions"
+          aria-label="Dropdown menu for admin profile and logout"
           className="text-center flex flex-col gap-2"
           onAction={(key) => {
             if (key === 'logout') {
@@ -62,7 +62,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactEl
             key="profile"
             color="default"
           >
-            <p className="text-jajanDark2">{data?.data.fullName}</p>
+            {data?.data.fullName}
           </DropdownItem>
           <DropdownItem
             key="logout"
