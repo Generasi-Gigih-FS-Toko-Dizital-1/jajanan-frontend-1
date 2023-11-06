@@ -1,12 +1,22 @@
+import React from 'react'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
-
 import { AiOutlineEllipsis } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import React from 'react'
+import useBackendOneClientPrivate from '../../hooks/useBackendOneClientPrivate'
 
 export default function ActionButton ({ type, id }: { type: string, id: string }): React.ReactElement {
   const navigate = useNavigate()
+  const backendOneClientPrivate = useBackendOneClientPrivate()
   const userType = type === 'admin' ? 'admins' : type === 'vendor' ? 'vendors' : 'customers'
+
+  const handleDelete = (): void => {
+    confirm(`Are you sure to delete this ${userType}?`)
+      ? backendOneClientPrivate.delete(`api/v1/${userType}/${id}`).then(() => {
+        alert(`${userType} deleted`)
+        window.location.reload()
+      }).catch((err: any) => { console.log(err) })
+      : alert('Delete canceled')
+  }
 
   return (
     <Dropdown>
@@ -20,11 +30,11 @@ export default function ActionButton ({ type, id }: { type: string, id: string }
         </Button>
       </DropdownTrigger>
       <DropdownMenu
+        aria-label="Dropdown menu for action button"
         onAction={(key) => {
           key === 'edit'
             ? navigate(`/${userType}/${key}/${id}`)
-            : confirm(`Are you sure you want to delete this ${userType}?`) &&
-            alert(`${userType} deleted!`)
+            : handleDelete()
         }
         }
       >

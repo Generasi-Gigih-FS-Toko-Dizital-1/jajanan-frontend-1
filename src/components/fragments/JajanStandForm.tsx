@@ -4,7 +4,15 @@ import { Input, Textarea } from '@nextui-org/react'
 import type { VendorTypes } from '../../types/UserTypes'
 import React from 'react'
 
-export default function JajanStandForm ({ data }: { data?: VendorTypes }): React.ReactElement {
+export default function JajanStandForm ({
+  data,
+  fields,
+  setFields
+}: {
+  data?: VendorTypes
+  fields: any
+  setFields: any
+}): React.ReactElement {
   return (
     <>
       <h2 className="font-semibold text-xl mb-6 sm:text-2xl md:mb-8 md:text-xl lg:text-2xl ">Add Jajan Stand</h2>
@@ -17,7 +25,8 @@ export default function JajanStandForm ({ data }: { data?: VendorTypes }): React
           variant="bordered"
           label="Name"
           radius="none"
-          defaultValue={(data != null) ? data.jajan_name : ''}
+          defaultValue={(data !== undefined) ? data.jajanName : ''}
+          onChange={(e) => { setFields({ ...fields, jajanName: e.target.value }) }}
         />
         <Input
           isRequired
@@ -33,7 +42,8 @@ export default function JajanStandForm ({ data }: { data?: VendorTypes }): React
               <AiOutlineLink/>
             </span>
           }
-          defaultValue={(data != null) ? data.jajan_image_url : ''}
+          defaultValue={(data !== undefined) ? data.jajanImageUrl : ''}
+          onChange={(e) => { setFields({ ...fields, jajanImageUrl: e.target.value }) }}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-5 mb-8 md:gap-4 md:mb-10">
@@ -45,7 +55,8 @@ export default function JajanStandForm ({ data }: { data?: VendorTypes }): React
           isRequired
           variant="bordered"
           radius="none"
-          defaultValue={(data != null) ? data.jajan_description : ''}
+          defaultValue={(data !== undefined) ? data.jajanDescription : ''}
+          onChange={(e) => { setFields({ ...fields, jajanDescription: e.target.value }) }}
         />
       </div>
     </>

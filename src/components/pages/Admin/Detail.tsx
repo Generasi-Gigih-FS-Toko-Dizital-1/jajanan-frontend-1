@@ -1,10 +1,15 @@
+import React from 'react'
+
+import useFetch from '../../../hooks/useFetch'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { Button, Chip } from '@nextui-org/react'
 import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
-import React from 'react'
-import useFetch from '../../../hooks/useFetch'
+
+import { dateFormatter } from '../../../utils/DateFormatter'
+
 import { type AdminTypes } from '../../../types/UserTypes'
-import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate.tsx'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
@@ -17,10 +22,12 @@ const Detail = (): React.ReactElement => {
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   const handleDelete = (): void => {
-    backendOneClientPrivate.instance.delete(url).then(() => {
-      alert('admin deleted')
-      navigate('/admins')
-    }).catch((err: any) => { console.log(err) })
+    confirm('Are you sure you want to delete this admin?')
+      ? backendOneClientPrivate.delete(`api/v1/admins/${id}`).then(() => {
+        alert('admin deleted')
+        navigate('/admins')
+      }).catch((err: any) => { console.log(err) })
+      : alert('Delete canceled')
   }
 
   return (
@@ -45,11 +52,11 @@ const Detail = (): React.ReactElement => {
         <div className="w-1/2 flex flex-col gap-y-5">
           <div>
             <h3 className="font-medium lg:text-xl">Created at</h3>
-            <p className="text-sm opacity-70 lg:text-base">{data?.data.createdAt}</p>
+            <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.createdAt)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Updated at</h3>
-            <p className="text-sm opacity-70 lg:text-base">{data?.data.updatedAt}</p>
+            <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.updatedAt)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Deleted at</h3>
@@ -65,12 +72,7 @@ const Detail = (): React.ReactElement => {
           </Button>
           <Button
             className="bg-jajanDanger text-white rounded-md"
-            onPress={
-              () => {
-                confirm('Are you sure you want to delete this admin?') &&
-                handleDelete()
-              }
-            }
+            onPress={handleDelete}
           >
             Delete
           </Button>
