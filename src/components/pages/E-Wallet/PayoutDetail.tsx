@@ -1,10 +1,17 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import React from 'react'
+import useFetch from '../../../hooks/useFetch'
+import { dateFormatter } from '../../../utils/DateFormatter'
+import { IDRFormatter } from '../../../utils/IDRFormatter'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
+  const { id } = useParams()
+  const { data, loading } = useFetch(`api/v1/payout-histories/${id}`)
+  console.log(data)
+  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -19,24 +26,26 @@ const Detail = (): React.ReactElement => {
           Back
         </Button>
       </div>
-
+      {loading
+        ? loadingBar
+        : (
       <div className="flex flex-wrap py-6 mx-4">
         <div className="lg:w-1/2 flex flex-col gap-y-5">
           <div>
             <h3 className="font-medium lg:text-xl">Payout Id</h3>
-            <p className="text-sm opacity-70 lg:text-base underline">12763528-347346378-hxbsjgd-234737467</p>
+            <p className="text-sm opacity-70 lg:text-base underline">{data?.data.id}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Amount</h3>
-            <p className="text-sm opacity-70 lg:text-base">IDR 10.0000</p>
+            <p className="text-sm opacity-70 lg:text-base">{IDRFormatter(Number(data?.data.amount))}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Claimed At</h3>
-            <p className="text-sm opacity-70 lg:text-base">Sunday 27 Oct 2023</p>
+            <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.createdAt)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Media</h3>
-            <p className="text-sm opacity-70 lg:text-base">VA-Mandiri</p>
+            <p className="text-sm opacity-70 lg:text-base">{data?.data.media}</p>
           </div>
         </div>
         <div className='lg:w-1/2 flex-col'>
@@ -44,6 +53,7 @@ const Detail = (): React.ReactElement => {
           <JajanStandCard className="py-4 mb-4" />
         </div>
       </div>
+          )}
     </div>
   )
 }

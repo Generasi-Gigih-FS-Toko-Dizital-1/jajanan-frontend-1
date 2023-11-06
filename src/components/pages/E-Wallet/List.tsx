@@ -14,6 +14,7 @@ import { dateFormatter } from '../../../utils/DateFormatter'
 import useFetch from '../../../hooks/useFetch'
 import { type TopUpHistory, type PayoutHistory } from '../../../types/E-walletTypes'
 import { paramsEncoder } from '../../../utils/ParamsEncoder'
+import { IDRFormatter } from '../../../utils/IDRFormatter'
 
 const List = (): React.ReactElement => {
   const { data: topUpHistories, loading: topUpHistoryLoading } = useFetch(`api/v1/top-up-histories?page_number=1&page_size=10&include=${paramsEncoder({ user: true })}`)
@@ -55,7 +56,7 @@ const List = (): React.ReactElement => {
                     </Link>
                   </TableCell>
                   <TableCell>{topUpHistory.user?.username}</TableCell>
-                  <TableCell>{topUpHistory.amount}</TableCell>
+                  <TableCell>{IDRFormatter(topUpHistory.amount)}</TableCell>
                   <TableCell>{dateFormatter(topUpHistory.createdAt)}</TableCell>
                   <TableCell>{topUpHistory.media}</TableCell>
                 </TableRow>
