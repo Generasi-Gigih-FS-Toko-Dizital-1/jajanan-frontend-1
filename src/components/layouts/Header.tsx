@@ -4,30 +4,22 @@ import { AiOutlineMenuFold, AiOutlineUser } from 'react-icons/ai'
 
 import { useNavigate } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
-import BackendOneClient from '../../clients/BackendOneClient'
 import useAuthentication from '../../hooks/useAuthentication'
+import { useLogout } from '../../hooks/useLogout'
 
 const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactElement => {
   const navigate = useNavigate()
-  const client = new BackendOneClient()
   const { authentication, setAuthentication }: any = useAuthentication()
 
   const session = authentication.session
-
+  const { logout } = useLogout()
   const url = `api/v1/admins/${session.accountId}`
   const { data } = useFetch(url)
 
   const handleLogout = (): void => {
     confirm('Are you sure you want to logout?')
-      ? client.instance.post('api/v1/authentications/admins/logout', {
-        session: authentication.session
-      })
-        .then(() => {
-          setAuthentication(null)
-          localStorage.removeItem('authentication')
-          navigate('/login')
-        })
-        .catch((err: any) => { console.log(err) })
+      ? logout(session, setAuthentication, navigate)
+
       : alert('logout canceled')
   }
 
