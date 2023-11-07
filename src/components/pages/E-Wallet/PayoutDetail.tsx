@@ -40,7 +40,7 @@ const Detail = (): React.ReactElement => {
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Amount</h3>
-            <p className="text-sm opacity-70 lg:text-base">{IDRFormatter(payoutHistory.amount)}</p>
+            <p className="text-2xl font-semibold md:text-3xl lg:text-4xl">{IDRFormatter(payoutHistory.amount)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Claimed At</h3>

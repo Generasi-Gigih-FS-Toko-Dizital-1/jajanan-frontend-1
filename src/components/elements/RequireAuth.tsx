@@ -14,7 +14,6 @@ const RequireAuth = (): React.ReactElement => {
     if (!isAuthValid) return false
 
     const isSessionValid = authentication.session !== undefined && authentication.session !== null
-    console.log(authentication.session)
     const isAccountTypeAdmin = authentication.session?.accountType === 'ADMIN'
     return isSessionValid && isAccountTypeAdmin
   }
