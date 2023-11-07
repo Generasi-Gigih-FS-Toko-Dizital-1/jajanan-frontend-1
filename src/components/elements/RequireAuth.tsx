@@ -1,29 +1,44 @@
 import React from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthentication from '../../hooks/useAuthentication.ts'
+import { useLogout } from '../../hooks/useLogout.tsx'
 
 const RequireAuth = (): React.ReactElement => {
-  const { authentication }: any = useAuthentication()
+  const { authentication, setAuthentication } = useAuthentication()
+  const navigate = useNavigate()
   const location = useLocation()
+  const { logout } = useLogout()
 
   const isAccountValid = (): boolean => {
     const isAuthValid = authentication !== undefined && authentication !== null
-    if (!isAuthValid) { return false }
+    if (!isAuthValid) return false
 
     const isSessionValid = authentication.session !== undefined && authentication.session !== null
     const isAccountTypeAdmin = authentication.session?.accountType === 'ADMIN'
     return isSessionValid && isAccountTypeAdmin
   }
 
-  return (
-    isAccountValid()
-      ? <Outlet />
-      : <Navigate
-          to='/login'
-          state={{ from: location }}
-          replace={true}
-        />
-  )
+  const isRefreshTokenExpired = (): boolean => {
+    const expiredAt = new Date(authentication.session?.expiredAt)
+    const now = new Date()
+    return expiredAt < now
+  }
+
+  if (isAccountValid()) {
+    if (isRefreshTokenExpired()) {
+      return logout(authentication.session, setAuthentication, navigate)
+    } else {
+      return <Outlet />
+    }
+  } else {
+    return (
+      <Navigate
+        to="/login"
+        state={{ from: location }}
+        replace={true}
+      />
+    )
+  }
 }
 
 export default RequireAuth

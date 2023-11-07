@@ -5,12 +5,15 @@ import React from 'react'
 import useFetch from '../../../hooks/useFetch'
 import { dateFormatter } from '../../../utils/DateFormatter'
 import { IDRFormatter } from '../../../utils/IDRFormatter'
+import { paramsEncoder } from '../../../utils/ParamsEncoder'
+import { type PayoutHistory } from '../../../types/E-walletTypes'
+import VendorCard from '../../fragments/VendorCard'
 
 const Detail = (): React.ReactElement => {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { data, loading } = useFetch(`api/v1/payout-histories/${id}`)
-  console.log(data)
+  const { data, loading } = useFetch(`api/v1/payout-histories?page_number=1&page_size=10&where=${paramsEncoder({ id })}&include=${paramsEncoder({ vendor: true })}`)
+  const payoutHistory: PayoutHistory = data?.data.payoutHistories[0]
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   return (
@@ -33,43 +36,27 @@ const Detail = (): React.ReactElement => {
         <div className="lg:w-1/2 flex flex-col gap-y-5">
           <div>
             <h3 className="font-medium lg:text-xl">Payout Id</h3>
-            <p className="text-sm opacity-70 lg:text-base underline">{data?.data.id}</p>
+            <p className="text-sm opacity-70 lg:text-base underline">{payoutHistory.id}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Amount</h3>
-            <p className="text-sm opacity-70 lg:text-base">{IDRFormatter(Number(data?.data.amount))}</p>
+            <p className="text-2xl font-semibold md:text-3xl lg:text-4xl">{IDRFormatter(payoutHistory.amount)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Claimed At</h3>
-            <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.createdAt)}</p>
+            <p className="text-sm opacity-70 lg:text-base">{dateFormatter(payoutHistory.createdAt)}</p>
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Media</h3>
-            <p className="text-sm opacity-70 lg:text-base">{data?.data.media}</p>
+            <p className="text-sm opacity-70 lg:text-base">{payoutHistory.media}</p>
           </div>
         </div>
         <div className='lg:w-1/2 flex-col'>
           <h2 className="my-4 font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Vendor</h2>
-          <JajanStandCard className="py-4 mb-4" />
+          <VendorCard className="py-4 mb-4" vendor={payoutHistory.vendor} />
         </div>
       </div>
           )}
-    </div>
-  )
-}
-
-const JajanStandCard = ({ className }: { className?: string }): React.ReactElement => {
-  return (
-    <div className={`${className} flex items-center gap-x-4 bg-jajanWarning p-4 rounded-xl md:p-5 md:gap-x-5`}>
-      <img
-        src="https://openai-labs-public-images-prod.azureedge.net/user-jTJ7A5puDaUD79bsLHVgWCyy/generations/generation-ZXpxrA1J2HneW7qCNQEJ9wQZ/image.webp"
-        className="rounded-full aspect-square w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 xl:w-32 xl:h-32"
-      />
-      <div className="flex flex-col justify-between gap-1 md:py-1 md:gap-2 md:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
-        <h2 className="font-semibold text-[24px] sm:text-2xl xl:text-3xl">Mayfield Toast</h2>
-        <p className="text-base xl:text-base 2xl:text-lg underline">@username</p>
-        <p className="text-base xl:text-base 2xl:text-lg">Your street food maestro. Fast, tasty bites for your cravings. Don&apos;t miss out!</p>
-      </div>
     </div>
   )
 }
