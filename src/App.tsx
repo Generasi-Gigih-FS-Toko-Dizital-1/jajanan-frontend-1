@@ -30,6 +30,9 @@ import VendorAdd from './components/pages/Vendor/Add'
 import VendorDetail from './components/pages/Vendor/Detail'
 import VendorEdit from './components/pages/Vendor/Edit'
 
+import TransactionList from './components/pages/Transaction/List'
+import TransactionDetail from './components/pages/Transaction/Detail'
+
 import EWalletList from './components/pages/E-Wallet/List'
 import PayoutDetail from './components/pages/E-Wallet/PayoutDetail'
 import TopUpDetail from './components/pages/E-Wallet/TopUpDetail'
@@ -61,7 +64,7 @@ export default function App (): React.ReactElement {
     },
 
     {
-      title: 'Manage Transaction',
+      title: 'Transaction',
       link: '/transactions',
       icon: <AiOutlineSwap />
     },
@@ -102,6 +105,10 @@ export default function App (): React.ReactElement {
             <Route path="add" element={<VendorAdd />} />
             <Route path="edit/:id" element={<VendorEdit />} />
             <Route path=":id" element={<VendorDetail />} />
+          </Route>
+          <Route path="/transactions">
+            <Route index element={<TransactionList />} />
+            <Route path=":id" element={<TransactionDetail />} />
           </Route>
           <Route path="/e-wallets">
             <Route index element={<EWalletList />} />
