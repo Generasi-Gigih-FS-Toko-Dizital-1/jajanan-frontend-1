@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import BackendOneClient from '../../../clients/BackendOneClient'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import AdminForm from '../../fragments/AdminForm'
@@ -9,15 +10,15 @@ import AdminForm from '../../fragments/AdminForm'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import getGeoLocation from '../../../utils/GetGeolocation'
-
 const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
+  const client = new BackendOneClient()
 
   const { id } = useParams()
   const url = `api/v1/admins/${id}`
   const { data } = useFetch(url)
+  const admins = useFetch('api/v1/admins').data?.data.admins
 
   const oldEmail = data?.data.email
 
@@ -25,38 +26,31 @@ const Edit = (): React.ReactElement => {
     fullName: '',
     gender: '',
     email: '',
+    oldPassword: '',
     password: '',
-    confirmPassword: '',
-    lastLatitude: 0,
-    lastLongitude: 0
+    confirmPassword: ''
   })
 
-  useEffect(() => {
-    getGeoLocation(fields, setFields)
-  }, [])
+  const { fullName, gender, email, oldPassword, password, confirmPassword } = fields
 
   useEffect(() => {
     setFields({
       fullName: data?.data.fullName,
       gender: data?.data.gender,
       email: data?.data.email,
-      password: data?.data.password,
-      confirmPassword: data?.data.confirmPassword,
-      lastLatitude: 0,
-      lastLongitude: 0
+      oldPassword,
+      password,
+      confirmPassword
     })
   }, [data])
 
-  const { fullName, gender, email, password, confirmPassword, lastLatitude, lastLongitude } = fields
+  // console.log(fields)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    console.log(fields)
-    return
-
     // empty validation
-    if (fullName === '' || email === '') {
+    if (fullName === '' || email === '' || oldPassword === '') {
       alert('Please fill all the fields')
       return
     }
@@ -66,48 +60,66 @@ const Edit = (): React.ReactElement => {
       alert('Please enter a valid email')
       return
     }
-    const emailUnique = data?.data.users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
+
+    const emailUnique = admins.filter((admin: any) => admin.email === email.toLowerCase().replace(/\s+/g, ''))
     if (emailUnique?.length !== 0 && email !== oldEmail) {
       alert('Email already registered')
       return
     }
 
     // password validation
-    if (password.length < 8) {
+    if (oldPassword.length < 8) {
       alert('Password must be at least 8 characters')
       return
     }
 
-    if (password !== confirmPassword) {
-      alert('Password and confirm password must be same')
+    if (password !== '' && password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
     }
 
-    confirm('Are you sure to update this admin?')
-      ? backendOneClientPrivate.patch('api/v1/admins', {
-        fullName,
-        gender,
-        email,
-        password,
-        lastLatitude,
-        lastLongitude
-      })
-        .then(() => {
-          alert('Update admin success')
-          setFields({
-            fullName: '',
-            gender: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            lastLatitude: 0,
-            lastLongitude: 0
+    if (password !== '' && password !== confirmPassword) {
+      alert('Password and confirm password must be the same')
+      return
+    }
+
+    const reqPassword = password === '' ? oldPassword : password
+
+    client.instance.post('api/v1/authentications/admins/login?method=email_and_password', {
+      email: fields.email,
+      password: fields.oldPassword
+    }).then(() => {
+      confirm('Are you sure to update this admin?')
+        ? backendOneClientPrivate.patch(`api/v1/admins/${id}`, {
+          fullName,
+          gender,
+          email,
+          oldPassword,
+          password: reqPassword
+        })
+          .then(() => {
+            alert('Update admin success')
+            setFields({
+              fullName: '',
+              gender: '',
+              email: '',
+              oldPassword: '',
+              password: '',
+              confirmPassword: ''
+            })
+            navigate('/admins')
           })
-          navigate('/admins')
-        })
-        .catch((err: any) => {
-          console.log(err)
-        })
-      : alert('Update canceled')
+          .catch((err: any) => {
+            console.log(err)
+          })
+        : alert('Update canceled')
+    }).catch((err: any) => {
+      if (err.response.status === 404) {
+        alert('The current password is wrong')
+      } else {
+        alert('Something went wrong')
+      }
+    })
   }
 
   return (

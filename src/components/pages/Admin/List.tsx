@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
+import useAuthentication from '../../../hooks/useAuthentication'
 import { Link, useNavigate } from 'react-router-dom'
 
 import ActionButton from '../../elements/ActionButton'
@@ -11,6 +12,7 @@ import { type AdminTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
   const navigate = useNavigate()
+  const { authentication } = useAuthentication()
   const [page, setPage] = useState(1)
   const rowsPerPage = 10
 
@@ -73,29 +75,31 @@ const List = (): React.ReactElement => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-          {items.map((admin: AdminTypes, index: number) => (
-            <TableRow key={admin.id} className="border-b">
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>
-                <Link
-                  to={`/admins/${admin.id}`}
-                  className="text-jajanDark2 underline"
-                >
-                  {admin.fullName}
-                </Link>
-              </TableCell>
-              <TableCell>{admin.email}</TableCell>
-              <TableCell>{admin.gender}</TableCell>
-              <TableCell>{dateFormatter(admin.updatedAt)}</TableCell>
-              <TableCell>{dateFormatter(admin.createdAt)}</TableCell>
-              <TableCell className="flex justify-center items-center">
-                <ActionButton
-                  type="admin"
-                  id={admin.id}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
+          {items
+            .filter((admin: AdminTypes) => admin.id !== authentication?.session.accountId)
+            .map((admin: AdminTypes, index: number) => (
+              <TableRow key={admin.id} className="border-b">
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  <Link
+                    to={`/admins/${admin.id}`}
+                    className="text-jajanDark2 underline"
+                  >
+                    {admin.fullName}
+                  </Link>
+                </TableCell>
+                <TableCell>{admin.email}</TableCell>
+                <TableCell>{admin.gender}</TableCell>
+                <TableCell>{dateFormatter(admin.updatedAt)}</TableCell>
+                <TableCell>{dateFormatter(admin.createdAt)}</TableCell>
+                <TableCell className="flex justify-center items-center">
+                  <ActionButton
+                    type="admin"
+                    id={admin.id}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
           )}
