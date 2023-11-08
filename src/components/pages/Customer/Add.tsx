@@ -44,7 +44,11 @@ const Add = (): React.ReactElement => {
       return
     }
 
-    // username unique validation
+    // username validation
+    if (/\s/g.test(username)) {
+      alert('Username cannot contain whitespace')
+      return
+    }
     const usernameUnique = data?.data.users.filter((user: any) => user.username === username.toLowerCase().replace(/\s+/g, ''))
     if (usernameUnique?.length !== 0) {
       alert('Username already registered')

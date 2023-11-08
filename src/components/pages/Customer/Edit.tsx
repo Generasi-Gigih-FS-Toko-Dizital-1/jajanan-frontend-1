@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import BackendOneClient from '../../../clients/BackendOneClient'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomerForm from '../../fragments/CustomerForm'
@@ -14,10 +15,12 @@ import getGeoLocation from '../../../utils/GetGeolocation'
 const Edit = (): React.ReactElement => {
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
+  const client = new BackendOneClient()
 
   const { id } = useParams()
   const url = `api/v1/users/${id}`
   const { data } = useFetch(url)
+  const users = useFetch('api/v1/users').data?.data.users
 
   const oldUsername = data?.data.username
   const oldEmail = data?.data.email
@@ -28,6 +31,7 @@ const Edit = (): React.ReactElement => {
     address: '',
     username: '',
     email: '',
+    oldPassword: '',
     password: '',
     confirmPassword: '',
     lastLatitude: 0,
@@ -45,20 +49,18 @@ const Edit = (): React.ReactElement => {
       address: data?.data.address,
       username: data?.data.username,
       email: data?.data.email,
-      password: data?.data.password,
-      confirmPassword: data?.data.confirmPassword,
+      oldPassword,
+      password,
+      confirmPassword,
       lastLatitude: 0,
       lastLongitude: 0
     })
   }, [data])
 
-  const { fullName, gender, address, username, email, password, confirmPassword, lastLatitude, lastLongitude } = fields
+  const { fullName, gender, address, username, email, oldPassword, password, confirmPassword, lastLatitude, lastLongitude } = fields
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-
-    console.log(fields)
-    return
 
     // empty validation
     if (fullName === '' || address === '' || username === '' || email === '') {
@@ -66,8 +68,12 @@ const Edit = (): React.ReactElement => {
       return
     }
 
-    // username unique validation
-    const usernameUnique = data?.data.users.filter((user: any) => user.username === username.toLowerCase().replace(/\s+/g, ''))
+    // username validation
+    if (/\s/g.test(username)) {
+      alert('Username cannot contain whitespace')
+      return
+    }
+    const usernameUnique = users.filter((user: any) => user.username === username.toLowerCase().replace(/\s+/g, ''))
     if (usernameUnique?.length !== 0 && username !== oldUsername) {
       alert('Username already registered')
       return
@@ -78,52 +84,73 @@ const Edit = (): React.ReactElement => {
       alert('Please enter a valid email')
       return
     }
-    const emailUnique = data?.data.users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
+    const emailUnique = users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
     if (emailUnique?.length !== 0 && email !== oldEmail) {
       alert('Email already registered')
       return
     }
 
     // password validation
-    if (password.length < 8) {
+    if (oldPassword.length < 8) {
       alert('Password must be at least 8 characters')
       return
     }
 
-    if (password !== confirmPassword) {
-      alert('Password and confirm password must be same')
+    if (password !== '' && password.length < 8) {
+      alert('Password must be at least 8 characters')
+      return
     }
 
-    confirm('Are you sure to update this customer?')
-      ? backendOneClientPrivate.patch('api/v1/users', {
-        fullName,
-        gender,
-        address,
-        username,
-        email,
-        password,
-        lastLatitude,
-        lastLongitude
-      })
-        .then(() => {
-          alert('Update customer success')
-          setFields({
-            fullName: '',
-            gender: '',
-            address: '',
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            lastLatitude: 0,
-            lastLongitude: 0
+    if (password !== '' && password !== confirmPassword) {
+      alert('Password and confirm password must be the same')
+      return
+    }
+
+    const reqPassword = password === '' ? oldPassword : password
+
+    client.instance.post('api/v1/authentications/users/login?method=email_and_password', {
+      email: fields.email,
+      password: fields.oldPassword
+    }).then(() => {
+      confirm('Are you sure to update this customer?')
+        ? backendOneClientPrivate.patch(`api/v1/users/${id}`, {
+          fullName,
+          gender,
+          address,
+          username,
+          email,
+          oldPassword,
+          password: reqPassword,
+          lastLatitude,
+          lastLongitude
+        })
+          .then(() => {
+            alert('Update customer success')
+            setFields({
+              fullName: '',
+              gender: '',
+              address: '',
+              username: '',
+              email: '',
+              oldPassword: '',
+              password: '',
+              confirmPassword: '',
+              lastLatitude: 0,
+              lastLongitude: 0
+            })
+            navigate('/customers')
           })
-          navigate('/customers')
-        })
-        .catch((err: any) => {
-          console.log(err)
-        })
-      : alert('Update canceled')
+          .catch((err: any) => {
+            console.log(err)
+          })
+        : alert('Update canceled')
+    }).catch((err: any) => {
+      if (err.response.status === 404) {
+        alert('The current password is wrong')
+      } else {
+        alert('Something went wrong')
+      }
+    })
   }
 
   return (
