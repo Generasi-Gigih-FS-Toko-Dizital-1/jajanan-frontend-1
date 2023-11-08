@@ -21,6 +21,7 @@ const VendorForm = ({
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
     useState(false)
+  const [isVisibleOldPassword, setIsVisibleOldPassword] = useState(false)
 
   return (
     <form className={className} onSubmit={action}>
@@ -100,12 +101,40 @@ const VendorForm = ({
         fields={fields}
         setFields={setFields}
       />
+      {
+        data !== undefined &&
+        <div className="flex flex-col w-full md:w-[calc(50%-.5rem)] md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
+          <Input
+            isRequired
+            labelPlacement="outside"
+            label="Old Password"
+            name="oldPassword"
+            placeholder="Enter your password"
+            variant="bordered"
+            radius="none"
+            endContent={
+              <button className="focus:outline-none" type="button" onClick={() => { setIsVisibleOldPassword(!isVisibleOldPassword) }} >
+                {isVisibleOldPassword
+                  ? (
+                  <AiFillEye className="text-2xl text-default-400 pointer-events-none" />
+                    )
+                  : (
+                  <AiFillEyeInvisible className="text-2xl text-default-400 pointer-events-none" />
+                    )}
+              </button>
+            }
+            type={isVisibleOldPassword ? 'text' : 'password'}
+            onChange={(e) => { setFields({ ...fields, oldPassword: e.target.value }) }}
+          />
+        </div>
+      }
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
         <Input
-          isRequired
+          isRequired={(data === undefined)}
           labelPlacement="outside"
           label="New Password"
-          placeholder="Enter your password"
+          name="password"
+          placeholder="Enter your new password"
           variant="bordered"
           radius="none"
           endContent={
@@ -123,10 +152,11 @@ const VendorForm = ({
           onChange={(e) => { setFields({ ...fields, password: e.target.value }) }}
         />
         <Input
-          isRequired
+          isRequired={(data === undefined)}
           labelPlacement="outside"
-          label="Confirm Password"
-          placeholder="Re-enter your password"
+          label="Confirm New Password"
+          name="confirmPassword"
+          placeholder="Re-enter your new password"
           variant="bordered"
           radius="none"
           endContent={
