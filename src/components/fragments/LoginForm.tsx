@@ -49,7 +49,7 @@ export default function LoginForm ({
         />
         <div className="absolute right-2 top-1 sm:top-2">
           <button
-            className="bg-white p-2 rounded-full"
+            className="bg-white p-2 sm:py-1 sm:px-2 md:p-2 rounded-full"
             type="button"
             onClick={() => { setPasswordShown(!passwordShown) }}
           >
