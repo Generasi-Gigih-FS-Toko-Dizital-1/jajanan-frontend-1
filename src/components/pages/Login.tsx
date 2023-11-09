@@ -72,7 +72,7 @@ export default function Index (): React.ReactElement {
 
   return (
     <div className='flex flex-col items-center justify-center h-screen w-screen bg-jajanWarning'>
-      <div className='flex rounded-xl border-2 border-jajanDark2 shadow-xl items-center justify-center w-11/12 sm:w-[480px] md:w-[732.86px] md:h-[500px] bg-white lg:w-[879.43px] lg:h-[600px]'>
+      <div className='flex rounded-xl border-2 border-jajanDark2 shadow-xl items-center justify-center w-11/12 sm:w-[480px] md:w-[732.86px] md:h-[500px] bg-white lg:w-[879.43px] xl:h-[600px]'>
         <div className='flex flex-col items-center justify-center h-full w-full md:w-[55%] pb-10'>
           <img
             src='/images/jajanmania-logo.svg'
