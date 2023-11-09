@@ -1,21 +1,39 @@
 import React from 'react'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
-import { AiOutlineEllipsis } from 'react-icons/ai'
+
 import { useNavigate } from 'react-router-dom'
 import useBackendOneClientPrivate from '../../hooks/useBackendOneClientPrivate'
+
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { AiOutlineEllipsis } from 'react-icons/ai'
+import { confirmAlert, successAlert, errorAlert } from './CustomAlert'
 
 export default function ActionButton ({ type, id }: { type: string, id: string }): React.ReactElement {
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
-  const userType = type === 'admin' ? 'admins' : type === 'vendor' ? 'vendors' : 'customers'
+  const userType = type === 'admin' ? 'admins' : type === 'vendor' ? 'vendors' : 'users'
 
   const handleDelete = (): void => {
-    confirm(`Are you sure to delete this ${userType}?`)
-      ? backendOneClientPrivate.delete(`api/v1/${userType}/${id}`).then(() => {
-        alert(`${userType} deleted`)
-        window.location.reload()
-      }).catch((err: any) => { console.log(err) })
-      : alert('Delete canceled')
+    void confirmAlert(
+      `Are you sure to delete this ${userType}?`,
+      'You won\'t be able to revert this!',
+      'Yes, delete it!',
+      'No, cancel!'
+    )
+      .then((result) => {
+        result.isConfirmed === true &&
+        backendOneClientPrivate.delete(`api/v1/${userType}/${id}`).then(() => {
+          successAlert(
+            'Deleted!',
+            `Your ${userType} has been deleted.`
+          )
+          window.location.reload()
+        }).catch((error: Error) => {
+          errorAlert(
+            'Error!',
+            `${error.message}`
+          )
+        })
+      })
   }
 
   return (

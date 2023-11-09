@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Chip } from '@nextui-org/react'
 import { AiOutlineArrowLeft, AiOutlineMail, AiOutlinePushpin, AiOutlineUser } from 'react-icons/ai'
+import { confirmAlert, successAlert, errorAlert } from '../../elements/CustomAlert'
 
 import { dateFormatter } from '../../../utils/DateFormatter'
 
@@ -22,12 +23,21 @@ const Detail = (): React.ReactElement => {
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   const handleDelete = (): void => {
-    confirm('Are you sure you want to delete this vendor?')
-      ? backendOneClientPrivate.delete(`api/v1/vendors/${id}`).then(() => {
-        alert('vendor deleted')
-        navigate('/vendors')
-      }).catch((err: any) => { console.log(err) })
-      : alert('Delete canceled')
+    void confirmAlert(
+      'Are you sure to delete this vendor?',
+      'You won\'t be able to revert this!',
+      'Yes, delete it!',
+      'No, cancel!'
+    )
+      .then((result) => {
+        result.isConfirmed === true &&
+        backendOneClientPrivate.delete(`api/v1/vendors/${id}`).then(() => {
+          successAlert('Deleted!', 'Your vendor has been deleted.')
+          navigate('/vendors')
+        }).catch((error: Error) => {
+          errorAlert('Error!', `${error.message}`)
+        })
+      })
   }
 
   return (

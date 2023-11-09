@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
-import BackendOneClient from '../../../clients/BackendOneClient.ts'
+import BackendOneClient from '../../../clients/BackendOneClient'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import VendorForm from '../../fragments/VendorForm.tsx'
+import VendorForm from '../../fragments/VendorForm'
+import { confirmAlert, successAlert, errorAlert } from '../../elements/CustomAlert'
 
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
@@ -71,45 +72,45 @@ const Edit = (): React.ReactElement => {
     e.preventDefault()
     // empty validation
     if (fullName === '' || gender === '' || address === '' || username === '' || email === '' || oldPassword === '' || jajanImageUrl === '' || jajanName === '' || jajanDescription === '') {
-      alert('Please fill all the fields')
+      errorAlert('Oops...', 'Please fill all the fields!')
       return
     }
 
     // username validation
     if (/\s/g.test(username)) {
-      alert('Username cannot contain whitespace')
+      errorAlert('Oops...', 'Username cannot contain whitespace')
       return
     }
     const usernameUnique = vendors.filter((vendor: any) => vendor.username === username.toLowerCase().replace(/\s+/g, ''))
     if (usernameUnique?.length !== 0 && username !== oldUsername) {
-      alert('Username already registered')
+      errorAlert('Oops...', 'Username already registered')
       return
     }
 
     // email validation
     if (!email.includes('@')) {
-      alert('Please enter a valid email')
+      errorAlert('Oops...', 'Please enter a valid email')
       return
     }
     const emailUnique = vendors.filter((vendor: any) => vendor.email === email.toLowerCase().replace(/\s+/g, ''))
     if (emailUnique?.length !== 0 && email !== oldEmail) {
-      alert('Email already registered')
+      errorAlert('Oops...', 'Email already registered')
       return
     }
 
     // password validation
     if (oldPassword.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters')
       return
     }
 
     if (password !== '' && password.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters')
       return
     }
 
     if (password !== '' && password !== confirmPassword) {
-      alert('Password and confirm password must be the same')
+      errorAlert('Oops...', 'Password and confirm password must be same')
       return
     }
 
@@ -119,51 +120,58 @@ const Edit = (): React.ReactElement => {
       email: fields.email,
       password: fields.oldPassword
     }).then(() => {
-      confirm('Are you sure you want to edit this vendor?')
-        ? backendOneClientPrivate.patch(`api/v1/vendors/${id}`, {
-          fullName,
-          gender,
-          address,
-          username,
-          email,
-          oldPassword,
-          password: reqPassword,
-          jajanImageUrl,
-          jajanName,
-          jajanDescription,
-          status,
-          lastLatitude,
-          lastLongitude
-        })
-          .then(() => {
-            alert('Update vendor Success')
-            setFields({
-              fullName: '',
-              gender: '',
-              address: '',
-              username: '',
-              email: '',
-              oldPassword: '',
-              password: '',
-              confirmPassword: '',
-              jajanImageUrl: '',
-              jajanName: '',
-              jajanDescription: '',
-              status: '',
-              lastLatitude: 0,
-              lastLongitude: 0
+      void confirmAlert(
+        'Are you sure your data is correct?',
+        '',
+        'Yes, update it!',
+        'No, cancel!'
+      )
+        .then((result) => {
+          result.isConfirmed === true &&
+          backendOneClientPrivate.patch(`api/v1/vendors/${id}`, {
+            fullName,
+            gender,
+            address,
+            username,
+            email,
+            oldPassword,
+            password: reqPassword,
+            jajanImageUrl,
+            jajanName,
+            jajanDescription,
+            status,
+            lastLatitude,
+            lastLongitude
+          })
+            .then(() => {
+              successAlert('Updated!', 'Update vendor success')
+              setFields({
+                fullName: '',
+                gender: '',
+                address: '',
+                username: '',
+                email: '',
+                oldPassword: '',
+                password: '',
+                confirmPassword: '',
+                jajanImageUrl: '',
+                jajanName: '',
+                jajanDescription: '',
+                status: '',
+                lastLatitude: 0,
+                lastLongitude: 0
+              })
+              navigate('/vendors')
             })
-            navigate('/vendors')
-          })
-          .catch((err: any) => {
-            console.log(err)
-          })
-        : alert('Edit canceled')
+            .catch((err: any) => {
+              errorAlert('Error!', err.response.data.message)
+            })
+        })
     }).catch((err: any) => {
       if (err.response.status === 404) {
-        alert('The current password is wrong')
+        errorAlert('Oops...', 'The current password is wrong')
       } else {
-        alert('Something went wrong')
+        errorAlert('Oops...', 'Something went wrong')
       }
     })
   }
