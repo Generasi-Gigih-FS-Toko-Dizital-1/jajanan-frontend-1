@@ -3,12 +3,15 @@ import React, { useState } from 'react'
 
 import BackendOneClient from '../../clients/BackendOneClient'
 import useAuthentication from '../../hooks/useAuthentication'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import LoginForm from '../fragments/LoginForm'
 import { errorAlert } from '../elements/CustomAlert'
 
 export default function Index (): React.ReactElement {
+  useDocumentTitle('Login')
+
   const client = new BackendOneClient()
   const { setAuthentication }: any = useAuthentication()
 
@@ -21,6 +24,7 @@ export default function Index (): React.ReactElement {
     email: '',
     password: ''
   })
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 

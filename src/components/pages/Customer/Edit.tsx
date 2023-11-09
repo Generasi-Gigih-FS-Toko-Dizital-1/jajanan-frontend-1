@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import BackendOneClient from '../../../clients/BackendOneClient'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomerForm from '../../fragments/CustomerForm'
@@ -14,6 +15,8 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import getGeoLocation from '../../../utils/GetGeolocation'
 
 const Edit = (): React.ReactElement => {
+  useDocumentTitle('Edit Customer')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
   const client = new BackendOneClient()

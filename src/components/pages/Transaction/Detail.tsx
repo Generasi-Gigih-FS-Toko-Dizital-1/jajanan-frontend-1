@@ -1,6 +1,7 @@
 import React from 'react'
 
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Chip } from '@nextui-org/react'
@@ -9,6 +10,8 @@ import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
 import { dateFormatter } from '../../../utils/DateFormatter'
 
 const Detail = (): React.ReactElement => {
+  useDocumentTitle('Detail Transaction')
+
   const navigate = useNavigate()
   const { id } = useParams()
 

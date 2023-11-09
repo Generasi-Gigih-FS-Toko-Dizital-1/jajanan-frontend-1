@@ -8,8 +8,11 @@ import { dateFormatter } from '../../../utils/DateFormatter'
 import { paramsEncoder } from '../../../utils/ParamsEncoder'
 import { type TopUpHistory } from '../../../types/E-walletTypes'
 import UserCard from '../../fragments/UserCard'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 const Detail = (): React.ReactElement => {
+  useDocumentTitle('Detailed Top Up History')
+
   const navigate = useNavigate()
   const { id } = useParams()
   const { data, loading } = useFetch(`api/v1/top-up-histories?page_number=1&page_size=10&where=${paramsEncoder({ id })}&include=${paramsEncoder({ user: true })}`)

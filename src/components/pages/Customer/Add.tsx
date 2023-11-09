@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate } from 'react-router-dom'
 
 import CustomerForm from '../../fragments/CustomerForm'
@@ -12,6 +13,8 @@ import { successAlert, errorAlert } from '../../elements/CustomAlert'
 import getGeoLocation from '../../../utils/GetGeolocation'
 
 const Add = (): React.ReactElement => {
+  useDocumentTitle('Add Customer')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
 

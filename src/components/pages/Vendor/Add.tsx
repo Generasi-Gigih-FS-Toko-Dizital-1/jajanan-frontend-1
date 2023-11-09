@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate } from 'react-router-dom'
 
 import VendorForm from '../../fragments/VendorForm'
@@ -12,6 +13,8 @@ import { successAlert, errorAlert } from '../../elements/CustomAlert'
 import getGeoLocation from '../../../utils/GetGeolocation'
 
 const Add = (): React.ReactElement => {
+  useDocumentTitle('Add Vendor')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
 
@@ -117,6 +120,7 @@ const Add = (): React.ReactElement => {
         errorAlert('Error!', err.response.data.message)
       })
   }
+
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">

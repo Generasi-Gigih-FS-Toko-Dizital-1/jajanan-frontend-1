@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
@@ -9,6 +10,8 @@ import { type TransactionHistoryTypes } from '../../../types/TransactionTypes'
 import { AiOutlineEye } from 'react-icons/ai'
 
 const List = (): React.ReactElement => {
+  useDocumentTitle('Transaction Histories')
+
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const rowsPerPage = 10

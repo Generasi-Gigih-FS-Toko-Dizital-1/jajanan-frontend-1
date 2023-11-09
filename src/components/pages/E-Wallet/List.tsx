@@ -18,8 +18,11 @@ import { type TopUpHistory, type PayoutHistory } from '../../../types/E-walletTy
 import { paramsEncoder } from '../../../utils/ParamsEncoder'
 import { IDRFormatter } from '../../../utils/IDRFormatter'
 import { AiOutlineEye } from 'react-icons/ai'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 const List = (): React.ReactElement => {
+  useDocumentTitle('Manage E-Wallet')
+
   const navigate = useNavigate()
   const [topUpHistoiryPage, setTopUpHistoiryPage] = useState(1)
   const [payoutHistoriesPage, setPayoutHistoriesPage] = useState(1)

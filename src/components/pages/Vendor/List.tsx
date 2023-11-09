@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { Link, useNavigate } from 'react-router-dom'
 
 import ActionButton from '../../elements/ActionButton'
@@ -9,6 +10,8 @@ import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHead
 import { type VendorTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
+  useDocumentTitle('Vendors')
+
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const rowsPerPage = 10
