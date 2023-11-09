@@ -1,6 +1,9 @@
 import React from 'react'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export default function Index (): React.ReactElement {
+  useDocumentTitle('Dashboard')
+
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">

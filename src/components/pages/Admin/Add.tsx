@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import useFetch from '../../../hooks/useFetch'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate } from 'react-router-dom'
 
 import AdminForm from '../../fragments/AdminForm'
@@ -12,6 +13,8 @@ import { successAlert, errorAlert } from '../../elements/CustomAlert'
 import getGeoLocation from '../../../utils/GetGeolocation'
 
 const Add = (): React.ReactElement => {
+  useDocumentTitle('Add Admin')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
 

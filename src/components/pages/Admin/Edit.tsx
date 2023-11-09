@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import BackendOneClient from '../../../clients/BackendOneClient'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import AdminForm from '../../fragments/AdminForm'
@@ -12,6 +13,8 @@ import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 const Edit = (): React.ReactElement => {
+  useDocumentTitle('Edit Admin')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
   const client = new BackendOneClient()

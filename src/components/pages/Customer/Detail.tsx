@@ -2,6 +2,7 @@ import React from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Chip } from '@nextui-org/react'
@@ -13,6 +14,8 @@ import { dateFormatter } from '../../../utils/DateFormatter'
 import { type CustomerTypes } from '../../../types/UserTypes'
 
 const Detail = (): React.ReactElement => {
+  useDocumentTitle('Detail Customer')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
   const { id } = useParams()

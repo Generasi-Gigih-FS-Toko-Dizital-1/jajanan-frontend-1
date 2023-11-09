@@ -8,8 +8,11 @@ import { IDRFormatter } from '../../../utils/IDRFormatter'
 import { paramsEncoder } from '../../../utils/ParamsEncoder'
 import { type PayoutHistory } from '../../../types/E-walletTypes'
 import VendorCard from '../../fragments/VendorCard'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 const Detail = (): React.ReactElement => {
+  useDocumentTitle('Detailed Payout History')
+
   const navigate = useNavigate()
   const { id } = useParams()
   const { data, loading } = useFetch(`api/v1/payout-histories?page_number=1&page_size=10&where=${paramsEncoder({ id })}&include=${paramsEncoder({ vendor: true })}`)

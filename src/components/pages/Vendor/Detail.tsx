@@ -11,8 +11,11 @@ import { confirmAlert, successAlert, errorAlert } from '../../elements/CustomAle
 import { dateFormatter } from '../../../utils/DateFormatter'
 
 import { type VendorTypes } from '../../../types/UserTypes'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 
 const Detail = (): React.ReactElement => {
+  useDocumentTitle('Detail Vendor')
+
   const navigate = useNavigate()
   const backendOneClientPrivate = useBackendOneClientPrivate()
   const { id } = useParams()

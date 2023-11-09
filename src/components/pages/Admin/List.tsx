@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useAuthentication from '../../../hooks/useAuthentication'
+import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { Link, useNavigate } from 'react-router-dom'
 
 import ActionButton from '../../elements/ActionButton'
@@ -11,6 +12,8 @@ import { dateFormatter } from '../../../utils/DateFormatter'
 import { type AdminTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
+  useDocumentTitle('Manage Admin')
+
   const navigate = useNavigate()
   const { authentication } = useAuthentication()
   const [page, setPage] = useState(1)
