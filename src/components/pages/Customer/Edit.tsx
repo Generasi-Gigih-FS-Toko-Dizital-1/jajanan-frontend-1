@@ -6,6 +6,7 @@ import BackendOneClient from '../../../clients/BackendOneClient'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomerForm from '../../fragments/CustomerForm'
+import { confirmAlert, successAlert, errorAlert } from '../../elements/CustomAlert'
 
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
@@ -64,45 +65,45 @@ const Edit = (): React.ReactElement => {
 
     // empty validation
     if (fullName === '' || address === '' || username === '' || email === '') {
-      alert('Please fill all the fields')
+      errorAlert('Oops...', 'Please fill all the fields!')
       return
     }
 
     // username validation
     if (/\s/g.test(username)) {
-      alert('Username cannot contain whitespace')
+      errorAlert('Oops...', 'Username cannot contain whitespace!')
       return
     }
     const usernameUnique = users.filter((user: any) => user.username === username.toLowerCase().replace(/\s+/g, ''))
     if (usernameUnique?.length !== 0 && username !== oldUsername) {
-      alert('Username already registered')
+      errorAlert('Oops...', 'Username already registered!')
       return
     }
 
     // email validation
     if (!email.includes('@')) {
-      alert('Please enter a valid email')
+      errorAlert('Oops...', 'Please enter a valid email!')
       return
     }
     const emailUnique = users.filter((user: any) => user.email === email.toLowerCase().replace(/\s+/g, ''))
     if (emailUnique?.length !== 0 && email !== oldEmail) {
-      alert('Email already registered')
+      errorAlert('Oops...', 'Email already registered!')
       return
     }
 
     // password validation
     if (oldPassword.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters!')
       return
     }
 
     if (password !== '' && password.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters!')
       return
     }
 
     if (password !== '' && password !== confirmPassword) {
-      alert('Password and confirm password must be the same')
+      errorAlert('Oops...', 'Password and confirm password must be the same!')
       return
     }
 
@@ -112,43 +113,49 @@ const Edit = (): React.ReactElement => {
       email: fields.email,
       password: fields.oldPassword
     }).then(() => {
-      confirm('Are you sure to update this customer?')
-        ? backendOneClientPrivate.patch(`api/v1/users/${id}`, {
-          fullName,
-          gender,
-          address,
-          username,
-          email,
-          oldPassword,
-          password: reqPassword,
-          lastLatitude,
-          lastLongitude
-        })
-          .then(() => {
-            alert('Update customer success')
-            setFields({
-              fullName: '',
-              gender: '',
-              address: '',
-              username: '',
-              email: '',
-              oldPassword: '',
-              password: '',
-              confirmPassword: '',
-              lastLatitude: 0,
-              lastLongitude: 0
+      void confirmAlert(
+        'Are you sure your data is correct?',
+        '',
+        'Yes, update it!',
+        'No, cancel!'
+      )
+        .then((result) => {
+          result.isConfirmed === true &&
+          backendOneClientPrivate.patch(`api/v1/users/${id}`, {
+            fullName,
+            gender,
+            address,
+            username,
+            email,
+            oldPassword,
+            password: reqPassword,
+            lastLatitude,
+            lastLongitude
+          })
+            .then(() => {
+              successAlert('Updated!', 'Customer updated successfully!')
+              setFields({
+                fullName: '',
+                gender: '',
+                address: '',
+                username: '',
+                email: '',
+                oldPassword: '',
+                password: '',
+                confirmPassword: '',
+                lastLatitude: 0,
+                lastLongitude: 0
+              })
+              navigate('/customers')
+            }).catch((err: any) => {
+              errorAlert('Error!', err.response.data.message)
             })
-            navigate('/customers')
-          })
-          .catch((err: any) => {
-            console.log(err)
-          })
-        : alert('Update canceled')
+        })
     }).catch((err: any) => {
       if (err.response.status === 404) {
-        alert('The current password is wrong')
+        errorAlert('Oops...', 'The current password is wrong!')
       } else {
-        alert('Something went wrong')
+        errorAlert('Oops...', 'Something went wrong!')
       }
     })
   }

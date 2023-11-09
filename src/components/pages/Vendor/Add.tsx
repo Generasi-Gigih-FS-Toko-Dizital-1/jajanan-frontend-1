@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import VendorForm from '../../fragments/VendorForm'
 import { Button } from '@nextui-org/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { successAlert, errorAlert } from '../../elements/CustomAlert'
 
 import getGeoLocation from '../../../utils/GetGeolocation'
 
@@ -43,40 +44,40 @@ const Add = (): React.ReactElement => {
     e.preventDefault()
     // empty validation
     if (fullName === '' || gender === '' || address === '' || username === '' || email === '' || password === '' || confirmPassword === '' || jajanImageUrl === '' || jajanName === '' || jajanDescription === '') {
-      alert('Please fill all the fields')
+      errorAlert('Oops...', 'Please fill all the fields!')
       return
     }
 
     // username validation
     if (/\s/g.test(username)) {
-      alert('Username cannot contain whitespace')
+      errorAlert('Oops...', 'Username cannot contain whitespace')
       return
     }
     const usernameUnique = data?.data.vendors.filter((vendor: any) => vendor.username === username.toLowerCase().replace(/\s+/g, ''))
     if (usernameUnique?.length !== 0) {
-      alert('Username already registered')
+      errorAlert('Oops...', 'Username already registered')
       return
     }
 
     // email validation
     if (!email.includes('@')) {
-      alert('Please enter a valid email')
+      errorAlert('Oops...', 'Please enter a valid email')
       return
     }
     const emailUnique = data?.data.vendors.filter((vendor: any) => vendor.email === email.toLowerCase().replace(/\s+/g, ''))
     if (emailUnique?.length !== 0) {
-      alert('Email already registered')
+      errorAlert('Oops...', 'Email already registered')
       return
     }
 
     // password validation
     if (password.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters')
       return
     }
 
     if (password !== confirmPassword) {
-      alert('Password and confirm password must be same')
+      errorAlert('Oops...', 'Password and confirm password must be same')
     }
 
     backendOneClientPrivate.post('api/v1/vendors', {
@@ -94,7 +95,7 @@ const Add = (): React.ReactElement => {
       lastLongitude
     })
       .then(() => {
-        alert('Add vendor Success')
+        successAlert('Added!', 'Add vendor Success')
         setFields({
           fullName: '',
           gender: '',
@@ -113,7 +114,7 @@ const Add = (): React.ReactElement => {
         navigate('/vendors')
       })
       .catch((err: any) => {
-        console.log(err)
+        errorAlert('Error!', err.response.data.message)
       })
   }
   return (

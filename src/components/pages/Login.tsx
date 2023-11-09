@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react'
-import useAuthentication from '../../hooks/useAuthentication.ts'
+
+import BackendOneClient from '../../clients/BackendOneClient'
+import useAuthentication from '../../hooks/useAuthentication'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import LoginForm from '../fragments/LoginForm.tsx'
-import BackendOneClient from '../../clients/BackendOneClient.ts'
+import LoginForm from '../fragments/LoginForm'
+import { errorAlert } from '../elements/CustomAlert'
 
 export default function Index (): React.ReactElement {
   const client = new BackendOneClient()
@@ -24,19 +26,19 @@ export default function Index (): React.ReactElement {
 
     // empty validation
     if (fields.email === '' || fields.password === '') {
-      alert('Please fill all the fields')
+      errorAlert('Oops...', 'Please fill all the fields!')
       return
     }
 
     // email validation
     if (!fields.email.includes('@')) {
-      alert('Please enter a valid email')
+      errorAlert('Oops...', 'Please enter a valid email!')
       return
     }
 
     // password validation
     if (fields.password.length < 8) {
-      alert('Password must be at least 8 characters')
+      errorAlert('Oops...', 'Password must be at least 8 characters!')
       return
     }
 
@@ -52,9 +54,9 @@ export default function Index (): React.ReactElement {
       })
       .catch((err) => {
         if (err.response.status === 404) {
-          alert('Wrong email or password')
+          errorAlert('Oops...', 'Wrong email or password!')
         } else {
-          alert('Something went wrong')
+          errorAlert('Oops...', 'Something went wrong!')
         }
       })
 
