@@ -95,11 +95,13 @@ const List = (): React.ReactElement => {
             className="border-b"
           >
             <TableCell>{index + 1}</TableCell>
-            <TableCell
-              className="text-jajanDark2 underline cursor-pointer"
-              onClick={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
-            >
-              {transaction.id}
+            <TableCell>
+              <span
+                className="text-jajanDark2 underline cursor-pointer"
+                onClick={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
+              >
+                {transaction.id}
+              </span>
             </TableCell>
             <TableCell>
               {IDRFormatter(transaction.transactionItems.reduce((total, item) => {
