@@ -1,11 +1,10 @@
 import React from 'react'
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuthentication from '../../hooks/useAuthentication.ts'
 import { useLogout } from '../../hooks/useLogout.tsx'
 
 const RequireAuth = (): React.ReactElement => {
-  const { authentication, setAuthentication } = useAuthentication()
-  const navigate = useNavigate()
+  const { authentication } = useAuthentication()
   const location = useLocation()
   const { logout } = useLogout()
 
@@ -26,7 +25,7 @@ const RequireAuth = (): React.ReactElement => {
 
   if (isAccountValid()) {
     if (isRefreshTokenExpired()) {
-      return logout(authentication.session, setAuthentication, navigate)
+      return logout()
     } else {
       return <Outlet />
     }
