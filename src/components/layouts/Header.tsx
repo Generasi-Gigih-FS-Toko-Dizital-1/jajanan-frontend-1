@@ -11,7 +11,7 @@ import { AiOutlineMenuFold, AiOutlineUser } from 'react-icons/ai'
 
 const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactElement => {
   const navigate = useNavigate()
-  const { authentication, setAuthentication }: any = useAuthentication()
+  const { authentication }: any = useAuthentication()
 
   const session = authentication.session
   const { logout } = useLogout()
@@ -27,7 +27,7 @@ const Header = ({ sidebarToggle }: { sidebarToggle: () => void }): React.ReactEl
     )
       .then((result) => {
         result.isConfirmed === true &&
-        logout(session, setAuthentication, navigate)
+        logout()
       })
   }
 
