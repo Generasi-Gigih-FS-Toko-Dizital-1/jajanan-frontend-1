@@ -2,23 +2,22 @@ import React from 'react'
 
 import useFetch from '../../../hooks/useFetch'
 import useDocumentTitle from '../../../hooks/useDocumentTitle'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { Button, Chip } from '@nextui-org/react'
 import { AiOutlineArrowLeft, AiOutlineUser } from 'react-icons/ai'
 
 import { dateFormatter } from '../../../utils/DateFormatter'
+import { IDRFormatter } from '../../../utils/IDRFormatter'
+import { type TransactionItemTypes } from '../../../types/TransactionTypes'
 
 const Detail = (): React.ReactElement => {
   useDocumentTitle('Detail Transaction')
 
   const navigate = useNavigate()
-  const { id } = useParams()
+  const location = useLocation()
 
-  const url = `api/v1/transaction-histories/${id}`
-
-  const { data, loading } = useFetch(url)
-  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+  const data = location.state?.data
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -33,93 +32,100 @@ const Detail = (): React.ReactElement => {
           Back
         </Button>
       </div>
-      {loading
-        ? loadingBar
-        : (
-        <>
       <div className="flex flex-wrap gap-y-10 py-6 mx-4">
-        <div className="w-full md:w-1/2 lg:w-[55%] flex flex-col gap-y-5">
+        <div className="w-full md:w-3/5 lg:w-[55%] flex flex-col gap-y-5">
           <div className="flex flex-col gap-y-5 md:mb-8 xl:mb-10">
             <div>
               <h3 className="font-medium lg:text-xl">Transaction ID</h3>
-              <p className="text-sm lg:text-xl font-medium">{data?.data.id}</p>
+              <p className="text-sm lg:text-xl font-medium">{data.id}</p>
             </div>
             <div>
               <h3 className="font-medium lg:text-xl">Payment Method</h3>
-              <p className="text-sm lg:text-xl">{data?.data.paymentMethod}</p>
+              <p className="text-sm lg:text-xl">{data.paymentMethod}</p>
             </div>
             <div>
               <h3 className="font-medium lg:text-xl">Amount</h3>
-              <p className="text-2xl font-semibold md:text-3xl lg:text-4xl">IDR 34,400</p>
+              <p className="text-2xl font-semibold md:text-3xl lg:text-4xl">
+                {IDRFormatter(data.transactionItems.reduce((total: any, item: { jajanItem: { price: any } }) => {
+                  return total + item.jajanItem.price
+                }, 0))}
+              </p>
             </div>
           </div>
           <div className="flex flex-wrap py-6">
             <div className="w-1/2 flex flex-col gap-y-5">
               <div>
                 <h3 className="font-medium lg:text-xl">Created at</h3>
-                <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.createdAt)}</p>
+                <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data.createdAt)}</p>
               </div>
               <div>
                 <h3 className="font-medium lg:text-xl">Updated at</h3>
-                <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data?.data.updatedAt)}</p>
+                <p className="text-sm opacity-70 lg:text-base">{dateFormatter(data.updatedAt)}</p>
               </div>
             </div>
             <div className="w-1/2 flex flex-col gap-y-5">
               <div>
                 <h3 className="font-medium lg:text-xl">Last Latitude</h3>
-                <p className="text-sm opacity-70 lg:text-base">{data?.data.lastLatitude}</p>
+                <p className="text-sm opacity-70 lg:text-base">{data.lastLatitude}</p>
               </div>
               <div>
                 <h3 className="font-medium lg:text-xl">Last Longtitude</h3>
-                <p className="text-sm opacity-70 lg:text-base">{data?.data.lastLongitude}</p>
+                <p className="text-sm opacity-70 lg:text-base">{data.lastLongitude}</p>
               </div>
             </div>
           </div>
         </div>
-        <div className="w-full md:w-1/2 lg:w-[45%] flex flex-col">
-          <h3 className="font-medium lg:text-xl">Jajanan</h3>
-          <JajananCard
-            id={data?.data.jajanId}
-          />
-          <h3 className="font-medium lg:text-xl">Customer</h3>
-          <CustomerProfileCard
-            id={data?.data.userId}
-          />
+        <div className="w-full lg:w-[45%] flex flex-col">
+          <div>
+            <h3 className="font-medium lg:text-xl">Jajanan</h3>
+            <div className="mb-6 md:mb-8 flex flex-col gap-y-5">
+              {
+                data.transactionItems.map((item: any) => (
+                  <JajananCard
+                    key={item.id}
+                    transaction={item}
+                  />
+                ))
+              }
+            </div>
+          </div>
+          <div className="mb-6 md:mb-8">
+            <h3 className="font-medium lg:text-xl">Customer</h3>
+            <CustomerProfileCard
+              id={data.userId}
+            />
+          </div>
         </div>
       </div>
-      </>
-          )}
     </div>
   )
 }
 
-const JajananCard = ({ id }: { id: string }): React.ReactElement => {
-  const url = `api/v1/jajan-items/${id}`
+const JajananCard = ({ transaction }: { transaction: TransactionItemTypes }): React.ReactElement => {
+  const jajan = transaction.jajanItem
 
+  const url = `api/v1/vendors/${jajan.vendorId}`
   const { data, loading } = useFetch(url)
-  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
+
   return (
-    <div className="mb-6 md:mb-8 p-4 flex items-center gap-x-4 bg-jajanWarning rounded-xl md:p-5 md:gap-x-5 lg:p-8">
-      {loading
-        ? loadingBar
-        : (
-        <>
+    <div className="p-4 flex items-center gap-x-4 bg-jajanWarning rounded-xl md:p-5 md:gap-x-5 lg:p-8">
       <img
-        src={data?.data.imageUrl}
+        src={jajan.imageUrl}
         className="rounded-full aspect-square w-28 h-28 sm:w-24 sm:h-24 md:w-28 md:h-28 xl:w-32 xl:h-32"
       />
-      <div className="flex flex-col justify-between gap-1 md:py-1 md:gap-2 md:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
-        <h2 className="font-semibold text-[24px] sm:text-2xl xl:text-3xl">{data?.data.price}</h2>
-        <p className="text-base xl:text-base 2xl:text-lg">{data?.data.name}</p>
+      <div className="w-full flex flex-col justify-between gap-1 md:py-1 md:gap-2">
+        <h3 className="text-xl md:text-2xl xl:text-3xl">{jajan.name}</h3>
         <Link
-          className="opacity-70 text-sm sm:text-base xl:text-lg underline"
-          to={`/vendors/${data?.data.vendorId}`}
+          className="opacity-70 text-base underline"
+          to={`/vendors/${jajan.vendorId}`}
         >
-          Vendor Name
+          {!loading && data?.data.jajanName}
         </Link>
+        <div className="flex justify-between items-center">
+          <p className="font-semibold text-xl md:text-2xl xl:text-3xl">{IDRFormatter(jajan.price)}</p>
+          <span className="text-sm sm:text-base xl:text-lg">{transaction.quantity} Item</span>
+        </div>
       </div>
-      </>
-          )}
     </div>
   )
 }
