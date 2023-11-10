@@ -98,11 +98,13 @@ const List = (): React.ReactElement => {
             className="border-b"
           >
             <TableCell>{index + 1}</TableCell>
-            <TableCell
-              className="text-jajanDark2 underline cursor-pointer"
-              onClick={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
-            >
-              {transaction.id}
+            <TableCell>
+              <span
+                className="text-jajanDark2 underline cursor-pointer"
+                onClick={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
+              >
+                {transaction.id}
+              </span>
             </TableCell>
             <TableCell>
               {IDRFormatter(transaction.transactionItems.reduce((total, item) => {
@@ -119,7 +121,7 @@ const List = (): React.ReactElement => {
                 className="flex justify-center rounded text-xl text-black/50 bg-jajanWarning/20 border border-jajanWarning hover:shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
                 isIconOnly
                 size="sm"
-                onPress={() => { navigate(`/transactions/${transaction.id}`) }}
+                onPress={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
               >
                 <AiOutlineEye/>
               </Button>
