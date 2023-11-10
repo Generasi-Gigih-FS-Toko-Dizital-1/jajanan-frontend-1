@@ -1,27 +1,52 @@
-# React + TypeScript + Vite
+<h1 align=center>Jajan Admin Panel (Frontend)</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description 📝
+This repository hosts the frontend specifically designed as an Admin Panel for the Jajanan app. The panel is tailored to manage admin functions, enabling comprehensive control over user roles including Admins, Street Vendors, Customers, and other essential components within the system.
 
-Currently, two official plugins are available:
+## Features 🌟
+### Manage Admins
+- List: Display all registered admin profiles within the system.
+- Detail: Access detailed information about individual admin accounts.
+- Add: Register new admin profiles into the system.
+- Edit: Modify and update existing admin account details.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Manage Street Vendor
+- List: View a comprehensive catalog of registered street vendors.
+- Detail: Access in-depth information about individual vendor profiles.
+- Add: Incorporate new street vendors into the system.
+- Edit: Modify and update existing vendor details.
 
-## Expanding the ESLint configuration
+### Manage Customer
+- List: Display a list of registered customers.
+- Detail: Access specific information about individual customer profiles.
+- Add: Register new customer profiles within the system.
+- Edit: Modify and update existing customer information.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Manage Transaction 
+- List: Display an overview of all transactions within the system.
+- Detail: Access comprehensive details about individual transactions.
 
-- Configure the top-level `parserOptions` property like this:
+### Manage E-Wallet
+#### Top-up
+- List: View a log of e-wallet top-up transactions.
+- Detail: Access detailed information about each top-up transaction.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+#### Payouts
+- List: Display a log of e-wallet payout transactions.
+- Detail: Access comprehensive details about each payout transaction.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## How to Install and Run 📥
+1. Clone this repository.
+2. Open the terminal and change the directory to the cloned repository.
+3. Run `npm install` or `yarn install` command in the terminal. This command will install all the required dependencies.
+4. Set up the environment variables according to the configured infrastructure in `docker-compose.yml` file and prepare the backend application URL.
+5. Run `npm dev` or `yarn dev` command in the terminal. This command will run the application in development mode.
+6. Try the application from the specified host and port in your browser, i.e. `http://localhost:5173`.
+
+## How to run the container that hosts the app 🐳
+1. Clone this repository.
+2. Open the terminal and change the directory to the cloned repository.
+3. Set up the environment variables according to the configured infrastructure in `docker-compose.yml` file and prepare the backend application URL.
+4. Run `docker-compose up -d --build` command in the terminal. This command will build and run the docker container.
+5. Wait until the build and run process is complete.
+7. Try the application from the specified host and port in your browser, i.e. `http://localhost:5173`.
