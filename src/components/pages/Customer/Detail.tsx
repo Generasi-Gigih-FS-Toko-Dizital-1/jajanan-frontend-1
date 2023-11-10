@@ -10,6 +10,7 @@ import { AiOutlineArrowLeft, AiOutlineMail, AiOutlinePushpin, AiOutlineUser } fr
 import { confirmAlert, successAlert, errorAlert } from '../../elements/CustomAlert'
 
 import { dateFormatter } from '../../../utils/DateFormatter'
+import { IDRFormatter } from '../../../utils/IDRFormatter'
 
 import { type CustomerTypes } from '../../../types/UserTypes'
 
@@ -145,7 +146,7 @@ const CustomerProfileCard = ({ className, profile }: { className?: string, profi
       <div className="flex flex-col justify-between md:text-right md:w-1/4 lg:w-[30%]">
         <span className="text-base sm:text-lg xl:text-xl 2xl:text-2xl">Balance</span>
         <div>
-          <span className="block text-3xl xl:text-4xl mb-1 font-semibold">IDR {profile.balance}</span>
+          <span className="block text-3xl xl:text-4xl mb-1 font-semibold">{IDRFormatter(profile.balance)}</span>
           <span className="block text-sm 2xl:text-base">Current on Wallet</span>
         </div>
       </div>
