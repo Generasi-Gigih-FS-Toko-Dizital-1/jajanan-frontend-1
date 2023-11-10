@@ -51,7 +51,7 @@ export default function ActionButton ({ type, id }: { type: string, id: string }
         aria-label="Dropdown menu for action button"
         onAction={(key) => {
           key === 'edit'
-            ? navigate(`/${userType === 'users' && 'customers'}/${key}/${id}`)
+            ? navigate(`/${userType === 'users' ? 'customers' : userType}/${key}/${id}`)
             : handleDelete()
         }
         }

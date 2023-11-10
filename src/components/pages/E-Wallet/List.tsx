@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Button,
-  Pagination,
   Tab,
   Table,
   TableBody,
@@ -13,46 +12,56 @@ import {
   Tabs
 } from '@nextui-org/react'
 import { dateFormatter } from '../../../utils/DateFormatter'
-import useFetch from '../../../hooks/useFetch'
 import { type TopUpHistory, type PayoutHistory } from '../../../types/E-walletTypes'
 import { paramsEncoder } from '../../../utils/ParamsEncoder'
 import { IDRFormatter } from '../../../utils/IDRFormatter'
-import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineEye, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import useDocumentTitle from '../../../hooks/useDocumentTitle'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 
 const List = (): React.ReactElement => {
   useDocumentTitle('Manage E-Wallet')
 
+  const backendOneClientPrivate = useBackendOneClientPrivate()
+
   const navigate = useNavigate()
   const [topUpHistoiryPage, setTopUpHistoiryPage] = useState(1)
   const [payoutHistoriesPage, setPayoutHistoriesPage] = useState(1)
-  const rowsPerPage = 10
+  const [pageSize] = useState(10)
 
-  const { data: topUpHistoriesResult, loading: topUpHistoryLoading } = useFetch(`api/v1/top-up-histories?include=${paramsEncoder({ user: true })}`)
-  const topUpHistories: TopUpHistory[] = topUpHistoriesResult?.data.topUpHistories
+  const [dataTopUp, setDataTopUp] = useState([])
+  const [dataPayout, setDataPayout] = useState([])
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const { data: payoutHistoriesResult, loading: payoutHistoryLoading } = useFetch(`api/v1/payout-histories?include=${paramsEncoder({ vendor: true })}`)
-  const payoutHistories: PayoutHistory[] = payoutHistoriesResult?.data.payoutHistories
+  useEffect(() => {
+    const url = `api/v1/top-up-histories?page_number=${topUpHistoiryPage}&page_size=${pageSize}&include=${paramsEncoder({ user: true })}`
+    setLoading(true)
 
-  const topUpHistoryLoadingBar: React.ReactElement = <>{topUpHistoryLoading && 'Loading...'}</>
-  const payoutHistoryLoadingBar: React.ReactElement = <>{topUpHistoryLoading && 'Loading...'}</>
+    backendOneClientPrivate.get(url)
+      .then((response: any) => {
+        setDataTopUp(response.data.data.topUpHistories)
+      }).catch((err: any) => {
+        console.log(err)
+      }).finally(() => {
+        setLoading(false)
+      })
+  }, [topUpHistoiryPage, pageSize])
 
-  const topUphistoriesPages = Math.ceil(topUpHistories?.length / rowsPerPage)
-  const payoutHistoriesPages = Math.ceil(payoutHistories?.length / rowsPerPage)
+  useEffect(() => {
+    const url = `api/v1/payout-histories?page_number=${payoutHistoriesPage}&page_size=${pageSize}&include=${paramsEncoder({ vendor: true })}`
+    setLoading(true)
 
-  const topUpHistoriesItems = useMemo(() => {
-    const start = (topUpHistoiryPage - 1) * rowsPerPage
-    const end = start + rowsPerPage
+    backendOneClientPrivate.get(url)
+      .then((response: any) => {
+        setDataPayout(response.data.data.payoutHistories)
+      }).catch((err: any) => {
+        console.log(err)
+      }).finally(() => {
+        setLoading(false)
+      })
+  }, [setTopUpHistoiryPage, pageSize])
 
-    return topUpHistories?.slice(start, end)
-  }, [topUpHistoiryPage, topUpHistories])
-
-  const payoutHistoriesItems = useMemo(() => {
-    const start = (payoutHistoriesPage - 1) * rowsPerPage
-    const end = start + rowsPerPage
-
-    return payoutHistories?.slice(start, end)
-  }, [payoutHistoriesPage, payoutHistories])
+  const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -62,39 +71,45 @@ const List = (): React.ReactElement => {
         </h2>
       </div>
       <Tabs variant="underlined" aria-label="Tabs variants">
-        <Tab key="photos" title="Top Up History">
-          {topUpHistoryLoading
-            ? topUpHistoryLoadingBar
+        <Tab key="topup" title="Top Up History">
+          {loading
+            ? loadingBar
             : (
           <Table
           aria-label="List of top up histories"
           className="overflow-x-auto"
           bottomContent={
           <div className="flex w-full">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="default"
-              page={topUpHistoiryPage}
-              total={topUphistoriesPages}
-              onChange={(page) => { setTopUpHistoiryPage(page) }}
-            />
+            <Button
+              className="rounded-r-none"
+              onPress={() => { setTopUpHistoiryPage((prev) => prev - 1) }}
+              isDisabled={topUpHistoiryPage === 1}
+              isIconOnly
+            >
+              <AiOutlineLeft/>
+            </Button>
+            <Button
+              className="rounded-l-none"
+              onPress={() => { setTopUpHistoiryPage((prev) => prev + 1) }}
+              isDisabled={dataTopUp.length < pageSize}
+              isIconOnly
+            >
+              <AiOutlineRight/>
+            </Button>
           </div>
         }>
             <TableHeader>
               <TableColumn>#</TableColumn>
-              <TableColumn>Top Up Id</TableColumn>
+              <TableColumn>Top Up ID</TableColumn>
               <TableColumn>Username</TableColumn>
               <TableColumn>Amount</TableColumn>
               <TableColumn>Received At</TableColumn>
-              <TableColumn>Media</TableColumn>
               <TableColumn className="flex justify-center items-center">
                 Action
               </TableColumn>
             </TableHeader>
             <TableBody>
-              {topUpHistoriesItems.map((topUpHistory: TopUpHistory) => (
+              {dataTopUp.map((topUpHistory: TopUpHistory) => (
                 <TableRow key={topUpHistory.id} className="border-b">
                   <TableCell>1</TableCell>
                   <TableCell>
@@ -106,7 +121,6 @@ const List = (): React.ReactElement => {
                   <TableCell>{topUpHistory.user?.username}</TableCell>
                   <TableCell>{IDRFormatter(topUpHistory.amount)}</TableCell>
                   <TableCell>{dateFormatter(topUpHistory.createdAt)}</TableCell>
-                  <TableCell>{topUpHistory.media}</TableCell>
                   <TableCell
                     className="flex justify-center items-center"
                   >
@@ -125,40 +139,46 @@ const List = (): React.ReactElement => {
           </Table>
               )}
         </Tab>
-        <Tab key="music" title="Payout History">
-          {payoutHistoryLoading
-            ? payoutHistoryLoadingBar
+        <Tab key="payout" title="Payout History">
+          {loading
+            ? loadingBar
             : (
           <Table
           aria-label="List of payout histories"
           className="overflow-x-auto"
           bottomContent={
           <div className="flex w-full">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="default"
-              page={payoutHistoriesPage}
-              total={payoutHistoriesPages}
-              onChange={(page) => { setPayoutHistoriesPage(page) }}
-            />
+            <Button
+              className="rounded-r-none"
+              onPress={() => { setPayoutHistoriesPage((prev) => prev - 1) }}
+              isDisabled={payoutHistoriesPage === 1}
+              isIconOnly
+            >
+              <AiOutlineLeft/>
+            </Button>
+            <Button
+              className="rounded-l-none"
+              onPress={() => { setPayoutHistoriesPage((prev) => prev + 1) }}
+              isDisabled={dataPayout.length < pageSize}
+              isIconOnly
+            >
+              <AiOutlineRight/>
+            </Button>
           </div>
         }
         >
             <TableHeader>
               <TableColumn>#</TableColumn>
-              <TableColumn>Payout Id</TableColumn>
+              <TableColumn>Payout ID</TableColumn>
               <TableColumn>Username</TableColumn>
               <TableColumn>Amount</TableColumn>
               <TableColumn>Claimed At</TableColumn>
-              <TableColumn>Media</TableColumn>
               <TableColumn className="flex justify-center items-center">
                 Action
               </TableColumn>
             </TableHeader>
             <TableBody>
-              {payoutHistoriesItems.map((payoutHistory: PayoutHistory) => (
+              {dataPayout.map((payoutHistory: PayoutHistory) => (
                 <TableRow key={payoutHistory.id} className="border-b">
                   <TableCell>1</TableCell>
                   <TableCell>
@@ -170,7 +190,6 @@ const List = (): React.ReactElement => {
                   <TableCell>{payoutHistory.vendor?.username}</TableCell>
                   <TableCell>{payoutHistory.amount}</TableCell>
                   <TableCell>{dateFormatter(payoutHistory.createdAt)}</TableCell>
-                  <TableCell>{payoutHistory.media}</TableCell>
                   <TableCell
                     className="flex justify-center items-center"
                   >

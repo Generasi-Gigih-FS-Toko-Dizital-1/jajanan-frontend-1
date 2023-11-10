@@ -1,34 +1,41 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import useFetch from '../../../hooks/useFetch'
+import useBackendOneClientPrivate from '../../../hooks/useBackendOneClientPrivate'
 import useDocumentTitle from '../../../hooks/useDocumentTitle'
 import { Link, useNavigate } from 'react-router-dom'
 
 import ActionButton from '../../elements/ActionButton'
-import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
 import { type CustomerTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
   useDocumentTitle('Customers')
 
+  const backendOneClientPrivate = useBackendOneClientPrivate()
+
   const navigate = useNavigate()
-  const [page, setPage] = useState(1)
-  const rowsPerPage = 10
+  const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize] = useState(10)
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const url = 'api/v1/users'
+  useEffect(() => {
+    const url = `api/v1/users?page_number=${pageNumber}&page_size=${pageSize}`
+    setLoading(true)
 
-  const { data, loading } = useFetch(url)
+    backendOneClientPrivate.get(url)
+      .then((response: any) => {
+        setData(response.data.data.users)
+      }).catch((err: any) => {
+        console.log(err)
+      }).finally(() => {
+        setLoading(false)
+      })
+  }, [pageNumber, pageSize])
+
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
-
-  const pages = Math.ceil(data?.data.users.length / rowsPerPage)
-
-  const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage
-    const end = start + rowsPerPage
-
-    return data?.data.users.slice(start, end)
-  }, [page, data])
 
   return (
     <div className="bg-white py-5 md:px-3">
@@ -49,15 +56,22 @@ const List = (): React.ReactElement => {
         className="overflow-x-auto"
         bottomContent={
           <div className="flex w-full">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="default"
-              page={page}
-              total={pages}
-              onChange={(page) => { setPage(page) }}
-            />
+            <Button
+              className="rounded-r-none"
+              onPress={() => { setPageNumber((prev) => prev - 1) }}
+              isDisabled={pageNumber === 1}
+              isIconOnly
+            >
+              <AiOutlineLeft/>
+            </Button>
+            <Button
+              className="rounded-l-none"
+              onPress={() => { setPageNumber((prev) => prev + 1) }}
+              isDisabled={data.length < pageSize}
+              isIconOnly
+            >
+              <AiOutlineRight/>
+            </Button>
           </div>
         }
       >
@@ -74,7 +88,7 @@ const List = (): React.ReactElement => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-        {items.map((customer: CustomerTypes, index: number) => (
+        {data.map((customer: CustomerTypes, index: number) => (
           <TableRow
             key={customer.id}
             className="border-b"

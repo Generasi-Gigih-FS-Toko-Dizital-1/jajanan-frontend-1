@@ -1,5 +1,6 @@
 import React from 'react'
 import { type VendorTypes } from '../../types/UserTypes'
+import { Link } from 'react-router-dom'
 
 const VendorCard = ({ className, vendor }: { className?: string, vendor: VendorTypes | undefined }): React.ReactElement => {
   return (
@@ -10,7 +11,12 @@ const VendorCard = ({ className, vendor }: { className?: string, vendor: VendorT
       />
       <div className="flex flex-col justify-between gap-1 md:py-1 md:gap-2 md:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
         <h2 className="font-semibold text-[24px] sm:text-2xl xl:text-3xl">{vendor?.fullName}</h2>
-        <p className="text-base xl:text-base 2xl:text-lg underline">@{vendor?.username}</p>
+        <Link
+          className="text-base xl:text-base 2xl:text-lg underline"
+          to={`/vendors/${vendor?.id}`}
+        >
+          @{vendor?.username}
+        </Link>
         <p className="text-base xl:text-base 2xl:text-lg">{vendor?.address}</p>
       </div>
     </div>

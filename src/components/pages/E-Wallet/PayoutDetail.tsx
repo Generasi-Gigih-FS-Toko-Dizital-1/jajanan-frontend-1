@@ -22,7 +22,7 @@ const Detail = (): React.ReactElement => {
   return (
     <div className="bg-white py-5 md:px-3">
       <div className="flex justify-between mx-4 mb-4">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detailed Payout History</h2>
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Detail Payout History</h2>
         <Button
           onPress={() => { navigate('/e-wallets') }}
           variant="bordered"
@@ -36,7 +36,7 @@ const Detail = (): React.ReactElement => {
         ? loadingBar
         : (
       <div className="flex flex-wrap py-6 mx-4">
-        <div className="lg:w-1/2 flex flex-col gap-y-5">
+        <div className="w-full md:w-3/5 lg:w-[55%] flex flex-col gap-y-5 mb-10 md:mb-12 xl:mb-14">
           <div>
             <h3 className="font-medium lg:text-xl">Payout Id</h3>
             <p className="text-sm opacity-70 lg:text-base underline">{payoutHistory.id}</p>
@@ -51,11 +51,18 @@ const Detail = (): React.ReactElement => {
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Media</h3>
-            <p className="text-sm opacity-70 lg:text-base">{payoutHistory.media}</p>
+            {
+              payoutHistory.media.includes('jpeg') || payoutHistory.media.includes('png') || payoutHistory.media.includes('jpg')
+                ? <img
+                  src={payoutHistory.media}
+                  className="object-cover h-full w-1/2 border border-jajanDark2"
+                />
+                : 'No Media'
+            }
           </div>
         </div>
-        <div className='lg:w-1/2 flex-col'>
-          <h2 className="my-4 font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Vendor</h2>
+        <div className='w-full lg:w-[45%] flex flex-col'>
+          <h2 className="font-semibold text-xl sm:text-2xl md:text-xl lg:text-2xl">Vendor</h2>
           <VendorCard className="py-4 mb-4" vendor={payoutHistory.vendor} />
         </div>
       </div>

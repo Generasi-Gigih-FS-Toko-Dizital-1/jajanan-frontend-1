@@ -41,8 +41,6 @@ const List = (): React.ReactElement => {
       })
   }, [pageNumber, pageSize])
 
-  // console.log(data)
-
   const loadingBar: React.ReactElement = <>{loading && 'Loading...'}</>
 
   return (
@@ -74,7 +72,6 @@ const List = (): React.ReactElement => {
             >
               <AiOutlineRight/>
             </Button>
-
           </div>
         }
       >
@@ -119,7 +116,7 @@ const List = (): React.ReactElement => {
                 className="flex justify-center rounded text-xl text-black/50 bg-jajanWarning/20 border border-jajanWarning hover:shadow-md hover:shadow-jajanWarning focus:shadow-md focus:shadow-jajanWarning transition-all ease-in-out duration-100"
                 isIconOnly
                 size="sm"
-                onPress={() => { navigate(`/transactions/${transaction.id}`) }}
+                onPress={() => { navigate(`/transactions/${transaction.id}`, { state: { data: transaction } }) }}
               >
                 <AiOutlineEye/>
               </Button>
