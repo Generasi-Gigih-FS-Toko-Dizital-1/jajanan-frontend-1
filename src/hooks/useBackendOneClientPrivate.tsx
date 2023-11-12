@@ -2,10 +2,12 @@ import { useEffect } from 'react'
 import BackendOneClient from '../clients/BackendOneClient'
 import useAuthentication from './useAuthentication.ts'
 import useRefreshAccessToken from './useRefreshAccessToken.tsx'
+import { useNavigate } from 'react-router-dom'
 
 const useBackendOneClientPrivate = (): any => {
+  const navigate = useNavigate()
   const refreshAccessToken = useRefreshAccessToken()
-  const { authentication } = useAuthentication()
+  const { authentication, setAuthentication } = useAuthentication()
   const backEndOneClient: BackendOneClient = new BackendOneClient()
 
   useEffect(() => {
@@ -31,6 +33,10 @@ const useBackendOneClientPrivate = (): any => {
             prevRequest.headers.Authorization = `Bearer ${accessToken}`
             return await backEndOneClient.instance(prevRequest)
           }
+        } else if (error?.response?.data?.message === 'Validate authentication failed, found session by authorization is unknown.') {
+          setAuthentication(null)
+          localStorage.removeItem('authentication')
+          navigate('/login')
         }
         return await Promise.reject(error)
       }

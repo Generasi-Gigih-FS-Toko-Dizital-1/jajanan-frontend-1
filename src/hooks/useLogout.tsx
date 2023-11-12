@@ -17,7 +17,7 @@ export const useLogout = (): any => {
         navigate('/login')
       })
       .catch((err: any) => {
-        if (err === true) {
+        if (err.message === 'Admin logout failed, admin not found') {
           setAuthentication(null)
           localStorage.removeItem('authentication')
           navigate('/login')
