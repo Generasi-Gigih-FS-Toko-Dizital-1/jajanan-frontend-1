@@ -28,8 +28,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setData(response.data.data.users)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })

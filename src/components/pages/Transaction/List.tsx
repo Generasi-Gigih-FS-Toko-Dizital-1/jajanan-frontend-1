@@ -34,8 +34,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setData(response.data.data.transactionHistories)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })

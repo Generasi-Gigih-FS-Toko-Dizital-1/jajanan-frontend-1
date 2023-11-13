@@ -31,8 +31,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setData(response.data.data.admins)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })
