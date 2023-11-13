@@ -28,20 +28,58 @@ const Detail = (): React.ReactElement => {
 
   const handleDelete = (): void => {
     void confirmAlert(
-      'Are you sure to delete this customer?',
-      'You won\'t be able to revert this!',
-      'Yes, delete it!',
-      'No, cancel!'
-    )
-      .then((result) => {
-        result.isConfirmed === true &&
-        backendOneClientPrivate.delete(`api/v1/users/${id}`).then(() => {
-          successAlert('Deleted!', 'Your customer has been deleted.')
-          navigate('/customers')
-        }).catch((error: Error) => {
-          errorAlert('Error!', `${error.message}`)
+      'Soft delete or Hard delete?',
+      'Soft delete will only change the status of the user to inactive. Hard delete will delete the user permanently.',
+      'Soft delete',
+      'Hard delete'
+    ).then((result) => {
+      void (result.isConfirmed === true
+        ? confirmAlert(
+          'Are you sure to Soft delete this customer?',
+          '',
+          'Yes, delete it!',
+          'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/users/${id}?method=soft`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  'Your customer has been deleted.'
+                )
+                navigate('/customers')
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
+          )
         })
-      })
+        : confirmAlert(
+          'Are you sure to Hard delete this customer?',
+          'You won\'t be able to revert this!',
+          'Yes, delete it!',
+          'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/users/${id}?method=hard`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  'Your customer has been deleted.'
+                )
+                navigate('/customers')
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
+          )
+        })
+      )
+    })
   }
 
   return (
@@ -77,7 +115,9 @@ const Detail = (): React.ReactElement => {
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Deleted at</h3>
-            <p className="text-sm opacity-70 lg:text-base">-</p>
+            <p className="text-sm opacity-70 lg:text-base">
+              {data?.data.deletedAt === null ? '-' : dateFormatter(data?.data.deletedAt)}
+            </p>
           </div>
         </div>
         <div className="w-1/2 flex flex-col gap-y-5">

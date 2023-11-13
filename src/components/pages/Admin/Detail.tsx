@@ -27,20 +27,58 @@ const Detail = (): React.ReactElement => {
 
   const handleDelete = (): void => {
     void confirmAlert(
-      'Are you sure to delete this admin?',
-      'You won\'t be able to revert this!',
-      'Yes, delete it!',
-      'No, cancel!'
-    )
-      .then((result) => {
-        result.isConfirmed === true &&
-        backendOneClientPrivate.delete(`api/v1/admins/${id}`).then(() => {
-          successAlert('Deleted!', 'Your admin has been deleted.')
-          navigate('/admins')
-        }).catch((error: Error) => {
-          errorAlert('Error!', `${error.message}`)
+      'Soft delete or Hard delete?',
+      'Soft delete will only change the status of the user to inactive. Hard delete will delete the user permanently.',
+      'Soft delete',
+      'Hard delete'
+    ).then((result) => {
+      void (result.isConfirmed === true
+        ? confirmAlert(
+          'Are you sure to Soft delete this admin?',
+          '',
+          'Yes, delete it!',
+          'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/admins/${id}?method=soft`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  'Your admin has been deleted.'
+                )
+                navigate('/admins')
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
+          )
         })
-      })
+        : confirmAlert(
+          'Are you sure to Hard delete this admin?',
+          'You won\'t be able to revert this!',
+          'Yes, delete it!',
+          'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/admins/${id}?method=hard`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  'Your admin has been deleted.'
+                )
+                navigate('/admins')
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
+          )
+        })
+      )
+    })
   }
 
   return (
@@ -73,7 +111,9 @@ const Detail = (): React.ReactElement => {
           </div>
           <div>
             <h3 className="font-medium lg:text-xl">Deleted at</h3>
-            <p className="text-sm opacity-70 lg:text-base">-</p>
+            <p className="text-sm opacity-70 lg:text-base">
+              {data?.data.deletedAt === null ? '-' : dateFormatter(data?.data.deletedAt)}
+            </p>
           </div>
         </div>
         <div className="w-full flex items-center gap-3 mt-5">

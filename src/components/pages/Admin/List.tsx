@@ -9,7 +9,6 @@ import ActionButton from '../../elements/ActionButton'
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
-import { dateFormatter } from '../../../utils/DateFormatter'
 import { type AdminTypes } from '../../../types/UserTypes'
 
 const List = (): React.ReactElement => {
@@ -31,8 +30,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setData(response.data.data.admins)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })
@@ -85,8 +82,7 @@ const List = (): React.ReactElement => {
           <TableColumn>Fullname</TableColumn>
           <TableColumn>Email</TableColumn>
           <TableColumn>Gender</TableColumn>
-          <TableColumn>Updated at</TableColumn>
-          <TableColumn>Created at</TableColumn>
+          <TableColumn>Status</TableColumn>
           <TableColumn className="flex justify-center items-center">
             Action
           </TableColumn>
@@ -107,8 +103,12 @@ const List = (): React.ReactElement => {
                 </TableCell>
                 <TableCell>{admin.email}</TableCell>
                 <TableCell>{admin.gender}</TableCell>
-                <TableCell>{dateFormatter(admin.updatedAt)}</TableCell>
-                <TableCell>{dateFormatter(admin.createdAt)}</TableCell>
+                <TableCell>
+                  {admin.deletedAt === null
+                    ? <span className="text-xs py-1 px-2 bg-green-400 rounded-full text-white">Active</span>
+                    : <span className="text-xs py-1 px-2 bg-red-400 rounded-full text-white">Deleted</span>
+                  }
+                </TableCell>
                 <TableCell className="flex justify-center items-center">
                   <ActionButton
                     type="admin"

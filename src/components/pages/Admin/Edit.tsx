@@ -48,8 +48,6 @@ const Edit = (): React.ReactElement => {
     })
   }, [data])
 
-  // console.log(fields)
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 

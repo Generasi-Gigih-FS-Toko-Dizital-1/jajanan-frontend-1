@@ -1,3 +1,5 @@
+import { errorAlert } from '../components/elements/CustomAlert'
+
 export default function getGeoLocation (fields: any, setFields: any): void {
   if (navigator.geolocation !== undefined) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -8,6 +10,9 @@ export default function getGeoLocation (fields: any, setFields: any): void {
       })
     })
   } else {
-    console.log('Geolocation is not supported by this browser.')
+    errorAlert(
+      'Geolocation Error',
+      'Geolocation is not supported by this browser, please use another browser and try again.'
+    )
   }
 }

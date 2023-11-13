@@ -111,7 +111,7 @@ const JajananCard = ({ transaction }: { transaction: TransactionItemTypes }): Re
     <div className="p-4 flex items-center gap-x-4 bg-jajanWarning rounded-xl md:p-5 md:gap-x-5 lg:p-8">
       <img
         src={jajan.imageUrl}
-        className="rounded-full aspect-square w-28 h-28 sm:w-24 sm:h-24 md:w-28 md:h-28 xl:w-32 xl:h-32"
+        className="border-2 border-jajanDark bg-white rounded-full object-cover aspect-square w-28 h-28 sm:w-24 sm:h-24 md:w-28 md:h-28 xl:w-32 xl:h-32"
       />
       <div className="w-full flex flex-col justify-between gap-1 md:py-1 md:gap-2">
         <h3 className="text-xl md:text-2xl xl:text-3xl">{jajan.name}</h3>

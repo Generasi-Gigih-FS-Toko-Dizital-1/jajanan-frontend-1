@@ -40,8 +40,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setDataTopUp(response.data.data.topUpHistories)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })
@@ -54,8 +52,6 @@ const List = (): React.ReactElement => {
     backendOneClientPrivate.get(url)
       .then((response: any) => {
         setDataPayout(response.data.data.payoutHistories)
-      }).catch((err: any) => {
-        console.log(err)
       }).finally(() => {
         setLoading(false)
       })
