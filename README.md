@@ -38,15 +38,7 @@ This repository hosts the frontend specifically designed as an Admin Panel for t
 ## How to Install and Run 📥
 1. Clone this repository.
 2. Open the terminal and change the directory to the cloned repository.
-3. Run `npm install` or `yarn install` command in the terminal. This command will install all the required dependencies.
-4. Set up the environment variables according to the configured infrastructure in `docker-compose.yml` file and prepare the backend application URL.
-5. Run `npm dev` or `yarn dev` command in the terminal. This command will run the application in development mode.
-6. Try the application from the specified host and port in your browser, i.e. `http://localhost:5173`.
-
-## How to run the container that hosts the app 🐳
-1. Clone this repository.
-2. Open the terminal and change the directory to the cloned repository.
 3. Set up the environment variables according to the configured infrastructure in `docker-compose.yml` file and prepare the backend application URL.
 4. Run `docker-compose up -d --build` command in the terminal. This command will build and run the docker container.
 5. Wait until the build and run process is complete.
-7. Try the application from the specified host and port in your browser, i.e. `http://localhost:5173`.
+6. Try the application from the specified host and port in your browser, i.e. `http://localhost:5173`.
