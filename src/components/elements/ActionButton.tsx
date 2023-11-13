@@ -14,26 +14,58 @@ export default function ActionButton ({ type, id }: { type: string, id: string }
 
   const handleDelete = (): void => {
     void confirmAlert(
-      `Are you sure to delete this ${userType}?`,
-      'You won\'t be able to revert this!',
-      'Yes, delete it!',
-      'No, cancel!'
-    )
-      .then((result) => {
-        result.isConfirmed === true &&
-        backendOneClientPrivate.delete(`api/v1/${userType}/${id}`).then(() => {
-          successAlert(
-            'Deleted!',
-            `Your ${userType} has been deleted.`
-          )
-          window.location.reload()
-        }).catch((error: Error) => {
-          errorAlert(
-            'Error!',
-            `${error.message}`
+      'Soft delete or Hard delete?',
+      'Soft delete will only change the status of the user to inactive. Hard delete will delete the user permanently.',
+      'Soft delete',
+      'Hard delete'
+    ).then((result) => {
+      void (result.isConfirmed === true
+        ? confirmAlert(
+            `Are you sure to Soft delete this ${userType}?`,
+            '',
+            'Yes, delete it!',
+            'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/${userType}/${id}?method=soft`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  `Your ${userType} has been deleted.`
+                )
+                window.location.reload()
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
           )
         })
-      })
+        : confirmAlert(
+            `Are you sure to Hard delete this ${userType}?`,
+            'You won\'t be able to revert this!',
+            'Yes, delete it!',
+            'No, cancel!'
+        ).then((result) => {
+          void (result.isConfirmed === true &&
+            backendOneClientPrivate.delete(`api/v1/${userType}/${id}?method=hard`)
+              .then(() => {
+                successAlert(
+                  'Deleted!',
+                  `Your ${userType} has been deleted.`
+                )
+                window.location.reload()
+              }).catch((error: Error) => {
+                errorAlert(
+                  'Error!',
+                  `${error.message}`
+                )
+              })
+          )
+        })
+      )
+    })
   }
 
   return (

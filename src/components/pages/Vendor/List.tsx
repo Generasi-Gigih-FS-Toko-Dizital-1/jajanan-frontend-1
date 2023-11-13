@@ -79,6 +79,7 @@ const List = (): React.ReactElement => {
           <TableColumn>Username</TableColumn>
           <TableColumn>Email</TableColumn>
           <TableColumn>Address</TableColumn>
+          <TableColumn>Status</TableColumn>
           <TableColumn
             className="flex justify-center items-center"
           >
@@ -103,6 +104,12 @@ const List = (): React.ReactElement => {
             <TableCell>{vendor.username}</TableCell>
             <TableCell>{vendor.email}</TableCell>
             <TableCell>{vendor.address}</TableCell>
+            <TableCell>
+              {vendor.deletedAt === null
+                ? <span className="text-xs py-1 px-2 bg-green-400 rounded-full text-white">Active</span>
+                : <span className="text-xs py-1 px-2 bg-red-400 rounded-full text-white">Deleted</span>
+              }
+            </TableCell>
             <TableCell
               className="flex justify-center items-center"
             >

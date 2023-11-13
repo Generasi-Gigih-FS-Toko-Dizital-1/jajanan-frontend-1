@@ -9,18 +9,21 @@ This repository hosts the frontend specifically designed as an Admin Panel for t
 - Detail: Access detailed information about individual admin accounts.
 - Add: Register new admin profiles into the system.
 - Edit: Modify and update existing admin account details.
+- Delete: Remove admin accounts from the system (soft and hard delete).
 
 ### Manage Street Vendor
 - List: View a comprehensive catalog of registered street vendors.
 - Detail: Access in-depth information about individual vendor profiles.
 - Add: Incorporate new street vendors into the system.
 - Edit: Modify and update existing vendor details.
+- Delete: Remove street vendors from the system (soft and hard delete).
 
 ### Manage Customer
 - List: Display a list of registered customers.
 - Detail: Access specific information about individual customer profiles.
 - Add: Register new customer profiles within the system.
 - Edit: Modify and update existing customer information.
+- Delete: Remove customers from the system (soft and hard delete).
 
 ### Manage Transaction 
 - List: Display an overview of all transactions within the system.
