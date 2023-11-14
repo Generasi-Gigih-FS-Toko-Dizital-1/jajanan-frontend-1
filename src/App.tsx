@@ -40,6 +40,8 @@ import TopUpDetail from './components/pages/E-Wallet/TopUpDetail'
 import RequireAuth from './components/elements/RequireAuth'
 import Anonymous from './components/elements/Anonymous'
 
+import NotFound from './components/pages/NotFound'
+
 export default function App (): React.ReactElement {
   const navList = [
     {
@@ -117,6 +119,8 @@ export default function App (): React.ReactElement {
           </Route>
         </Route>
       </Route>
+      <Route path="*" element={<Navigate to="/not-found" />} />
+      <Route path="/not-found" element={<NotFound />} />
     </Routes>
   )
 }
