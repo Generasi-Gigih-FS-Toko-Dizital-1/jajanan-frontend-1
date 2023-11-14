@@ -33,7 +33,7 @@ const useBackendOneClientPrivate = (): any => {
             prevRequest.headers.Authorization = `Bearer ${accessToken}`
             return await backEndOneClient.instance(prevRequest)
           }
-        } else if (error?.response?.data?.message === 'Validate authentication failed, found session by authorization is unknown.') {
+        } else if (error?.response?.data?.message === 'Validate authentication failed, found session by authorization is unknown.' || error?.response?.data?.message === 'Admin refresh access token failed, session did not match.') {
           setAuthentication(null)
           localStorage.removeItem('authentication')
           navigate('/login')
