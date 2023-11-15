@@ -4,7 +4,7 @@ function useDocumentTitle (title: string, prevailOnUnmount = false): void {
   const defaultTitle = useRef(document.title)
 
   useEffect(() => {
-    document.title = `${title} | Jajan Mania Panel`
+    document.title = `${title} | Jajanan App Panel`
   }, [title])
 
   useEffect(() => () => {
