@@ -15,7 +15,9 @@ export default function JajanStandForm ({
 }): React.ReactElement {
   return (
     <>
-      <h2 className="font-semibold text-xl mb-6 sm:text-2xl md:mb-8 md:text-xl lg:text-2xl ">Add Jajan Stand</h2>
+      <h2 className="font-semibold text-xl mb-6 sm:text-2xl md:mb-8 md:text-xl lg:text-2xl ">
+        {(data !== undefined) ? 'Edit' : 'Add'} Jajan Stand
+      </h2>
       <div className="flex flex-col md:flex-row gap-5 mb-4 md:gap-4 md:mb-5">
         <Input
           isRequired
